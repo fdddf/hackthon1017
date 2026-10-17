@@ -192,9 +192,19 @@ survives all of them. The venue wifi was never going to be our single point of f
 
 Judges asked for honesty, so:
 
-- **Real:** both clients, the live state sync, the help ladder, the leak guard, all four
-  Claude calls, the language switch, the collapsed answer, WebRTC signalling and the peer
-  connection.
+- **Verified working:** both clients, the live state sync over WebSocket, the full help
+  ladder, the escalation to the parent, the collapsed answer and its friction step, the
+  parent-goal-to-quest round trip, the Patterns view, the privacy screen, the answer-leak
+  guard, and the Cloudflare tunnel (page, routes and API proxy all served).
+- **Call:** the state machine and the signalling relay are verified end to end — parent
+  taps Call, the watch rings, the child answers, the card stays up during the call. The
+  audio/video peer connection needs a machine with camera permission; where it is denied
+  the call degrades on its own to the UI-only path and says so on screen. **Test it on the
+  demo machine before recording.**
+- **Claude calls:** the four prompts, the schema handling and the leak guard are written
+  and exercised against the bundled fallbacks. **Everything in this repo has so far run
+  with `hasKey: false`** — put a real key in `.env` and walk the demo once before trusting
+  the live hint and card quality.
 - **Seeded:** the week of behaviour the Observer reads. We built this in an afternoon; we
   could not generate a real week. The analysis over it is a real Claude call.
 - **One family, in memory:** no database, no accounts. Restarting the server resets it.
