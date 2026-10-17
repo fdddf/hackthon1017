@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { FALLBACK_HINTS, FALLBACK_CARD, FALLBACK_PATTERNS } from './fallback.js';
+import { FALLBACK_HINTS, FALLBACK_CARD, FALLBACK_PATTERNS, FALLBACK_QUEST } from './fallback.js';
 
 const MODEL = 'claude-opus-5-5';
 const client = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;
@@ -158,6 +158,41 @@ export async function translate({ problem, language = 'en', hintsAlreadyTried = 
   } catch (err) {
     console.error('[translate] falling back:', err.message);
     return FALLBACK_CARD;
+  }
+}
+
+// --- JOB 2, the other direction: a parent's goal becomes something a child can hold
+
+const QUEST_SYSTEM = `A parent has told you what they want for their child this week.
+Turn it into ONE small task that fits on a smartwatch and that the child can finish today.
+
+Rules:
+- The task is a behaviour the child controls, never an outcome. "Read the question twice"
+  works. "Get them right" does not.
+- Title: under 60 characters, second person, no praise, no exclamation marks.
+- "why": one short sentence in the parent's voice explaining where this came from, so it
+  reads like their mum noticed something — not like an app issued an instruction.
+- Points between 10 and 25, higher only if it genuinely costs the child more effort.
+
+JSON only: {"title": "...", "why": "...", "points": 15}`;
+
+export async function quest({ goal, child }) {
+  if (!client || !goal) return FALLBACK_QUEST;
+  try {
+    const out = await ask({
+      system: QUEST_SYSTEM,
+      effort: 'low',
+      maxTokens: 400,
+      user: `Child: ${child.name}, age ${child.age}.\n\nWhat their parent said: "${goal}"`,
+    });
+    return {
+      title: String(out.title),
+      why: String(out.why),
+      points: Math.min(25, Math.max(10, Number(out.points) || 15)),
+    };
+  } catch (err) {
+    console.error('[quest] falling back:', err.message);
+    return FALLBACK_QUEST;
   }
 }
 

@@ -55,3 +55,9 @@ export const FALLBACK_PATTERNS = {
   tonight:
     "Don't teach the maths tonight. Read one question together and ask him to underline the part that says what we're looking for. Ten minutes is enough.",
 };
+
+export const FALLBACK_QUEST = {
+  title: 'Read the question twice before you touch the numbers',
+  why: 'Mum noticed you solve fast, but sometimes you answer a different question.',
+  points: 15,
+};

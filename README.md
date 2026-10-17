@@ -1,118 +1,209 @@
-# ⚡ Claude Impact Lab Berlin · 17 Oct 2026
+# Relay
 
-> We started with a conversation. Now we build.
+> **AI doesn't answer. It passes the ball.**
 
-A full-day build sprint in Berlin. ~100 curated people, mixed teams, Claude API credits, judges, and gifts for the winning team. Top builds get shared with Anthropic.
+A kid's **watch** and a parent's **phone**, with Claude between them — not doing the
+homework, not policing the child, but making sure the two humans connect at the moment
+it matters.
 
-🔗 Event page: https://luma.com/claude-oofc
-
-**Not just for developers.** Engineers, designers, researchers, founders, creatives, product people and domain experts all build here. If you can describe a problem, you can build with Claude.
+Built in one day at [Claude Impact Lab Berlin](https://luma.com/claude-oofc), 17 Oct 2026.
+Challenge: *AI education for everyone.* Audience: **parents** — and their children.
 
 ---
 
-## 🗓️ Schedule
+## Who it's for
 
-| Time | What |
+Parents of children roughly 8–13, with a sharp edge for immigrant families in Berlin.
+
+Most children that age here **have a kids' smartwatch and do not have a phone** — parents
+chose that on purpose. The watch is the only device that is both on the child's wrist all
+day and trusted by the parent. Nobody is building AI for it.
+
+## The problem
+
+Three things go wrong in the same ten minutes of an evening:
+
+1. **The kid gets stuck**, and the fastest escape is a chatbot that hands over a finished
+   answer. They stop being stuck, and they stop learning.
+2. **The kid doesn't ask for help**, because asking feels like admitting you're bad at it.
+   So they stall, guess, or quit, and nobody finds out until the test.
+3. **The parent isn't there** — other room, other shift, other country — or is there but
+   doesn't know *how* to help, so they say the answer, or they say "concentrate."
+
+AI made this worse, not better. Nothing makes the **slow** path — the one where the kid
+actually learns — easy enough to choose at 9pm.
+
+And for a parent whose German isn't fluent, a German worksheet is simply out of reach.
+Their child does homework alone, in a language the household doesn't share.
+
+## What Relay does
+
+```
+  CHILD (watch)                CLAUDE                    PARENT (phone)
+  ─────────────                ──────                    ──────────────
+  "I'm stuck"      ──────▶  1. THE BRAKE
+                            one hint, never the answer
+                   ◀──────  hint 1 → hint 2
+                                 │  still stuck
+                                 ▼
+                            2. THE TRANSLATOR
+                            turns the stuck moment    ──────▶  Coaching Card
+                            into something a parent            + the watch rings
+                            can act on
+                                 │
+  check-ins, mood,  ──────▶  3. THE OBSERVER          ──────▶  This week's pattern
+  persistence time             patterns in *learning*          + what to do tonight
+                               behaviour, never a score
+```
+
+### On the child's watch
+
+- **The Persistence Ring** fills while they stay with a problem. **It rewards time spent,
+  not correctness.** Every other system in a child's life rewards the right answer.
+- **The Help Ladder** — three dots, always visible. Two are AI hints. **The third is their
+  parent's face.** The child can see, before they ask, that help exists, that it's finite,
+  and that the last rung is a person. Help shame is the real reason kids don't ask, and
+  three dots on a wrist fix more of it than any amount of encouragement.
+- **I'm stuck** — one button. The hint comes back as text *and* spoken aloud.
+- **Quests and points** — one task at a time, and **points buy time with a parent, not
+  toys**: "20 minutes of football with Dad."
+- **What Mum can see** — a screen on the *child's* watch listing exactly what is shared,
+  in words a ten-year-old reads. No hidden collection, ever.
+
+### On the parent's phone
+
+- **Tonight** — what they're stuck on, how long they held on, which hints they used.
+- **The Coaching Card**, which appears by itself when the ladder reaches the third dot:
+  what this is really testing · **the answer, collapsed behind two clicks and a "Sure?
+  Try the questions first"** · three questions to ask in order · the exact sentence to say
+  if they're still stuck · and **the AI skill you just used**, so the parent takes the
+  technique to any AI, anywhere.
+- **Read this card in** Türkçe, العربية, Українська, Deutsch or English — *even when the
+  homework is in another language.*
+- **Call** — one tap to the watch, **with the card still on screen**, so the parent reads
+  question one while they talk.
+- **Patterns** — the week's read: where they quit, where they persist, one thing to do
+  tonight. Guidance, never a grade.
+
+## Why the call is in here
+
+A video call is the kind of thing a hackathon team bolts on to look impressive. Ours is
+**the last rung of the ladder.** The whole argument is that AI should know when to stop
+and get a human — so it ends at a parent's face, and the parent arrives already briefed.
+
+Every other tool tries to replace a person. This one is engineered to summon one, and to
+make them better when they arrive.
+
+## Where we draw the privacy line
+
+| We collect | We never collect |
 |---|---|
-| 09:30 | Check-in |
-| 10:00 | Welcome: the challenge, rules and judging |
-| 10:30 | Bingo icebreaker |
-| 10:45 | Team forming (teams of 5) |
-| 11:00 | **Build starts** |
-| 13:00 | Lunch until 13:45, then back to building |
-| 15:00 | Submission reminder. Record your demo now! |
-| 15:45 | 15 minute warning |
-| **16:00** | **⛔ Hard deadline: repo, README and 2 minute demo video** |
-| 16:05 | First round judging, two groups of three judges |
-| 16:38 | Six finalists announced (top 3 of each group) |
-| 16:40 | Finals: six teams pitch live (6 min + 4 min Q&A) |
-| 17:45 | Winners announced + closing |
-| 18:00 | End |
+| Which problem, how long they stayed, hints used, mood taps | Location. Audio. Camera. Messages. Screen time. Anything outside a homework session. |
+
+1. **Learning behaviour only** — the tool points at a worksheet, never at a child.
+2. **The child can see the deal** — the "What Mum can see" screen is complete.
+3. **Output is guidance, never judgement** — "do this tonight," never "your child has an
+   attention problem." The Observer prompt forbids the words *lazy, distracted, behind,
+   struggling, weak*.
+
+We do not read children's AI chats. We do not track them.
 
 ---
 
-## 🎯 The challenge: AI education for everyone
+## Run it
 
-Build a working prototype that helps real people learn or use AI. One day. Claude Code.
+Needs Node 20+.
 
-Pick one real audience, for example: older adults, small business owners, job seekers, parents, newcomers, people with disabilities, or workers in non-tech jobs. Another group is fine, as long as it is a real one.
+```bash
+npm install
+cp .env.example .env     # paste your Anthropic API key into .env
+npm run dev
+```
 
-## 👥 Teams
+Then open **http://localhost:5173** — both devices, side by side. That's the demo view.
 
-Every team has **5 people**. There are four roles: **builder**, **product or design**, **domain expert** and **founder**. Each team must include at least 1 builder, 1 product or design person and 1 domain expert; the other 2 seats can be a founder or anyone. Your role is on your name tag. Pick a team name and tell it to us at the desk.
+| URL | What |
+|---|---|
+| `/` | The stage: watch and phone together |
+| `/watch` | The child's watch alone (open on a phone to hold a real device) |
+| `/parent` | The parent's phone alone |
 
----
+**It runs without an API key.** Every Claude call falls back to bundled content, so the
+whole flow demos on a dead network. You'll see `⚠ No ANTHROPIC_API_KEY` in the server log.
 
-## 🚀 Get started (5 minutes)
+To put it on a real phone in the room:
 
-1. **One person per team** opens the **[starter repo](https://github.com/Claude-Community-Berlin/claude-impact-lab-starter)** and clicks **Use this template** → *Create a new repository* (public).
-2. Add your teammates as collaborators.
-3. **Claim your $100 API credits** with the QR code in the room: sign in with the Claude Console account you will use today. Your organization is filled in for you; add your name and submit once. Then create an API key in the Console. Credits can take a while to arrive, so if yours are not there yet, build with a teammate's key in the meantime.
-4. Set your API key locally. Never commit it:
-   ```bash
-   cp .env.example .env    # then paste your key into .env
-   ```
-5. Open your new repo in Claude Code (`claude`) or Claude.ai. Claude Code reads `CLAUDE.md` automatically: it knows the rules, judging, timeline and how your team should collaborate. In Claude.ai, paste `CLAUDE.md` into your first message.
-6. Build. 🛠️ Fill in the starter's README as you go: what it does, who it's for, how to run it.
+```bash
+npm run tunnel
+```
 
-**No terminal?** Build in [Claude.ai](https://claude.ai) with artifacts, then paste your link and screenshots into your submission. That counts.
+### Walk the demo
 
----
-
-## 📏 Rules
-
-1. **Build today.** Ideas and research can come from before; the build happens on the day.
-2. **Use Claude.** Claude must be part of the solution, not just the tool that wrote it.
-3. **Teams of 5**, with at least 1 builder, 1 product or design and 1 domain expert.
-4. **Public repo** with a README anyone can follow.
-5. **No secrets in Git.** API keys go in `.env`, which is git-ignored.
-6. **Open-source libraries, APIs and assets are fine.** Credit them in your README.
-7. **Be kind.** Help other teams and respect the venue.
-8. **16:00 is final.** Late submissions are not judged.
-
----
-
-## 📤 How to submit (before 16:00)
-
-You need three things by 16:00:
-
-1. **Repo:** your public repo, named with your team name
-2. **README:** who it is for, what problem it solves, how to run it
-3. **Demo video:** a 2 minute screen recording of it working (required)
-
-Then **one person per team** fills in the **[submission form](https://tally.so/r/1WPr9Q)** (also on the QR code in the room): team name, team members, repo link, demo video link, and who it is for. Done ✅
-
-Judges watch your demo first, then read your README.
-
-**Tip:** Record the 2-minute demo at 15:00, not 15:55. Loom, a phone, or a screen recording all work.
+1. Watch → **Start**
+2. Watch → **I'm stuck** → hint 1, spoken. One dot goes out. *No answer on screen.*
+3. Watch → **I'm stuck** → hint 2. Second dot out.
+4. Watch → **Still stuck — ask Mum** → the phone lights up with the Coaching Card
+5. Phone → reach for the answer. It's collapsed. Click twice.
+6. Phone → **Call** → the watch rings → **answer** → the card stays up during the call
+7. Phone → **Patterns**, and the **Read this card in** language switch
+8. Watch → **Me** → what Mum can see
 
 ---
 
-## 🏆 Judging
+## How it's built
 
-100 points, four criteria:
+```
+src/watch/     the round face           src/parent/   the phone
+src/lib/       ws client, WebRTC, types
+server/        express + ws hub, the three Claude jobs, bundled fallbacks
+```
 
-| Criteria | Points | Question the judges ask |
+Everything is TypeScript. One `npm run dev` starts both halves.
+
+**The server is authoritative.** Both clients render from one state object pushed over a
+WebSocket, so the watch and the phone can never disagree in front of a judge. WebRTC
+carries audio and video only; signalling rides the same socket. Same-host P2P, STUN only,
+no TURN.
+
+**Four Claude calls**, all `claude-opus-5-5`:
+
+| Endpoint | Job | Effort |
 |---|---|---|
-| **Impact** | 40 | Does it help a real audience learn or use AI? Would they actually use it? |
-| **Working demo** | 20 | Does it really run? |
-| **Technical quality** | 20 | Is it well built? |
-| **Creativity** | 20 | Is the idea fresh? |
+| `brake()` | one hint, never the answer | `low` — the watch must feel instant |
+| `translate()` | stuck moment → Coaching Card, in the parent's language | `medium` |
+| `observe()` | a week of behaviour → one pattern and one action | `medium` |
+| `quest()` | a parent's goal → a task a child can hold | `low` |
 
-Ties are broken by the higher Impact score.
+**The prompt is the product.** The system prompts forbid the answer appearing in any hint,
+require every hint to cite the specific numbers and objects in *this* problem, cap watch
+text at 90 characters, and ban diagnostic language in the Observer.
 
-**Round one (16:05):** two groups of three judges each score their half of the teams. The top 3 of each group go to the finals.
-**Finals (16:40):** six teams · 6 min demo + 4 min Q&A, scored by all six judges.
+**And we check.** `leaksAnswer()` in `server/claude.js` scans every hint and every ladder
+question for the answer's value and digits, and replaces any that leak. A coaching tool
+that gives the game away is worse than no coaching tool.
+
+**It degrades at every layer.** No API key, a failed call, a refusal, malformed JSON, a
+dropped socket, no camera, no speech synthesis — each has a fallback, and the demo
+survives all of them. The venue wifi was never going to be our single point of failure.
 
 ---
 
-## 🆘 Help
+## What's real and what isn't
 
-Stuck? Find a Claude ambassador or mentor in the room.
+Judges asked for honesty, so:
 
-Useful links:
-- Claude docs: https://docs.claude.com
-- Claude Code: https://docs.claude.com/en/docs/claude-code/overview
-- Prompting guide: https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview
+- **Real:** both clients, the live state sync, the help ladder, the leak guard, all four
+  Claude calls, the language switch, the collapsed answer, WebRTC signalling and the peer
+  connection.
+- **Seeded:** the week of behaviour the Observer reads. We built this in an afternoon; we
+  could not generate a real week. The analysis over it is a real Claude call.
+- **One family, in memory:** no database, no accounts. Restarting the server resets it.
+- **Not built:** real watch hardware. The watch is a faithful 300px round face in the
+  browser, sized and constrained like the real thing.
 
-Have fun. Build something that matters. 🧡
+## Credits
+
+Built with [Claude Code](https://claude.com/claude-code). React, Vite, Express, `ws`,
+`@anthropic-ai/sdk`. No other dependencies.
+
+Product brief: [`docs/wyl_prd_relay.md`](docs/wyl_prd_relay.md)

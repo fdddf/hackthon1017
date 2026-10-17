@@ -3,7 +3,7 @@ import express from 'express';
 import { createServer } from 'node:http';
 import { WebSocketServer } from 'ws';
 import { freshState, REWARDS } from './state.js';
-import { brake, translate, observe } from './claude.js';
+import { brake, translate, observe, quest } from './claude.js';
 
 const PORT = Number(process.env.PORT ?? 8787);
 const app = express();
@@ -99,6 +99,14 @@ wss.on('connection', (socket, req) => {
       case 'stuck':
         await pullRung();
         return; // pullRung broadcasts
+
+      case 'quest:set': {
+        // The parent says what they want; Claude makes it something a child can hold.
+        const made = await quest({ goal: String(msg.goal ?? ''), child: state.child });
+        state.quest = { ...made, done: false };
+        log('quest:set');
+        break;
+      }
 
       case 'quest:done':
         if (!state.quest.done) {

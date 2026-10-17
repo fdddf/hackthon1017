@@ -507,3 +507,24 @@ body {
   .devices { gap: 32px; }
   .phone-shell { width: 360px; height: 700px; }
 }
+
+.goal-input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 11px 13px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper-2);
+}
+.goal-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.quest-preview {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+.quest-preview strong { color: var(--ink); }

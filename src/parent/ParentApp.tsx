@@ -59,6 +59,44 @@ function Tonight({ state }: { state: RelayState }) {
   );
 }
 
+/** The Translator, pointing the other way: a parent's goal becomes a child's task. */
+function Goal({ state, send }: { state: RelayState; send: (m: Record<string, unknown>) => void }) {
+  const [goal, setGoal] = useState('');
+  const [sent, setSent] = useState(false);
+
+  return (
+    <div className="card">
+      <h3>What do you want for him this week?</h3>
+      <p className="step-look" style={{ marginTop: 0, marginBottom: 10 }}>
+        Say it how you'd say it to a friend. We'll turn it into one thing he can finish today.
+      </p>
+      <input
+        className="goal-input"
+        value={goal}
+        placeholder="He rushes and answers the wrong question"
+        onChange={(e) => {
+          setGoal(e.target.value);
+          setSent(false);
+        }}
+      />
+      <button
+        className="btn wide"
+        style={{ marginTop: 10 }}
+        disabled={!goal.trim()}
+        onClick={() => {
+          send({ type: 'quest:set', goal });
+          setSent(true);
+        }}
+      >
+        {sent ? 'Sent to his watch' : 'Send to his watch'}
+      </button>
+      <div className="quest-preview">
+        <strong>On his watch now:</strong> {state.quest.title}
+      </div>
+    </div>
+  );
+}
+
 function Card({ state, send }: { state: RelayState; send: (m: Record<string, unknown>) => void }) {
   if (!state.escalated) {
     return (
@@ -279,6 +317,7 @@ export function ParentApp() {
             <>
               <Tonight state={state} />
               <Card state={state} send={send} />
+              <Goal state={state} send={send} />
             </>
           ) : (
             <PatternsTab state={state} />
