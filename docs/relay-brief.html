@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 
 <style>
-  /* Layout: a single narrative column, interrupted once by a full-width device
-     stage where the reader checks in on the watch and asks Claude on the phone. */
+  /* Layout: a narrative column, opened by a device stage the reader drives and
+     broken twice by full-width figures — the week chart and the map. */
   :root {
     --bg: #ebe8e1;
     --surface: #fffefb;
@@ -453,25 +453,24 @@
   }
 
   /* ── check-in rows on the watch ── */
-  .streak {
-    font-family: var(--mono); font-size: 10px; color: var(--ring);
-    letter-spacing: 0.05em;
-  }
+  .streak { font-family: var(--mono); font-size: 10px; color: var(--ring); letter-spacing: .05em; }
   .cp {
     display: flex; align-items: center; gap: 9px; width: 100%;
     background: var(--face-2); border: 0; border-radius: 11px;
     padding: 9px 11px; cursor: pointer; text-align: left;
     font-family: inherit; color: var(--face-ink); flex: none;
   }
-  .cp:disabled { cursor: default; opacity: .72; }
-  .cp.done { background: #19222033; box-shadow: inset 0 0 0 1px #2b4a3f; }
+  .cp:disabled { cursor: default; opacity: .75; }
+  .cp.done { box-shadow: inset 0 0 0 1px #2b4a3f; }
   .cp-icon { font-size: 14px; flex: none; width: 17px; }
   .cp-label { flex: 1; font-size: 12.5px; min-width: 0; }
-  .cp-time {
-    font-family: var(--mono); font-size: 11px; color: var(--rung); flex: none;
-  }
+  .cp-time { font-family: var(--mono); font-size: 11px; color: var(--rung); flex: none; }
   .cp-time.late { color: #ff8f6b; }
   .cp:not(.done) .cp-time { color: var(--face-dim); }
+  .cp-where {
+    display: block; font-family: var(--mono); font-size: 9px;
+    color: var(--face-dim); letter-spacing: .04em; margin-top: 2px;
+  }
 
   .nudge {
     flex: none; background: #241f14; border: 1px solid #5a4620;
@@ -493,10 +492,9 @@
   .points-big { font-size: 32px; font-weight: 700; letter-spacing: -.02em; flex: none; }
   .reward {
     display: flex; justify-content: space-between; gap: 8px; align-items: center;
-    font-size: 11.5px; padding: 9px 0; border-bottom: 1px solid #262330;
-    background: none; border-left: 0; border-right: 0; border-top: 0;
-    color: inherit; font-family: inherit; text-align: left; width: 100%; flex: none;
-    line-height: 1.3;
+    font-size: 11.5px; padding: 9px 0; border: 0; border-bottom: 1px solid #262330;
+    background: none; color: inherit; font-family: inherit; text-align: left;
+    width: 100%; flex: none; line-height: 1.3; cursor: pointer;
   }
   .reward span:last-child { color: var(--ring); flex: none; font-family: var(--mono); }
   .moods { display: flex; gap: 7px; flex: none; }
@@ -505,20 +503,37 @@
     border: 2px solid transparent; border-radius: 11px; cursor: pointer;
   }
   .moods button[aria-pressed="true"] { border-color: var(--ring); }
+  .seen { font-size: 11.5px; line-height: 1.45; padding: 6px 0; border-bottom: 1px solid #262330; flex: none; }
+  .seen.no { color: var(--face-dim); }
 
-  /* ── the parent asking Claude ── */
+  /* the child's own AI, on the wrist */
+  .kidq {
+    flex: none; width: 100%; text-align: left; font-family: inherit;
+    background: var(--face-2); color: var(--face-ink); border: 0;
+    border-radius: 11px; padding: 9px 11px; font-size: 12px; line-height: 1.35;
+    cursor: pointer;
+  }
+  .kidsay {
+    flex: none; background: #15241f; border-left: 3px solid var(--rung);
+    border-radius: 10px; padding: 10px 11px; font-size: 12.5px; line-height: 1.45;
+  }
+  .kidsay small {
+    display: block; font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--rung); margin-bottom: 5px;
+  }
+  .kidplan { margin: 7px 0 0; padding-left: 15px; font-size: 12px; line-height: 1.6; }
+
+  /* ── the parent's phone ── */
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip {
     border: 1px solid var(--paper-line); background: var(--paper);
     color: var(--paper-ink); border-radius: 999px; padding: 7px 12px;
-    font-family: inherit; font-size: 12.5px; cursor: pointer; text-align: left;
-    line-height: 1.3;
+    font-family: inherit; font-size: 12.5px; cursor: pointer; text-align: left; line-height: 1.3;
   }
   .chip:hover { background: var(--paper-2); }
   .bubble-parent {
     align-self: flex-end; max-width: 86%; background: #1f1c22; color: #f3efe8;
-    border-radius: 16px 16px 4px 16px; padding: 10px 13px; font-size: 13.5px;
-    line-height: 1.45;
+    border-radius: 16px 16px 4px 16px; padding: 10px 13px; font-size: 13.5px; line-height: 1.45;
   }
   .evi {
     margin: 9px 0 0; padding: 9px 11px; background: var(--paper-2);
@@ -535,6 +550,93 @@
     font-weight: 600; cursor: pointer;
   }
   .sendbtn:disabled { opacity: .5; cursor: default; }
+  .ptabs { display: flex; gap: 5px; margin-top: 11px; }
+  .ptabs button {
+    flex: 1; border: 0; background: var(--paper-2); padding: 8px 2px; border-radius: 9px;
+    font-family: inherit; font-size: 11.5px; cursor: pointer; color: var(--paper-dim);
+  }
+  .ptabs button[aria-selected="true"] { background: var(--paper-ink); color: var(--paper); }
+
+  .histrow {
+    display: flex; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--paper-line);
+    align-items: flex-start; width: 100%; background: none; border-left: 0; border-right: 0;
+    border-top: 0; font-family: inherit; text-align: left; cursor: pointer; color: inherit;
+  }
+  .histrow:last-child { border-bottom: 0; }
+  .histrow .when2 {
+    font-family: var(--mono); font-size: 10.5px; color: var(--paper-dim);
+    flex: none; width: 4.4em; padding-top: 2px;
+  }
+  .histrow .what { font-size: 13px; line-height: 1.4; min-width: 0; }
+  .histrow .what em { display: block; font-style: normal; color: var(--paper-dim); font-size: 12px; margin-top: 2px; }
+
+  .callrow { display: flex; gap: 8px; }
+  .callrow button {
+    flex: 1; border: 0; border-radius: 999px; padding: 11px 6px; cursor: pointer;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+  }
+  .callvid { background: #2b6e55; color: #fff; }
+  .callaud { background: var(--paper-2); color: var(--paper-ink); border: 1px solid var(--paper-line) !important; }
+  .callstage {
+    background: #15131a; border-radius: 14px; padding: 13px; color: #efeae2;
+    display: flex; gap: 11px; align-items: center;
+  }
+  .callstage .vid {
+    width: 58px; height: 58px; border-radius: 11px; flex: none;
+    background: linear-gradient(145deg,#394a44,#1d2724);
+    display: grid; place-items: center; font-size: 22px;
+  }
+  .callstage .cs { font-size: 12.5px; line-height: 1.4; min-width: 0; }
+  .callstage .cs b { display: block; font-size: 13.5px; }
+  .callstage .cs small { font-family: var(--mono); font-size: 10px; color: #8f9b96; }
+
+  /* ── charts ── */
+  .viz-root {
+    --surface-1: var(--surface);
+    --series-1: #2a78d6;
+    --grid: var(--line);
+    --ink-1: var(--ink);
+    --ink-2: var(--ink-dim);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root { --series-1: #3987e5; }
+  }
+  :root[data-theme="dark"] .viz-root { --series-1: #3987e5; }
+
+  .chartcard {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 16px; padding: 20px 18px;
+  }
+  .chartcard figcaption {
+    font-size: 13.5px; color: var(--ink-dim); line-height: 1.5; margin-top: 14px;
+  }
+  .chartwrap { overflow-x: auto; }
+  .chart-svg { display: block; min-width: 460px; width: 100%; height: auto; }
+  .ev-line { stroke: var(--series-1); stroke-width: 2; opacity: .45; }
+  .ev-dot { fill: var(--series-1); stroke: var(--surface-1); stroke-width: 2; }
+  .ev-grid { stroke: var(--grid); stroke-width: 1; }
+  .ev-tick { fill: var(--ink-2); font-family: var(--mono); font-size: 10px; }
+  .ev-day { fill: var(--ink-1); font-family: var(--mono); font-size: 11px; }
+  .ev-lab { fill: var(--ink-2); font-family: var(--mono); font-size: 9.5px; }
+  .ev-band { fill: var(--ink-1); opacity: .035; }
+
+  .datatable { margin-top: 14px; }
+  .datatable table { font-family: var(--mono); font-size: 11.5px; min-width: 420px; }
+  .datatable th, .datatable td { padding: 6px 10px; }
+
+  /* ── the map ── */
+  .mapcard { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .map-svg { display: block; width: 100%; height: auto; border-radius: 10px; }
+  .mp-block { fill: var(--line); opacity: .5; }
+  .mp-road { stroke: var(--line); stroke-width: 3; }
+  .mp-pin-near { fill: #2a78d6; stroke: var(--surface); stroke-width: 2; }
+  .mp-pin-far { fill: #eb6834; stroke: var(--surface); stroke-width: 2; }
+  .mp-lab { fill: var(--ink); font-family: var(--mono); font-size: 10px; }
+  .mp-sub { fill: var(--ink-dim); font-family: var(--mono); font-size: 9px; }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .mp-pin-far { fill: #d95926; }
+  }
+  :root[data-theme="dark"] .mp-pin-far { fill: #d95926; }
 </style>
 
 <div class="wrap hero">
@@ -542,9 +644,9 @@
   <h1>Tempo</h1>
   <p class="thesis">It doesn't score your child.<br>It tells you what to say tonight.</p>
   <p class="lede" style="margin-top:28px">
-    A kid checks in through their day on a watch. Their parent asks Claude about it in
-    their own words — and gets an answer built out of their child's real times, plus one
-    thing to do this evening.
+    A kid taps their way through the day on a watch — and asks it for help planning their
+    own evening. Their parent asks Claude about that week in their own words, sees it as a
+    chart and a map, and calls them. <b>Two people, one family, both learning to use AI.</b>
   </p>
   <p class="meta">
     <span>Audience: parents (and their kids)</span><span>·</span>
@@ -557,10 +659,10 @@
 <div class="stage-band">
   <section class="wrap wrap-wide">
     <p class="eyebrow" style="text-align:center">Play it yourself</p>
-    <h2 style="text-align:center;margin-bottom:8px">Check in, then ask</h2>
+    <h2 style="text-align:center;margin-bottom:8px">Both ends of the family</h2>
     <p class="stage-hint" style="min-height:0;margin-bottom:30px">
-      Tap a few check-ins on the watch. Then pick a question on the phone — the one a real
-      parent would actually type — and watch what Claude does with five days of times.
+      On the watch: tap check-ins, then open <b>Ask</b> — the child has their own AI.
+      On the phone: ask a question, then look at <b>Week</b>, <b>Map</b> and <b>History</b>.
     </p>
 
     <div class="stage">
@@ -571,6 +673,7 @@
             <div class="watch-scroll" id="watchScroll"></div>
             <div class="watch-tabs">
               <button data-tab="today" aria-selected="true">Today</button>
+              <button data-tab="ask" aria-selected="false">Ask</button>
               <button data-tab="points" aria-selected="false">Points</button>
               <button data-tab="me" aria-selected="false">Me</button>
             </div>
@@ -583,8 +686,14 @@
         <div class="phone-shell">
           <div class="phone-screen">
             <div class="phone-head">
-              <h4>Ask about Mert</h4>
+              <h4 id="phoneTitle">Ask about Mert</h4>
               <span class="pill" id="phonePill">5 days of check-ins</span>
+              <div class="ptabs">
+                <button data-ptab="ask" aria-selected="true">Ask</button>
+                <button data-ptab="week" aria-selected="false">Week</button>
+                <button data-ptab="map" aria-selected="false">Map</button>
+                <button data-ptab="history" aria-selected="false">History</button>
+              </div>
             </div>
             <div class="phone-body" id="phoneBody"></div>
           </div>
@@ -603,30 +712,32 @@
 
 <section class="wrap">
   <p class="eyebrow">The brief says: help real people use AI</p>
-  <h2>So a parent has to be the one using it</h2>
-  <p style="color:var(--ink-dim)">
-    An app that quietly runs analysis in the background is not a person using AI — it's a
-    feature. The judges will say so.
-  </p>
-  <p style="color:var(--ink-dim)">
-    Here the parent types the question themselves, in their own words, the way they'd say
-    it to a friend. What makes it work isn't a clever interface — it's that
-    <b style="color:var(--ink)">for the first time they have something worth asking about:
-    their own child's real data, and their own worry.</b> Most parents have never had a
-    reason to open an AI. This is one.
-  </p>
-  <div class="twocol" style="margin-top:22px">
+  <h2>So we gave an AI to both of them</h2>
+  <div class="twocol">
     <div class="note">
-      <h3>And they learn to use it better</h3>
-      <p>Every answer ends with <b>what made that question answerable</b> — "you gave me five
-      days of times instead of saying he's lazy." They take that to any AI, anywhere. That's
-      the <i>learn</i> half of the brief, and it costs us one field in the response.</p>
+      <h3>The parent asks about her own child</h3>
+      <p>She types it the way she'd say it to a friend. What makes it work isn't the
+      interface — it's that <b>for the first time she has something worth asking about:
+      her own child's real data, and her own worry.</b> Most parents have never had a
+      reason to open an AI. This is one.</p>
+    </div>
+    <div class="note">
+      <h3>The child asks about their own evening</h3>
+      <p>"I've got football and homework — which first?" The watch helps him <b>order his
+      own evening</b> instead of doing anything for him. A ten-year-old learning that an AI
+      is a thinking tool, not an answer machine, is the single most durable thing we could
+      teach today.</p>
+    </div>
+    <div class="note">
+      <h3>And both of them learn to ask better</h3>
+      <p>Every answer to the parent ends with <b>what made that question answerable</b> —
+      "you gave me five days of times instead of saying he's lazy." That's the <i>learn</i>
+      half of the brief, and it costs one field in the response.</p>
     </div>
     <div class="note">
       <h3>Starter questions are the on-ramp</h3>
-      <p>A parent who has never used AI doesn't know what to type. Four real questions sit
-      on the screen as chips. <b>Blank-page paralysis is the actual barrier</b>, not
-      scepticism.</p>
+      <p>Someone who has never used AI doesn't know what to type. Real questions sit on both
+      screens as chips. <b>Blank-page paralysis is the actual barrier</b>, not scepticism.</p>
     </div>
   </div>
 </section>
@@ -635,85 +746,106 @@
   <p class="eyebrow">The problem</p>
   <h2>Parents can see the symptom and never the cause</h2>
   <div class="fails">
-    <div class="fail">
-      <span class="n">01</span>
+    <div class="fail"><span class="n">01</span>
       <p><b>What a parent sees:</b> homework starting at half nine, again. Bedtime creeping.
-      A kid who seems slower than last year.</p>
-    </div>
-    <div class="fail">
-      <span class="n">02</span>
-      <p><b>What they conclude:</b> he's getting lazy. Because that's the only explanation
-      visible from the kitchen at 21:40.</p>
-    </div>
-    <div class="fail">
-      <span class="n">03</span>
-      <p><b>What's actually happening:</b> two days a week he gets home ninety minutes later.
-      Nobody has ever put those two columns side by side — <b>including the parent, who has
-      all the information and none of the pattern.</b></p>
-    </div>
+      A kid who seems slower than last year.</p></div>
+    <div class="fail"><span class="n">02</span>
+      <p><b>What they conclude:</b> he's getting lazy. It's the only explanation visible
+      from the kitchen at 21:40.</p></div>
+    <div class="fail"><span class="n">03</span>
+      <p><b>What's actually happening:</b> two days a week he gets home ninety minutes later,
+      because training moved across town. <b>Nobody ever put those two columns side by side —
+      including the parent, who has all the information and none of the pattern.</b></p></div>
   </div>
-  <p style="margin-top:22px;color:var(--ink-dim)">
-    And the family that needs this most is the one where the parent works a late shift, or
-    reads German slowly, or simply isn't in the room at 17:00. They aren't absent. They're
-    missing one column.
-  </p>
 </section>
 
-<section class="wrap">
-  <p class="eyebrow">The bet</p>
-  <h2>Why a watch</h2>
-  <div class="twocol">
+<section class="wrap wrap-wide">
+  <p class="eyebrow">On the phone · Week</p>
+  <h2>Five evenings, drawn</h2>
+  <figure class="chartcard viz-root" style="margin:0">
+    <div class="chartwrap" id="bigChart"></div>
+    <figcaption>
+      Each line is one evening, from getting home to getting into bed. Tuesday and Thursday
+      don't just end later — <b>they start later</b>. The same ninety minutes is missing from
+      both ends.
+      <br><br>
+      <b>Every dot is one colour on purpose.</b> We don't paint late days red. The product's
+      whole claim is that it doesn't grade a child, and a chart that scores his week in
+      traffic lights would give that away in the first second a judge looks at it. Position
+      carries the message; colour stays out of it.
+    </figcaption>
+    <div class="tablewrap datatable" id="chartTable"></div>
+  </figure>
+</section>
+
+<section class="wrap wrap-wide">
+  <p class="eyebrow">On the phone · Map</p>
+  <h2>And then you see why</h2>
+  <div class="mapcard" id="mapCard"></div>
+  <div class="twocol" style="margin-top:20px">
     <div class="note">
-      <h3>Kids have one</h3>
-      <p>Most 8–13 year olds here <b>have a kids' smartwatch and don't have a phone</b>.
-      Parents chose that on purpose. It's the only device that's on the child's wrist all
-      day and trusted by the parent.</p>
+      <h3>Pins, not a trail</h3>
+      <p>The map shows <b>only the places a check-in happened</b> — he tapped "got home", so
+      home gets a pin. There is no background location, no breadcrumb, no "where is he right
+      now". The rule stays exactly what it was: <b>the child taps it, or it doesn't exist.</b></p>
     </div>
     <div class="note">
-      <h3>A tap is the only honest input</h3>
-      <p>No child fills in a form. No child answers "how was your day" usefully. <b>One tap
-      at the moment it happens</b> is the only way to get a timestamp that's true — and
-      timestamps are the entire raw material of the product.</p>
-    </div>
-    <div class="note">
-      <h3>Nobody else will build for it</h3>
-      <p>Every other team today is building a web app for a laptop. Say the word "watch" in
-      the first ten seconds of the pitch.</p>
+      <h3>The map is the punchline, not a feature</h3>
+      <p>The chart shows that Tuesdays are different. The map shows <i>why</i> in one glance:
+      training moved to a hall across town. <b>A parent who sees this stops saying "hurry up"
+      and starts asking about Tuesdays.</b></p>
     </div>
   </div>
 </section>
 
 <section class="wrap">
   <p class="eyebrow">What's on each device</p>
-  <h2>A rich watch, a thinking phone</h2>
+  <h2>A rich watch, a serious phone app</h2>
   <div class="jobs">
-    <div class="job">
-      <span class="tag">the watch · the child's</span>
+    <div class="job"><span class="tag">watch · the child's</span>
       <h3>Eight taps, one day</h3>
-      <p>Woke, left, got home, moved, started homework, read, screens off, in bed. Each tap
-      is a timestamp and some points. A ring fills as the day takes shape — <b>it shows the
-      shape, it doesn't grade it.</b></p>
-    </div>
-    <div class="job">
-      <span class="tag">the watch · the child's</span>
+      <p>Woke, left, got home, moved, homework, read, screens off, in bed. Each tap is a
+      timestamp, a place and some points. A ring fills as the day takes shape — <b>it shows
+      the shape, it doesn't grade it.</b></p></div>
+    <div class="job"><span class="tag">watch · the child's</span>
+      <h3>His own AI</h3>
+      <p>Plan tonight, decide what to drop, ask why he keeps running out of evening. Short
+      answers, watch-sized, spoken aloud. <b>It never does the thing for him.</b></p></div>
+    <div class="job"><span class="tag">watch · the child's</span>
       <h3>Points buy time, not toys</h3>
-      <p>"20 minutes of football with Dad." "A whole afternoon, just you and Mum." We refuse
-      to teach a child that effort converts into stuff. Plus a one-tap mood, and a streak
-      they care about more than we expect.</p>
-    </div>
-    <div class="job">
-      <span class="tag">the phone · the parent's</span>
-      <h3>Ask anything, in your own words</h3>
+      <p>"20 minutes of football with Dad." We refuse to teach a child that effort converts
+      into stuff. Plus a one-tap mood and a streak he cares about more than we expect.</p></div>
+    <div class="job"><span class="tag">phone · the parent's</span>
+      <h3>Ask anything</h3>
       <p>Claude answers from the real times, quotes them, separates behaviour from cause,
-      and says "I can't see that from this" when it can't. Then: one thing to do tonight.</p>
-    </div>
-    <div class="job">
-      <span class="tag">the phone · the parent's</span>
-      <h3>Guidance that reaches the child</h3>
-      <p>The advice becomes a short message in the parent's own voice on the watch — never
-      a reminder, never a reprimand. Or one tap to call. <b>The AI stops at the doorway; a
-      parent walks through it.</b></p>
-    </div>
+      and says "I can't see that from this" when it can't.</p></div>
+    <div class="job"><span class="tag">phone · the parent's</span>
+      <h3>Week, map, history</h3>
+      <p>The chart, the pins, and <b>every conversation she's had before</b> — fourteen weeks
+      of them, searchable. This isn't a session; it's a record of a childhood she can scroll
+      back through.</p></div>
+    <div class="job"><span class="tag">phone · the parent's</span>
+      <h3>Video or audio, one tap</h3>
+      <p>Video when she's home, audio when she's on the tram. <b>The chart stays on screen
+      while they talk.</b> The AI stops at the doorway; a parent walks through it.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">The bet</p>
+  <h2>Why a watch</h2>
+  <div class="twocol">
+    <div class="note"><h3>Kids have one</h3>
+      <p>Most 8–13 year olds here <b>have a kids' smartwatch and don't have a phone</b>.
+      Parents chose that on purpose. It's the only device that's on the child's wrist all day
+      and trusted by the parent.</p></div>
+    <div class="note"><h3>A tap is the only honest input</h3>
+      <p>No child fills in a form. No child answers "how was your day" usefully. <b>One tap at
+      the moment it happens</b> is the only way to get a timestamp that's true — and timestamps
+      are the entire raw material.</p></div>
+    <div class="note"><h3>Nobody else will build for it</h3>
+      <p>Every other team today is building a web app for a laptop. Say the word "watch" in
+      the first ten seconds of the pitch.</p></div>
   </div>
 </section>
 
@@ -721,68 +853,65 @@
   <p class="eyebrow">Say this before you're asked</p>
   <h2>This is the one that can sink us</h2>
   <p style="color:var(--ink-dim)">
-    We are building behaviour tracking for children. If we don't draw the line out loud,
-    a judge will draw it for us.
+    We are building behaviour tracking for children, and now there's a map in it. If we don't
+    draw the line out loud, a judge will draw it for us.
   </p>
   <div class="tablewrap" style="margin-top:18px">
     <table>
       <thead><tr><th>We collect</th><th>We never collect</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>The times the child tapped, which ones they skipped, the face they picked,
-          points and streak</td>
-          <td>Location. Audio. Camera. Messages. Screen time. Contacts. Anything the child
-          didn't tap themselves.</td>
-        </tr>
-      </tbody>
+      <tbody><tr>
+        <td>The times he tapped, which ones he skipped, <b>the place attached to a tap he
+        made</b>, the face he picked, points and streak</td>
+        <td>Continuous location. Any location he didn't attach himself. Audio. Camera.
+        Messages. Screen time. Contacts. Anything outside a check-in.</td>
+      </tr></tbody>
     </table>
   </div>
   <div class="twocol" style="margin-top:20px">
-    <div class="note">
-      <h3>The child taps it, or it doesn't exist</h3>
-      <p>Every data point in the system was put there by the child, on purpose. Nothing is
-      sensed, inferred or collected in the background. <b>That one rule answers most of the
-      question.</b></p>
-    </div>
-    <div class="note">
-      <h3>The child can see the deal</h3>
-      <p>Open the <b>Me</b> tab on the watch above. A complete list of what's shared, in
-      words a ten-year-old reads. Nobody else in the room will have this.</p>
-    </div>
-    <div class="note">
-      <h3>Guidance, never judgement</h3>
-      <p>The prompt forbids the words lazy, distracted, behind, struggling, weak, and every
-      clinical label. Output is "do this tonight", never "your child has a problem."</p>
-    </div>
+    <div class="note"><h3>He taps it, or it doesn't exist</h3>
+      <p>Every point in the system was put there by the child, on purpose — the places
+      included. Nothing is sensed or inferred in the background. <b>That one rule answers
+      most of the question, including the map.</b></p></div>
+    <div class="note"><h3>He can see the deal</h3>
+      <p>Open the <b>Me</b> tab on the watch above. A complete list of what's shared, in words
+      a ten-year-old reads, and the map is on it. Nobody else in the room will have this.</p></div>
+    <div class="note"><h3>Guidance, never judgement</h3>
+      <p>The prompt forbids lazy, distracted, behind, struggling, weak, and every clinical
+      label. Output is "do this tonight", never "your child has a problem."</p></div>
+    <div class="note"><h3>No live location, ever</h3>
+      <p>There is deliberately no "where is he now". That is the product a dozen companies
+      already sell, and it's the one that makes a child feel followed. <b>We are not building
+      it, and we will say so.</b></p></div>
   </div>
 </section>
 
 <section class="wrap">
   <p class="eyebrow">How we spend the day</p>
-  <h2>Four stages, each demo-able alone</h2>
+  <h2>Five stages, each demo-able alone</h2>
   <div class="tablewrap">
     <table>
       <thead><tr><th>When</th><th>Ships</th><th>If the clock stopped here</th></tr></thead>
       <tbody>
-        <tr><td class="when">→ 13:10</td><td>Watch check-ins + live sync to the phone</td><td>Thin, but real</td></tr>
+        <tr><td class="when">→ 13:15</td><td>Watch check-ins + live sync to the phone</td><td>Thin, but real</td></tr>
         <tr><td class="when">→ 13:50</td><td><b>Ask Claude, grounded in the week</b></td><td><b>The actual product</b></td></tr>
-        <tr><td class="when">→ 14:20</td><td>Send guidance to the watch · the call</td><td>The loop closes</td></tr>
-        <tr><td class="when">→ 14:45</td><td>Fallbacks, README, freeze</td><td>—</td></tr>
+        <tr><td class="when">→ 14:10</td><td>The week chart + the map</td><td>It looks like a product</td></tr>
+        <tr><td class="when">→ 14:25</td><td>Watch AI · send guidance · video and audio call</td><td>The loop closes</td></tr>
+        <tr><td class="when">→ 14:45</td><td>History, fallbacks, README, freeze</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
   <div class="note" style="margin-top:20px">
     <h3>Cut order — decided now, not argued at 14:00</h3>
     <p class="cutlist">
-      tunnel → the call → points &amp; rewards → mood → streak<br>
+      tunnel → history → video (keep audio) → points &amp; rewards → mood → streak<br>
       <b>Never cut:</b> the parent typing a real question · the answer quoting real times ·
-      the AI-skill card
+      the AI-skill card · the watch AI · the map
     </p>
   </div>
   <p style="margin-top:18px;color:var(--ink-dim)">
-    <b style="color:var(--ink)">Everyone stops building at 14:45.</b> The last hour is
-    recording and rehearsal. If the call isn't connecting by 14:20 it becomes UI-only and
-    we say so in the README.
+    <b style="color:var(--ink)">Everyone stops building at 14:45.</b> The last hour is recording
+    and rehearsal. If the call isn't connecting by 14:25 it becomes UI-only and we say so in
+    the README.
   </p>
 </section>
 
@@ -791,17 +920,16 @@
   <h2>The two minutes, shot by shot</h2>
   <div class="shots">
     <div class="shot"><span class="t">0:00</span><span class="d">A parent on our team, no slides: <b>"My son starts his homework at half nine. I've been telling him he's lazy for a month."</b></span></div>
-    <div class="shot"><span class="t">0:15</span><span class="d">Watch: he taps <b>Got home</b>. 18:51. The ring fills a notch. <b>"One tap. That's the whole input."</b></span></div>
-    <div class="shot"><span class="t">0:30</span><span class="d">Phone. She types it the way she'd say it: <b>"Is he getting slower, or is something else going on?"</b></span></div>
-    <div class="shot"><span class="t">0:45</span><span class="d">The answer, with her own numbers in it: <b>"Three days he's home by 17:10 and starts at 18:25. Two days he's home at 18:50 and starts at 21:40. Same boy, ninety minutes less day."</b> Let that sit.</span></div>
-    <div class="shot"><span class="t">1:05</span><span class="d"><b>Tonight:</b> "Don't mention homework. Ask him what Tuesdays actually look like now."</span></div>
-    <div class="shot"><span class="t">1:20</span><span class="d">She taps <b>send to his watch</b>. It arrives in her voice, not the app's: <i>"Tuesdays look long from where I'm sitting — want to tell me about them tonight?"</i> He taps OK.</span></div>
-    <div class="shot"><span class="t">1:35</span><span class="d">Scroll to the skill card: <b>"You gave me five days of times instead of saying he's lazy. That's what made this answerable."</b> Say: <b>"She just learned to use AI. We didn't teach her — the answer did."</b></span></div>
-    <div class="shot"><span class="t">1:50</span><span class="d">The child's <b>Me</b> screen. <b>"He tapped every one of these himself. We sense nothing."</b> Repo link. Stop.</span></div>
+    <div class="shot"><span class="t">0:12</span><span class="d">Watch: he taps <b>Got home</b>. 18:51, one pin. <b>"One tap. That's the whole input."</b></span></div>
+    <div class="shot"><span class="t">0:25</span><span class="d">Still on the watch — he opens <b>Ask</b>: <i>"I've got football and homework. Which first?"</i> It helps him order his own evening. <b>"He's ten, and he's using AI to think."</b></span></div>
+    <div class="shot"><span class="t">0:45</span><span class="d">Phone. She types it the way she'd say it: <b>"Is he getting slower, or is something else going on?"</b> The answer comes back with <b>her own numbers in it.</b></span></div>
+    <div class="shot"><span class="t">1:05</span><span class="d"><b>Week</b> tab: five evenings drawn. Then <b>Map</b>: the Tuesday pin is across town. <b>"That's the ninety minutes."</b> Let it sit.</span></div>
+    <div class="shot"><span class="t">1:25</span><span class="d">She taps <b>send to his watch</b>. It arrives in her voice: <i>"Tuesdays look long from where I'm sitting — want to tell me about them tonight?"</i> Then <b>video call</b>, chart still on screen.</span></div>
+    <div class="shot"><span class="t">1:45</span><span class="d">The skill card: <b>"You gave me five days of times instead of saying he's lazy."</b> Say: <b>"She just learned to use AI. We didn't teach her — the answer did."</b></span></div>
+    <div class="shot"><span class="t">1:55</span><span class="d">The child's <b>Me</b> screen. <b>"He tapped every one of these himself, pins included. There is no 'where is he now' in this app."</b> Repo link. Stop.</span></div>
   </div>
   <p style="margin-top:18px;color:var(--ink-dim)">
-    No slides. No architecture diagram. No code on screen. A real parent's voice, two real
-    devices.
+    No slides. No architecture diagram. No code on screen. A real parent's voice, two real devices.
   </p>
 </section>
 
@@ -811,7 +939,7 @@
   <div class="twocol">
     <div class="note"><h3>Team name</h3><p>The desk needs it, and the repo should match.</p></div>
     <div class="note"><h3>Which second language</h3><p>Pick one somebody on the team actually speaks, or Q&amp;A gets dangerous.</p></div>
-    <div class="note"><h3>No children on camera</h3><p>Recommendation: don't. The watch and a parent's voice are enough.</p></div>
+    <div class="note"><h3>No children on camera</h3><p>Recommendation: don't — including in the video call shot. Film the parent's side.</p></div>
   </div>
 </section>
 
@@ -821,25 +949,26 @@
 </footer>
 
 <script>
-  // Five weekdays of real check-in times. The shape is the thing Claude has to
-  // find: homework is always late, but so is getting home — on exactly two days.
+  // ── the seeded week ────────────────────────────────────────────────────
+  // The shape is the thing Claude has to find: homework is always late, but so
+  // is getting home — on exactly the two days training moved across town.
   var WEEK = [
-    { day: 'Mon', home: '17:05', hw: '18:25', bed: '21:04', move: '17:40', mood: 'good'  },
-    { day: 'Tue', home: '18:50', hw: '21:40', bed: '22:25', move: null,    mood: 'rough' },
-    { day: 'Wed', home: '17:12', hw: '18:20', bed: '21:00', move: '17:50', mood: 'good'  },
-    { day: 'Thu', home: '18:48', hw: '21:50', bed: '22:30', move: null,    mood: 'rough' },
-    { day: 'Fri', home: '17:08', hw: '18:35', bed: '21:10', move: '17:35', mood: 'ok'    }
+    { day: 'Mon', home: '17:05', hw: '18:25', bed: '21:04', move: '17:40', where: 'Park',        mood: 'good'  },
+    { day: 'Tue', home: '18:50', hw: '21:40', bed: '22:25', move: null,    where: 'Sports hall', mood: 'rough' },
+    { day: 'Wed', home: '17:12', hw: '18:20', bed: '21:00', move: '17:50', where: 'Park',        mood: 'good'  },
+    { day: 'Thu', home: '18:48', hw: '21:50', bed: '22:30', move: null,    where: 'Sports hall', mood: 'rough' },
+    { day: 'Fri', home: '17:08', hw: '18:35', bed: '21:10', move: '17:35', where: 'Park',        mood: 'ok'    }
   ];
 
   var CHECKPOINTS = [
-    { id: 'wake',     label: 'Woke up',          icon: '☀', pts: 5,  target: '07:00', demo: '07:02' },
-    { id: 'left',     label: 'Left for school',  icon: '🎒', pts: 5,  target: '07:45', demo: '07:43' },
-    { id: 'home',     label: 'Got home',         icon: '🏠', pts: 5,  target: '17:10', demo: '18:51' },
-    { id: 'move',     label: 'Moved my body',    icon: '⚽', pts: 15, target: '17:45', demo: '19:05' },
-    { id: 'homework', label: 'Started homework', icon: '✏', pts: 20, target: '18:30', demo: '21:38' },
-    { id: 'read',     label: 'Read something',   icon: '📖', pts: 15, target: '20:00', demo: '21:55' },
-    { id: 'screens',  label: 'Screens off',      icon: '🌙', pts: 15, target: '20:30', demo: '22:05' },
-    { id: 'sleep',    label: 'In bed',           icon: '🛏', pts: 10, target: '21:00', demo: '22:20' }
+    { id: 'wake',     label: 'Woke up',          icon: '☀',             pts: 5,  target: '07:00', demo: '07:02', where: 'Home' },
+    { id: 'left',     label: 'Left for school',  icon: '🎒',       pts: 5,  target: '07:45', demo: '07:43', where: 'Home' },
+    { id: 'home',     label: 'Got home',         icon: '🏠',       pts: 5,  target: '17:10', demo: '18:51', where: 'Home' },
+    { id: 'move',     label: 'Moved my body',    icon: '⚽',             pts: 15, target: '17:45', demo: '19:05', where: 'Sports hall' },
+    { id: 'homework', label: 'Started homework', icon: '✏',             pts: 20, target: '18:30', demo: '21:38', where: 'Home' },
+    { id: 'read',     label: 'Read something',   icon: '📖',       pts: 15, target: '20:00', demo: '21:55', where: 'Home' },
+    { id: 'screens',  label: 'Screens off',      icon: '🌙',       pts: 15, target: '20:30', demo: '22:05', where: 'Home' },
+    { id: 'sleep',    label: 'In bed',           icon: '🛏',       pts: 10, target: '21:00', demo: '22:20', where: 'Home' }
   ];
 
   var REWARDS = [
@@ -848,6 +977,26 @@
     { cost: 250, label: 'A whole afternoon, just you and Mum' }
   ];
 
+  // ── the child's own AI ─────────────────────────────────────────────────
+  var KID = {
+    order: {
+      q: "I've got football and homework. Which first?",
+      say: 'Football first — you think better after. But pick your homework time now, before you go. Last Tuesday "after" turned into 21:40.',
+      plan: ['17:45  football', '19:00  homework', '20:15  read']
+    },
+    tired: {
+      q: "I'm too tired to read tonight.",
+      say: "That's allowed. You've read four days this week, so one off breaks nothing. Want to do five minutes instead of twenty, or skip it properly?",
+      plan: []
+    },
+    points: {
+      q: 'How do I get more points?',
+      say: 'Moving your body is worth 15 and you skipped it twice this week — that’s 30 points sitting there. It also makes the rest of your evening shorter.',
+      plan: []
+    }
+  };
+
+  // ── what Claude tells the parent ───────────────────────────────────────
   var ANSWERS = {
     slower: {
       q: 'Is he getting slower, or is something else going on?',
@@ -865,7 +1014,7 @@
     },
     bedtime: {
       q: 'Why is bedtime sliding?',
-      answer: "It isn't sliding — it's two different weeks living in one. Mon, Wed and Fri he's in bed by 21:10. Tue and Thu: 22:25 and 22:30. Both late nights follow a day he got home at about 18:50 and started homework after 21:30. Bedtime is the last domino here, not the first.",
+      answer: "It isn't sliding — it's two different weeks living in one. Mon, Wed and Fri he's in bed by 21:10. Tue and Thu: 22:25 and 22:30. Both late nights follow a day he got home about 18:50 and started homework after 21:30. Bedtime is the last domino here, not the first.",
       evidence: [
         'In bed       21:04 · 22:25 · 21:00 · 22:30 · 21:10',
         'Got home     17:05 · 18:50 · 17:12 · 18:48 · 17:08'
@@ -873,21 +1022,21 @@
       tonight: "Nothing about bedtime tonight. Ask him instead which one thing he'd drop from a Tuesday if he were allowed to — and actually consider dropping it.",
       skill: {
         name: 'Ask why, not how do I fix it',
-        why: 'You asked why it was happening instead of asking me for a bedtime routine. That let me go looking for a cause inside your own data. Had you asked for a routine, I would have handed you a generic one that ignored Tuesdays completely.'
+        why: 'You asked why it was happening instead of asking me for a bedtime routine. That let me look for a cause inside your own data. Had you asked for a routine, I would have handed you a generic one that ignored Tuesdays completely.'
       }
     },
-    hardest: {
-      q: 'Which day of his week is the hardest?',
-      answer: 'Tuesday, and Thursday is its twin. They are the only two days he gets home after 18:45, the only two he skips moving his body, the only two homework starts after 21:30, and the only two he tapped the rough face. Four separate things agree, which is more than I usually get.',
+    where: {
+      q: 'Where is he on the days he gets home late?',
+      answer: 'The sports hall on Pankstraße, both times. On the three early days his "moved my body" pin is the park four streets away. The hall is about 35 minutes each way — that is the ninety minutes, almost exactly.',
       evidence: [
-        'Got home     17:05 · 18:50 · 17:12 · 18:48 · 17:08',
-        'Moved body     yes ·     — ·   yes ·     — ·   yes',
-        'His mood      good · rough ·  good · rough ·    ok'
+        'Mon · Wed · Fri   moved at the Park      → home 17:05 · 17:12 · 17:08',
+        'Tue · Thu         Sports hall, Pankstr. → home 18:50 · 18:48',
+        'He pinned every one of these himself'
       ],
-      tonight: 'Ask him to walk you through a Tuesday, hour by hour, with no comment from you at all. Just listen to where the time goes.',
+      tonight: 'Ask him how he gets to the hall and how long it really takes. He may have been quietly solving a transport problem on his own for weeks.',
       skill: {
-        name: 'Let the AI do the ranking',
-        why: "You asked which day, rather than asking me to confirm that Tuesday is bad. An open question lets me check every day against every signal. A leading question only ever gets you your own hunch back."
+        name: 'Ask where, not just when',
+        why: 'The times told you something changed; asking where told you what. When you have two kinds of data about the same event, asking the AI to cross them is where the answer usually is.'
       }
     }
   };
@@ -900,8 +1049,135 @@
 
   var NUDGE_TEXT = "Mum here. Tuesdays look long from where I'm sitting — want to tell me about them tonight?";
 
+  var HISTORY = [
+    { when: '3 Oct',  what: 'Is he eating breakfast before school?',   note: 'Four of five days. The one he skipped he left at 07:58.' },
+    { when: '21 Sep', what: 'He seems happier this month — am I imagining it?', note: 'No — rough faces went from 6 to 2 after football started.' },
+    { when: '8 Sep',  what: 'What changed when we moved his bedtime?', note: 'He woke 20 minutes earlier on his own within a fortnight.' },
+    { when: '30 Aug', what: 'First week of term — how is it going?',  note: 'Everything 15–20 minutes later than July. Settled by week three.' }
+  ];
+
+  // ── chart: five evenings, one line each ────────────────────────────────
+  function mins(hhmm) { var p = hhmm.split(':'); return Number(p[0]) * 60 + Number(p[1]); }
+  function isLate(at, target) { return Boolean(at) && mins(at) - mins(target) > 20; }
+
+  var T0 = 1005, T1 = 1380; // 16:45 → 23:00
+
+  function weekChartSVG(compact) {
+    var w = compact ? 300 : 620;
+    var padL = compact ? 30 : 56;
+    var padR = compact ? 12 : 22;
+    var top = compact ? 20 : 42;
+    var rowH = compact ? 22 : 34;
+    var h = top + WEEK.length * rowH + (compact ? 16 : 22);
+    var plot = w - padL - padR;
+    var x = function (m) { return padL + ((m - T0) / (T1 - T0)) * plot; };
+
+    var s = '<svg class="chart-svg" viewBox="0 0 ' + w + ' ' + h + '" role="img" '
+      + 'aria-label="Five evenings from getting home to bedtime. Tuesday and Thursday start and end about ninety minutes later than Monday, Wednesday and Friday.">';
+
+    // faint bands behind the two days that differ — grouping, not a verdict
+    for (var b = 0; b < WEEK.length; b++) {
+      if (WEEK[b].day === 'Tue' || WEEK[b].day === 'Thu') {
+        s += '<rect class="ev-band" x="' + (padL - 6) + '" y="' + (top + b * rowH - rowH / 2 + 3)
+          + '" width="' + (plot + 12) + '" height="' + (rowH - 6) + '" rx="5"></rect>';
+      }
+    }
+
+    // recessive grid
+    var ticks = [1020, 1140, 1260, 1380];
+    var tickLabels = ['17:00', '19:00', '21:00', '23:00'];
+    for (var t = 0; t < ticks.length; t++) {
+      var tx = x(ticks[t]);
+      s += '<line class="ev-grid" x1="' + tx.toFixed(1) + '" y1="' + (top - 10)
+        + '" x2="' + tx.toFixed(1) + '" y2="' + (top + (WEEK.length - 1) * rowH + 12) + '"></line>';
+      s += '<text class="ev-tick" x="' + tx.toFixed(1) + '" y="' + (top + (WEEK.length - 1) * rowH + 26)
+        + '" text-anchor="middle">' + tickLabels[t] + '</text>';
+    }
+
+    for (var i = 0; i < WEEK.length; i++) {
+      var d = WEEK[i];
+      var y = top + i * rowH;
+      var xh = x(mins(d.home)), xw = x(mins(d.hw)), xb = x(mins(d.bed));
+
+      s += '<text class="ev-day" x="' + (padL - 10) + '" y="' + (y + 4) + '" text-anchor="end">' + d.day + '</text>';
+      s += '<line class="ev-line" x1="' + xh.toFixed(1) + '" y1="' + y + '" x2="' + xb.toFixed(1) + '" y2="' + y + '"></line>';
+
+      var pts = [
+        { cx: xh, t: d.home, n: 'got home' },
+        { cx: xw, t: d.hw,   n: 'homework started' },
+        { cx: xb, t: d.bed,  n: 'in bed' }
+      ];
+      for (var p = 0; p < pts.length; p++) {
+        s += '<circle class="ev-dot" cx="' + pts[p].cx.toFixed(1) + '" cy="' + y + '" r="' + (compact ? 4 : 5) + '">'
+          + '<title>' + d.day + ' · ' + pts[p].n + ' ' + pts[p].t + '</title></circle>';
+      }
+
+      // direct labels on the first row only — never a number on every point
+      if (i === 0 && !compact) {
+        for (var q = 0; q < pts.length; q++) {
+          s += '<text class="ev-lab" x="' + pts[q].cx.toFixed(1) + '" y="' + (y - 13)
+            + '" text-anchor="middle">' + pts[q].n + '</text>';
+        }
+      }
+    }
+    return s + '</svg>';
+  }
+
+  function chartTableHTML() {
+    var s = '<table><thead><tr><th>Day</th><th>Got home</th><th>Homework</th><th>In bed</th><th>Moved</th><th>Mood</th></tr></thead><tbody>';
+    for (var i = 0; i < WEEK.length; i++) {
+      var d = WEEK[i];
+      s += '<tr><td>' + d.day + '</td><td>' + d.home + '</td><td>' + d.hw + '</td><td>' + d.bed
+        + '</td><td>' + (d.move || '—') + '</td><td>' + d.mood + '</td></tr>';
+    }
+    return s + '</tbody></table>';
+  }
+
+  // ── map: pins where a check-in happened. No trail, no live location. ───
+  function mapSVG() {
+    var roadsV = [90, 205, 320, 435, 545];
+    var roadsH = [62, 134, 206, 262];
+    var s = '<svg class="map-svg" viewBox="0 0 620 310" role="img" '
+      + 'aria-label="A schematic neighbourhood. Home, school and the park sit close together; the sports hall used on Tuesdays and Thursdays is across town.">';
+
+    for (var i = 0; i < roadsV.length; i++) {
+      s += '<line class="mp-road" x1="' + roadsV[i] + '" y1="20" x2="' + roadsV[i] + '" y2="290"></line>';
+    }
+    for (var j = 0; j < roadsH.length; j++) {
+      s += '<line class="mp-road" x1="24" y1="' + roadsH[j] + '" x2="600" y2="' + roadsH[j] + '"></line>';
+    }
+    var blocks = [
+      [40, 34, 36, 16], [112, 80, 70, 40], [232, 34, 60, 16], [350, 90, 60, 34],
+      [460, 150, 70, 40], [120, 160, 60, 32], [250, 215, 54, 32], [440, 36, 56, 14],
+      [352, 220, 62, 30], [40, 220, 36, 30]
+    ];
+    for (var b = 0; b < blocks.length; b++) {
+      s += '<rect class="mp-block" x="' + blocks[b][0] + '" y="' + blocks[b][1]
+        + '" width="' + blocks[b][2] + '" height="' + blocks[b][3] + '" rx="3"></rect>';
+    }
+
+    // the long hop, drawn once so the distance is legible
+    s += '<path d="M 205 206 C 300 150, 420 110, 545 62" fill="none" stroke="var(--ink-dim)" '
+      + 'stroke-width="1.5" stroke-dasharray="4 5" opacity=".55"></path>';
+    s += '<text class="mp-sub" x="372" y="128" text-anchor="middle">35 min each way</text>';
+
+    var pins = [
+      { x: 205, y: 206, cls: 'mp-pin-near', label: 'Home',        sub: 'got home · 5 pins',  dy: 24 },
+      { x: 120, y: 134, cls: 'mp-pin-near', label: 'School',      sub: 'left · 5 pins',      dy: -24 },
+      { x: 320, y: 262, cls: 'mp-pin-near', label: 'The park',    sub: 'moved · Mon Wed Fri', dy: 26 },
+      { x: 545, y: 62,  cls: 'mp-pin-far',  label: 'Sports hall', sub: 'moved · Tue Thu',     dy: -26 }
+    ];
+    for (var p = 0; p < pins.length; p++) {
+      var pn = pins[p];
+      s += '<circle class="' + pn.cls + '" cx="' + pn.x + '" cy="' + pn.y + '" r="8"></circle>';
+      s += '<text class="mp-lab" x="' + pn.x + '" y="' + (pn.y + pn.dy) + '" text-anchor="middle">' + pn.label + '</text>';
+      s += '<text class="mp-sub" x="' + pn.x + '" y="' + (pn.y + pn.dy + 12) + '" text-anchor="middle">' + pn.sub + '</text>';
+    }
+    return s + '</svg>';
+  }
+
   // ── state ──────────────────────────────────────────────────────────────
-  var today, points, mood, thread, nudge, tab, thinking;
+  var today, points, mood, thread, nudge, tab, ptab, thinking, kidSaid, call;
 
   function init() {
     today = { wake: '07:02', left: '07:43', home: '18:51' };
@@ -910,27 +1186,22 @@
     thread = [];
     nudge = null;
     tab = 'today';
+    ptab = 'ask';
     thinking = false;
+    kidSaid = null;
+    call = 'idle';
   }
 
   var watchScroll = document.getElementById('watchScroll');
   var phoneBody = document.getElementById('phoneBody');
   var phonePill = document.getElementById('phonePill');
+  var phoneTitle = document.getElementById('phoneTitle');
   var stageHint = document.getElementById('stageHint');
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
-
-  function mins(hhmm) {
-    var p = hhmm.split(':');
-    return Number(p[0]) * 60 + Number(p[1]);
-  }
-
-  /** Only flag a check-in that actually moved the shape of the day. */
-  function isLate(at, target) {
-    return Boolean(at) && mins(at) - mins(target) > 20;
-  }
+  function hint(t) { stageHint.innerHTML = t; }
 
   // ── the watch ──────────────────────────────────────────────────────────
   function renderWatch() {
@@ -939,7 +1210,6 @@
     if (tab === 'today') {
       var done = Object.keys(today).length;
       var r = 24, c = 2 * Math.PI * r, pct = done / CHECKPOINTS.length;
-
       html += '<div class="watch-top"><span>TODAY</span><span class="streak">11 days</span></div>';
       html += '<div class="ring-wrap"><svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true">'
         + '<circle class="ring-track" cx="29" cy="29" r="' + r + '" fill="none" stroke-width="6"></circle>'
@@ -956,13 +1226,30 @@
       for (var i = 0; i < CHECKPOINTS.length; i++) {
         var cp = CHECKPOINTS[i];
         var at = today[cp.id];
-        var late = isLate(at, cp.target);
-        html += '<button class="cp ' + (at ? 'done' : '') + '" data-cp="' + cp.id + '"'
-          + (at ? ' disabled' : '') + '>'
+        html += '<button class="cp ' + (at ? 'done' : '') + '" data-cp="' + cp.id + '"' + (at ? ' disabled' : '') + '>'
           + '<span class="cp-icon">' + cp.icon + '</span>'
-          + '<span class="cp-label">' + esc(cp.label) + '</span>'
-          + '<span class="cp-time ' + (late ? 'late' : '') + '">' + (at ? esc(at) : '+' + cp.pts) + '</span>'
-          + '</button>';
+          + '<span class="cp-label">' + esc(cp.label)
+          + (at ? '<span class="cp-where">◉ ' + esc(cp.where) + '</span>' : '')
+          + '</span>'
+          + '<span class="cp-time ' + (isLate(at, cp.target) ? 'late' : '') + '">'
+          + (at ? esc(at) : '+' + cp.pts) + '</span></button>';
+      }
+    }
+
+    if (tab === 'ask') {
+      html += '<p class="watch-label">Ask me anything</p>';
+      if (kidSaid) {
+        html += '<div class="kidsay"><small>Your watch</small>' + esc(kidSaid.say);
+        if (kidSaid.plan.length) {
+          html += '<ul class="kidplan">';
+          for (var k = 0; k < kidSaid.plan.length; k++) html += '<li>' + esc(kidSaid.plan[k]) + '</li>';
+          html += '</ul>';
+        }
+        html += '</div>';
+      }
+      var keys = ['order', 'tired', 'points'];
+      for (var q = 0; q < keys.length; q++) {
+        html += '<button class="kidq" data-kq="' + keys[q] + '">' + esc(KID[keys[q]].q) + '</button>';
       }
     }
 
@@ -970,9 +1257,8 @@
       html += '<p class="watch-label">Your points</p><div class="points-big">' + points + '</div>'
         + '<p class="watch-label">Swap for time together</p>';
       for (var j = 0; j < REWARDS.length; j++) {
-        var rw = REWARDS[j];
-        html += '<button class="reward" data-rw="' + j + '"' + (points < rw.cost ? ' disabled' : '') + '>'
-          + '<span>' + esc(rw.label) + '</span><span>' + rw.cost + '</span></button>';
+        html += '<button class="reward" data-rw="' + j + '"' + (points < REWARDS[j].cost ? ' disabled' : '') + '>'
+          + '<span>' + esc(REWARDS[j].label) + '</span><span>' + REWARDS[j].cost + '</span></button>';
       }
     }
 
@@ -980,16 +1266,26 @@
       html += '<p class="watch-label">How was today?</p><div class="moods">'
         + '<button data-mood="good" aria-pressed="' + (mood === 'good') + '">🙂</button>'
         + '<button data-mood="ok" aria-pressed="' + (mood === 'ok') + '">😐</button>'
-        + '<button data-mood="rough" aria-pressed="' + (mood === 'rough') + '">😞</button>'
-        + '</div>'
+        + '<button data-mood="rough" aria-pressed="' + (mood === 'rough') + '">😞</button></div>'
         + '<p class="watch-label">What Mum can see</p>'
         + '<div class="seen">The times you tapped today</div>'
         + '<div class="seen">Which ones you skipped</div>'
+        + '<div class="seen">The place on each tap you made</div>'
         + '<div class="seen">The face you picked</div>'
         + '<div class="seen">Your points and your streak</div>'
-        + '<div class="seen no">Not where you are</div>'
+        + '<div class="seen no">Not where you are right now</div>'
+        + '<div class="seen no">Not anywhere you didn’t tap</div>'
         + '<div class="seen no">Not your messages</div>'
         + '<div class="seen no">Not anything else, ever</div>';
+    }
+
+    if (call === 'ringing' && tab === 'today') {
+      html += '<div class="watch-action"><button class="watch-btn calling" data-answer="1">Mum is calling</button></div>';
+    }
+    if (call === 'video' || call === 'audio') {
+      html = '<p class="watch-label">On a ' + call + ' call</p>'
+        + '<div class="kidsay"><small>Mum</small>She can see the same chart you can.</div>'
+        + '<div class="watch-action"><button class="watch-btn" data-hang="1">End</button></div>';
     }
 
     watchScroll.innerHTML = html;
@@ -998,164 +1294,217 @@
   // ── the phone ──────────────────────────────────────────────────────────
   function renderPhone() {
     var done = Object.keys(today).length;
-    phonePill.textContent = done + ' check-ins today · 5 days of history';
+    phonePill.textContent = done + ' check-ins today · 14 weeks of history';
+    phoneTitle.textContent = ptab === 'ask' ? 'Ask about Mert'
+      : ptab === 'week' ? 'His week'
+      : ptab === 'map' ? 'Where his taps happened' : 'Everything you’ve asked';
 
     var html = '';
 
-    if (!thread.length && !thinking) {
-      html += '<div class="pcard"><h5>Where to start</h5>'
-        + '<p style="font-size:13.5px;color:var(--paper-dim);margin-bottom:11px">'
-        + 'Ayşe has never used an AI for anything. These are the four questions she might '
-        + 'actually type.</p>'
-        + '<div class="chips">'
-        + '<button class="chip" data-q="slower">Is he getting slower, or is something else going on?</button>'
-        + '<button class="chip" data-q="bedtime">Why is bedtime sliding?</button>'
-        + '<button class="chip" data-q="hardest">Which day of his week is the hardest?</button>'
-        + '<button class="chip" data-q="noticed">What did you notice this week?</button>'
-        + '</div></div>';
+    if (call !== 'idle') {
+      html += '<div class="callstage"><div class="vid">' + (call === 'video' ? '📹' : '🎧') + '</div>'
+        + '<div class="cs"><b>Connected — ' + call + '</b>'
+        + 'The chart stays on screen while you talk.<br><small>00:14</small></div></div>'
+        + '<button class="sendbtn" style="background:var(--alert)" data-hang="1">End call</button>';
     }
 
-    for (var i = 0; i < thread.length; i++) {
-      var t = thread[i];
-      if (t.role === 'parent') {
-        html += '<div class="bubble-parent">' + esc(t.text) + '</div>';
-        continue;
-      }
-      if (t.unprompted) {
-        html += '<div class="pcard"><h5>What I noticed</h5>'
-          + '<p style="font-weight:600;margin-bottom:6px">' + esc(t.headline) + '</p>'
-          + '<p>' + esc(t.body) + '</p></div>';
-      } else {
-        html += '<div class="pcard"><h5>From his check-ins</h5><p>' + esc(t.answer) + '</p>';
-        html += '<ul class="evi">';
-        for (var e = 0; e < t.evidence.length; e++) html += '<li>' + esc(t.evidence[e]) + '</li>';
-        html += '</ul></div>';
-      }
+    if (ptab === 'week') {
+      html += '<div class="pcard viz-root"><h5>Five evenings</h5>'
+        + '<div class="chartwrap">' + weekChartSVG(true) + '</div>'
+        + '<p style="font-size:13px;color:var(--paper-dim);margin-top:10px">'
+        + 'Tuesday and Thursday don’t just end later — they start later.</p></div>';
+      html += '<div class="pcard"><h5>The same week, as numbers</h5>'
+        + '<div class="tablewrap datatable" style="margin-top:0">' + chartTableHTML() + '</div></div>';
+    }
 
-      html += '<div class="tonight-card"><h5>Tonight, 15 minutes</h5><p>' + esc(t.tonight) + '</p></div>';
+    if (ptab === 'map') {
+      html += '<div class="pcard"><h5>Pins, not a trail</h5>' + mapSVG()
+        + '<p style="font-size:13px;color:var(--paper-dim);margin-top:10px">'
+        + 'Only places attached to a tap he made. There is no “where is he now” in this app.</p></div>';
+      html += '<div class="pcard alert"><h5>The ninety minutes</h5>'
+        + '<p>On Tue and Thu he moves at the sports hall across town instead of the park four '
+        + 'streets away. About 35 minutes each way.</p></div>';
+    }
 
-      if (t.skill) {
-        html += '<div class="skillcard"><h5>What made that question work</h5>'
-          + '<p><strong>' + esc(t.skill.name) + '</strong></p>'
-          + '<p class="try">' + esc(t.skill.why) + '</p></div>';
+    if (ptab === 'history') {
+      html += '<div class="pcard"><h5>Earlier conversations</h5>';
+      for (var i = 0; i < HISTORY.length; i++) {
+        html += '<button class="histrow" data-hist="' + i + '"><span class="when2">' + esc(HISTORY[i].when) + '</span>'
+          + '<span class="what">' + esc(HISTORY[i].what) + '<em>' + esc(HISTORY[i].note) + '</em></span></button>';
       }
+      html += '</div><div class="pcard"><h5>Why this matters</h5><p style="font-size:13.5px">'
+        + 'Fourteen weeks of questions and answers, kept. <strong>This isn’t a chat session — '
+        + 'it’s a record of a childhood she can scroll back through.</strong></p></div>';
+    }
 
-      if (i === thread.length - 1) {
-        html += '<div class="pcard"><h5>Send it to him</h5>'
+    if (ptab === 'ask') {
+      if (!thread.length && !thinking) {
+        html += '<div class="pcard"><h5>Where to start</h5>'
           + '<p style="font-size:13.5px;color:var(--paper-dim);margin-bottom:11px">'
-          + 'Claude rewrites tonight’s suggestion in your voice — never a reminder, '
-          + 'never a telling-off.</p>'
-          + '<button class="sendbtn" data-send="1"' + (nudge ? ' disabled' : '') + '>'
-          + (nudge ? 'Sent to his watch' : 'Send to his watch') + '</button></div>';
+          + 'Ayşe has never used an AI for anything. These are the questions she might actually type.</p>'
+          + '<div class="chips">'
+          + '<button class="chip" data-q="slower">Is he getting slower, or is something else going on?</button>'
+          + '<button class="chip" data-q="bedtime">Why is bedtime sliding?</button>'
+          + '<button class="chip" data-q="where">Where is he on the days he gets home late?</button>'
+          + '<button class="chip" data-q="noticed">What did you notice this week?</button>'
+          + '</div></div>';
+      }
 
-        if (!thinking) {
+      for (var t = 0; t < thread.length; t++) {
+        var turn = thread[t];
+        if (turn.role === 'parent') { html += '<div class="bubble-parent">' + esc(turn.text) + '</div>'; continue; }
+
+        if (turn.unprompted) {
+          html += '<div class="pcard"><h5>What I noticed</h5>'
+            + '<p style="font-weight:600;margin-bottom:6px">' + esc(turn.headline) + '</p>'
+            + '<p>' + esc(turn.body) + '</p></div>';
+        } else {
+          html += '<div class="pcard"><h5>From his check-ins</h5><p>' + esc(turn.answer) + '</p><ul class="evi">';
+          for (var e = 0; e < turn.evidence.length; e++) html += '<li>' + esc(turn.evidence[e]) + '</li>';
+          html += '</ul></div>';
+        }
+
+        html += '<div class="tonight-card"><h5>Tonight, 15 minutes</h5><p>' + esc(turn.tonight) + '</p></div>';
+
+        if (turn.skill) {
+          html += '<div class="skillcard"><h5>What made that question work</h5>'
+            + '<p><strong>' + esc(turn.skill.name) + '</strong></p>'
+            + '<p class="try">' + esc(turn.skill.why) + '</p></div>';
+        }
+
+        if (t === thread.length - 1 && !thinking) {
+          html += '<div class="pcard"><h5>Reach him</h5>'
+            + '<button class="sendbtn" data-send="1"' + (nudge ? ' disabled' : '') + '>'
+            + (nudge ? 'Sent to his watch' : 'Send tonight’s suggestion to his watch') + '</button>'
+            + '<div class="callrow" style="margin-top:9px">'
+            + '<button class="callvid" data-call="video">Video call</button>'
+            + '<button class="callaud" data-call="audio">Audio call</button></div></div>';
           html += '<div class="pcard"><h5>Ask something else</h5><div class="chips">'
             + '<button class="chip" data-q="slower">Is he getting slower?</button>'
             + '<button class="chip" data-q="bedtime">Why is bedtime sliding?</button>'
-            + '<button class="chip" data-q="hardest">Which day is hardest?</button>'
+            + '<button class="chip" data-q="where">Where is he on the late days?</button>'
             + '</div></div>';
         }
       }
+
+      if (thinking) html += '<div class="thinking">reading five days of check-ins…</div>';
     }
 
-    if (thinking) html += '<div class="thinking">reading five days of check-ins…</div>';
-
     phoneBody.innerHTML = html;
-    phoneBody.scrollIntoView = phoneBody.scrollIntoView || function () {};
     var screen = phoneBody.parentElement;
-    if (thread.length || thinking) screen.scrollTop = screen.scrollHeight;
+    if (ptab === 'ask' && (thread.length || thinking)) screen.scrollTop = screen.scrollHeight;
+    else screen.scrollTop = 0;
   }
 
   function render() { renderWatch(); renderPhone(); }
 
-  function hint(text) { stageHint.innerHTML = text; }
+  function syncTabs(sel, attr, value) {
+    var btns = document.querySelectorAll(sel);
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].setAttribute('aria-selected', btns[i].dataset[attr] === value ? 'true' : 'false');
+    }
+  }
 
-  // ── interaction ────────────────────────────────────────────────────────
   function askQuestion(key) {
     if (thinking) return;
+    ptab = 'ask';
+    syncTabs('.ptabs button', 'ptab', 'ask');
     if (key === 'noticed') {
       thinking = true; render();
       setTimeout(function () {
-        thread.push({ role: 'claude', unprompted: true, headline: NOTICED.headline,
-                      body: NOTICED.body, tonight: NOTICED.tonight });
+        thread.push({ role: 'claude', unprompted: true, headline: NOTICED.headline, body: NOTICED.body, tonight: NOTICED.tonight });
         thinking = false; render();
-        hint('Claude went looking without being asked. Useful — but the <b>real</b> moment is a parent typing their own question.');
+        hint('Claude went looking without being asked. Useful — but the <b>real</b> moment is a parent typing her own question.');
       }, 900);
       return;
     }
     var a = ANSWERS[key];
     if (!a) return;
     thread.push({ role: 'parent', text: a.q });
-    thinking = true;
-    render();
+    thinking = true; render();
     hint('She asked it the way she’d say it to a friend. No prompt engineering, no training.');
     setTimeout(function () {
-      thread.push({ role: 'claude', answer: a.answer, evidence: a.evidence,
-                    tonight: a.tonight, skill: a.skill });
+      thread.push({ role: 'claude', answer: a.answer, evidence: a.evidence, tonight: a.tonight, skill: a.skill });
       thinking = false; render();
-      hint('<b>Her own numbers are in the answer.</b> Scroll the phone — under the advice is the card that teaches her why the question worked.');
+      hint('<b>Her own numbers are in the answer.</b> Now open <b>Week</b> and <b>Map</b> — the same fact, drawn two ways.');
     }, 1100);
   }
 
   document.addEventListener('click', function (ev) {
-    var el = ev.target.closest ? ev.target.closest('[data-cp],[data-q],[data-send],[data-ack],[data-mood],[data-rw],[data-tab]') : null;
+    var el = ev.target.closest
+      ? ev.target.closest('[data-cp],[data-q],[data-kq],[data-send],[data-ack],[data-mood],[data-rw],[data-tab],[data-ptab],[data-call],[data-hang],[data-answer],[data-hist]')
+      : null;
     if (!el) return;
+    var d = el.dataset;
 
-    if (el.dataset.tab) {
-      tab = el.dataset.tab;
-      var btns = document.querySelectorAll('.watch-tabs button');
-      for (var i = 0; i < btns.length; i++) {
-        btns[i].setAttribute('aria-selected', btns[i].dataset.tab === tab ? 'true' : 'false');
-      }
-      renderWatch();
-      if (tab === 'me') hint('Every line here was put there by a tap he made himself. <b>Nothing is sensed in the background.</b>');
+    if (d.tab) {
+      tab = d.tab; syncTabs('.watch-tabs button', 'tab', tab); renderWatch();
+      if (tab === 'me') hint('Every line here was put there by a tap he made himself — <b>the places included</b>. Nothing is sensed in the background.');
+      if (tab === 'ask') hint('<b>The child has his own AI.</b> It helps him order his evening; it never does the thing for him.');
       if (tab === 'points') hint('Points buy <b>time with a parent</b>, never things.');
       return;
     }
-
-    if (el.dataset.cp) {
+    if (d.ptab) {
+      ptab = d.ptab; syncTabs('.ptabs button', 'ptab', ptab); renderPhone();
+      if (ptab === 'week') hint('Five evenings, one line each. <b>Two of them start and end ninety minutes late.</b>');
+      if (ptab === 'map') hint('<b>The punchline.</b> On those two days he moves at a hall across town, not the park four streets away.');
+      if (ptab === 'history') hint('Fourteen weeks of questions, kept. <b>Not a chat session — a record.</b>');
+      return;
+    }
+    if (d.cp) {
       var cp = null;
-      for (var j = 0; j < CHECKPOINTS.length; j++) if (CHECKPOINTS[j].id === el.dataset.cp) cp = CHECKPOINTS[j];
+      for (var i = 0; i < CHECKPOINTS.length; i++) if (CHECKPOINTS[i].id === d.cp) cp = CHECKPOINTS[i];
       if (cp && !today[cp.id]) {
-        today[cp.id] = cp.demo;
-        points += cp.pts;
-        render();
+        today[cp.id] = cp.demo; points += cp.pts; render();
         hint(isLate(cp.demo, cp.target)
-          ? '<b>' + cp.label + ' at ' + cp.demo + '.</b> Late again — but that is the symptom, not the cause. Ask the phone why.'
-          : cp.label + ' at ' + cp.demo + '. One tap, one timestamp. That is the entire input.');
+          ? '<b>' + cp.label + ' at ' + cp.demo + '.</b> Late again — but that is the symptom. Ask the phone why.'
+          : cp.label + ' at ' + cp.demo + ', pinned at ' + cp.where + '. One tap. That is the entire input.');
       }
       return;
     }
-
-    if (el.dataset.q) { askQuestion(el.dataset.q); return; }
-
-    if (el.dataset.send) {
-      nudge = { text: NUDGE_TEXT, at: '19:04', acked: false };
-      render();
+    if (d.kq) {
+      kidSaid = KID[d.kq]; renderWatch();
+      hint('He asked, and it helped him <b>decide for himself</b>. That is a ten-year-old learning what an AI is for.');
+      return;
+    }
+    if (d.q) { askQuestion(d.q); return; }
+    if (d.send) {
+      nudge = { text: NUDGE_TEXT, at: '19:04', acked: false }; render();
       hint('It arrived <b>in her voice</b>, not the app’s — and it asks him something instead of telling him something.');
       return;
     }
-
-    if (el.dataset.ack) { if (nudge) nudge.acked = true; renderWatch(); return; }
-
-    if (el.dataset.mood) { mood = el.dataset.mood; renderWatch(); return; }
-
-    if (el.dataset.rw) {
-      var rw = REWARDS[Number(el.dataset.rw)];
+    if (d.ack) { if (nudge) nudge.acked = true; renderWatch(); return; }
+    if (d.mood) { mood = d.mood; renderWatch(); return; }
+    if (d.rw) {
+      var rw = REWARDS[Number(d.rw)];
       if (rw && points >= rw.cost) { points -= rw.cost; renderWatch(); }
+      return;
+    }
+    if (d.call) {
+      call = 'ringing'; render();
+      hint('His watch is ringing. <b>The AI stops at the doorway; a parent walks through it.</b>');
+      setTimeout(function () { call = d.call; render(); }, 1200);
+      return;
+    }
+    if (d.answer) { call = 'video'; render(); return; }
+    if (d.hang) { call = 'idle'; render(); return; }
+    if (d.hist) {
+      hint('Every one of these is a real conversation she had weeks ago. <b>The app remembers; she doesn’t have to.</b>');
       return;
     }
   });
 
   document.getElementById('reset').addEventListener('click', function () {
     init();
-    var btns = document.querySelectorAll('.watch-tabs button');
-    for (var i = 0; i < btns.length; i++) {
-      btns[i].setAttribute('aria-selected', btns[i].dataset.tab === 'today' ? 'true' : 'false');
-    }
+    syncTabs('.watch-tabs button', 'tab', 'today');
+    syncTabs('.ptabs button', 'ptab', 'ask');
     render();
     hint('Mert got home at 18:51 today. His mum has never used an AI for anything.');
   });
+
+  document.getElementById('bigChart').innerHTML = weekChartSVG(false);
+  document.getElementById('chartTable').innerHTML = chartTableHTML();
+  document.getElementById('mapCard').innerHTML = mapSVG();
 
   init();
   render();
