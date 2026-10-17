@@ -1,10 +1,12 @@
-# Relay
+# Tempo
 
-> **AI doesn't answer. It passes the ball.**
+> **It doesn't score your child. It tells you what to say tonight.**
 
-A kid's **watch** and a parent's **phone**, with Claude between them — not doing the
-homework, not policing the child, but making sure the two humans connect at the moment
-it matters.
+A kid taps their way through the day on a **watch** — and asks it for help planning
+their own evening. Their parent asks Claude about that week **in their own words**, sees
+it as a chart and a map, and calls them.
+
+Two people in one family, both learning to use AI.
 
 Built in one day at [Claude Impact Lab Berlin](https://luma.com/claude-oofc), 17 Oct 2026.
 Challenge: *AI education for everyone.* Audience: **parents** — and their children.
@@ -13,7 +15,8 @@ Challenge: *AI education for everyone.* Audience: **parents** — and their chil
 
 ## Who it's for
 
-Parents of children roughly 8–13, with a sharp edge for immigrant families in Berlin.
+Parents of children roughly 8–13, with a sharp edge for families in Berlin where the
+parent works a late shift, reads German slowly, or simply isn't in the room at 17:00.
 
 Most children that age here **have a kids' smartwatch and do not have a phone** — parents
 chose that on purpose. The watch is the only device that is both on the child's wrist all
@@ -21,92 +24,74 @@ day and trusted by the parent. Nobody is building AI for it.
 
 ## The problem
 
-Three things go wrong in the same ten minutes of an evening:
+- **What a parent sees:** homework starting at half nine, again. Bedtime creeping. A kid
+  who seems slower than last year.
+- **What they conclude:** he's getting lazy. It's the only explanation visible from the
+  kitchen at 21:40.
+- **What's actually happening:** two days a week he gets home ninety minutes later,
+  because training moved across town. **Nobody ever put those two columns side by side —
+  including the parent, who has all the information and none of the pattern.**
 
-1. **The kid gets stuck**, and the fastest escape is a chatbot that hands over a finished
-   answer. They stop being stuck, and they stop learning.
-2. **The kid doesn't ask for help**, because asking feels like admitting you're bad at it.
-   So they stall, guess, or quit, and nobody finds out until the test.
-3. **The parent isn't there** — other room, other shift, other country — or is there but
-   doesn't know *how* to help, so they say the answer, or they say "concentrate."
+## Why this is a "use AI" project, not an app with AI in it
 
-AI made this worse, not better. Nothing makes the **slow** path — the one where the kid
-actually learns — easy enough to choose at 9pm.
+An app that quietly runs analysis in the background is not a person using AI. So:
 
-And for a parent whose German isn't fluent, a German worksheet is simply out of reach.
-Their child does homework alone, in a language the household doesn't share.
+- **The parent types the question herself**, the way she'd say it to a friend. What makes
+  it work isn't the interface — it's that for the first time she has something worth
+  asking about: her own child's real data, and her own worry. Most parents have never had
+  a reason to open an AI. This is one.
+- **The child asks his own AI** on the wrist — "I've got football and homework, which
+  first?" — and it helps him *order his own evening* instead of doing anything for him.
+  A ten-year-old learning that an AI is a thinking tool rather than an answer machine is
+  the most durable thing we could teach in a day.
+- **Every answer to the parent ends with what made that question answerable** — "you gave
+  me five days of times instead of saying he's lazy." She takes that to any AI, anywhere.
+  That's the *learn* half of the brief, and it costs one field in the response.
+- **Starter questions are the on-ramp.** Someone who has never used AI doesn't know what
+  to type. Blank-page paralysis is the real barrier, not scepticism.
 
-## What Relay does
+## What's in it
 
-```
-  CHILD (watch)                CLAUDE                    PARENT (phone)
-  ─────────────                ──────                    ──────────────
-  "I'm stuck"      ──────▶  1. THE BRAKE
-                            one hint, never the answer
-                   ◀──────  hint 1 → hint 2
-                                 │  still stuck
-                                 ▼
-                            2. THE TRANSLATOR
-                            turns the stuck moment    ──────▶  Coaching Card
-                            into something a parent            + the watch rings
-                            can act on
-                                 │
-  check-ins, mood,  ──────▶  3. THE OBSERVER          ──────▶  This week's pattern
-  persistence time             patterns in *learning*          + what to do tonight
-                               behaviour, never a score
-```
+### The watch (the child's)
 
-### On the child's watch
+- **Eight check-ins a day** — woke, left, got home, moved, homework, read, screens off,
+  in bed. Each tap is a timestamp, a place and some points.
+- **A day ring** that fills as the day takes shape. It shows the shape; it doesn't grade it.
+- **His own AI** — short, watch-sized answers that help him decide, never do it for him.
+  Skipping a thing is allowed; the prompt says so.
+- **Points that buy time with a parent, not toys** — "20 minutes of football with Dad."
+- **A one-tap mood**, and a streak he cares about more than we expected.
+- **"What Mum can see"** — a complete list of what's shared, in words a ten-year-old reads.
 
-- **The Persistence Ring** fills while they stay with a problem. **It rewards time spent,
-  not correctness.** Every other system in a child's life rewards the right answer.
-- **The Help Ladder** — three dots, always visible. Two are AI hints. **The third is their
-  parent's face.** The child can see, before they ask, that help exists, that it's finite,
-  and that the last rung is a person. Help shame is the real reason kids don't ask, and
-  three dots on a wrist fix more of it than any amount of encouragement.
-- **I'm stuck** — one button. The hint comes back as text *and* spoken aloud.
-- **Quests and points** — one task at a time, and **points buy time with a parent, not
-  toys**: "20 minutes of football with Dad."
-- **What Mum can see** — a screen on the *child's* watch listing exactly what is shared,
-  in words a ten-year-old reads. No hidden collection, ever.
+### The phone (the parent's)
 
-### On the parent's phone
-
-- **Tonight** — what they're stuck on, how long they held on, which hints they used.
-- **The Coaching Card**, which appears by itself when the ladder reaches the third dot:
-  what this is really testing · **the answer, collapsed behind two clicks and a "Sure?
-  Try the questions first"** · three questions to ask in order · the exact sentence to say
-  if they're still stuck · and **the AI skill you just used**, so the parent takes the
-  technique to any AI, anywhere.
-- **Read this card in** Türkçe, العربية, Українська, Deutsch or English — *even when the
-  homework is in another language.*
-- **Call** — one tap to the watch, **with the card still on screen**, so the parent reads
-  question one while they talk.
-- **Patterns** — the week's read: where they quit, where they persist, one thing to do
-  tonight. Guidance, never a grade.
-
-## Why the call is in here
-
-A video call is the kind of thing a hackathon team bolts on to look impressive. Ours is
-**the last rung of the ladder.** The whole argument is that AI should know when to stop
-and get a human — so it ends at a parent's face, and the parent arrives already briefed.
-
-Every other tool tries to replace a person. This one is engineered to summon one, and to
-make them better when they arrive.
+- **Ask** — any question, in her own words. Claude answers from the real times, quotes
+  them, separates behaviour from cause, and says "I can't see that from this" when it can't.
+  Then one thing to do tonight, and the AI skill she just used.
+- **Week** — five evenings drawn, one line each, from getting home to getting into bed.
+- **Map** — pins where a check-in happened. The Tuesday mystery, made visible.
+- **History** — earlier conversations, re-askable with a tap.
+- **Send to his watch** — the advice, rewritten by Claude in her own voice. Never a
+  reminder, never a telling-off.
+- **Video or audio call** — video at home, audio on the tram. The week stays on screen
+  while they talk.
+- The answer renders in Türkçe, العربية, Українська, Deutsch or English.
 
 ## Where we draw the privacy line
 
+We are building behaviour tracking for children, and there is a map in it. So:
+
 | We collect | We never collect |
 |---|---|
-| Which problem, how long they stayed, hints used, mood taps | Location. Audio. Camera. Messages. Screen time. Anything outside a homework session. |
+| The times he tapped, which ones he skipped, **the place attached to a tap he made**, the face he picked, points and streak | Continuous location. Any location he didn't attach himself. Audio. Camera. Messages. Screen time. Contacts. Anything outside a check-in. |
 
-1. **Learning behaviour only** — the tool points at a worksheet, never at a child.
-2. **The child can see the deal** — the "What Mum can see" screen is complete.
-3. **Output is guidance, never judgement** — "do this tonight," never "your child has an
-   attention problem." The Observer prompt forbids the words *lazy, distracted, behind,
-   struggling, weak*.
-
-We do not read children's AI chats. We do not track them.
+1. **He taps it, or it doesn't exist.** Every point in the system was put there by the
+   child on purpose, the places included. Nothing is sensed or inferred in the background.
+2. **He can see the deal.** The "What Mum can see" screen on his own watch is complete.
+3. **Guidance, never judgement.** The prompts forbid *lazy, distracted, behind, struggling,
+   weak* and every clinical label. Output is "do this tonight", never "your child has a problem."
+4. **No live location, ever.** There is deliberately no "where is he now". That is the
+   product a dozen companies already sell, and it's the one that makes a child feel followed.
 
 ---
 
@@ -120,7 +105,7 @@ cp .env.example .env     # paste your Anthropic API key into .env
 npm run dev
 ```
 
-Then open **http://localhost:5173** — both devices, side by side. That's the demo view.
+Open **http://localhost:5173** — both devices side by side. That's the demo view.
 
 | URL | What |
 |---|---|
@@ -129,62 +114,58 @@ Then open **http://localhost:5173** — both devices, side by side. That's the d
 | `/parent` | The parent's phone alone |
 
 **It runs without an API key.** Every Claude call falls back to bundled content, so the
-whole flow demos on a dead network. You'll see `⚠ No ANTHROPIC_API_KEY` in the server log.
+whole flow demos on a dead network. The server log says `⚠ No ANTHROPIC_API_KEY`.
 
-To put it on a real phone in the room:
-
-```bash
-npm run tunnel
-```
+To put it on a real phone in the room: `npm run tunnel` (needs `cloudflared`).
 
 ### Walk the demo
 
-1. Watch → **Start**
-2. Watch → **I'm stuck** → hint 1, spoken. One dot goes out. *No answer on screen.*
-3. Watch → **I'm stuck** → hint 2. Second dot out.
-4. Watch → **Still stuck — ask Mum** → the phone lights up with the Coaching Card
-5. Phone → reach for the answer. It's collapsed. Click twice.
-6. Phone → **Call** → the watch rings → **answer** → the card stays up during the call
-7. Phone → **Patterns**, and the **Read this card in** language switch
-8. Watch → **Me** → what Mum can see
+1. Watch → tap **Got home**, then a few more check-ins
+2. Watch → **Ask** → "I've got football and homework. Which first?"
+3. Phone → type or tap **"Is he getting slower, or is something else going on?"**
+4. Phone → **Week**, then **Map** — the same fact, drawn two ways
+5. Phone → **Send tonight's suggestion to his watch** → it arrives in her voice
+6. Phone → **Video call** or **Audio call** → the watch rings → answer
+7. Watch → **Me** → what Mum can see
 
 ---
 
 ## How it's built
 
 ```
-src/watch/     the round face           src/parent/   the phone
-src/lib/       ws client, WebRTC, types
-server/        express + ws hub, the three Claude jobs, bundled fallbacks
+src/watch/     the round face          src/parent/   the four-tab phone app
+src/lib/       ws client, WebRTC, shared chart + map, types
+server/        express + ws hub, four Claude jobs, bundled fallbacks
 ```
 
 Everything is TypeScript. One `npm run dev` starts both halves.
 
 **The server is authoritative.** Both clients render from one state object pushed over a
 WebSocket, so the watch and the phone can never disagree in front of a judge. WebRTC
-carries audio and video only; signalling rides the same socket. Same-host P2P, STUN only,
-no TURN.
+carries audio and video only; signalling rides the same socket. Same-host P2P, STUN only.
 
 **Four Claude calls**, all `claude-opus-5-5`:
 
-| Endpoint | Job | Effort |
+| Call | Job | Effort |
 |---|---|---|
-| `brake()` | one hint, never the answer | `low` — the watch must feel instant |
-| `translate()` | stuck moment → Coaching Card, in the parent's language | `medium` |
-| `observe()` | a week of behaviour → one pattern and one action | `medium` |
-| `quest()` | a parent's goal → a task a child can hold | `low` |
+| `askAboutChild()` | the parent's question, grounded in five real days | `medium` |
+| `kidAsk()` | the child's own AI, on the wrist | `low` — a watch must feel instant |
+| `noticed()` | the unprompted read, for a parent who doesn't know what to ask | `medium` |
+| `nudge()` | tonight's advice, rewritten in the parent's own voice | `low` |
 
-**The prompt is the product.** The system prompts forbid the answer appearing in any hint,
-require every hint to cite the specific numbers and objects in *this* problem, cap watch
-text at 90 characters, and ban diagnostic language in the Observer.
+**The prompts are the product.** They require every claim to quote the times it came
+from, forbid the answer implying any knowledge of where the child is *now*, cap watch text
+at 220 characters, ban diagnostic language, and tell the child's AI in as many words that
+it does not enforce anything and is not his parent.
 
-**And we check.** `leaksAnswer()` in `server/claude.js` scans every hint and every ladder
-question for the answer's value and digits, and replaces any that leak. A coaching tool
-that gives the game away is worse than no coaching tool.
+**The chart is deliberately one colour.** A chart that scored his week in traffic lights
+would contradict the product's own claim in the first second a judge looked at it.
+Position carries the message; colour stays out of it. The series colour was validated
+against both the light and dark chart surfaces.
 
 **It degrades at every layer.** No API key, a failed call, a refusal, malformed JSON, a
-dropped socket, no camera, no speech synthesis — each has a fallback, and the demo
-survives all of them. The venue wifi was never going to be our single point of failure.
+dropped socket, no camera or microphone — each has a fallback, and the demo survives all
+of them. The venue wifi was never going to be our single point of failure.
 
 ---
 
@@ -192,21 +173,22 @@ survives all of them. The venue wifi was never going to be our single point of f
 
 Judges asked for honesty, so:
 
-- **Verified working:** both clients, the live state sync over WebSocket, the full help
-  ladder, the escalation to the parent, the collapsed answer and its friction step, the
-  parent-goal-to-quest round trip, the Patterns view, the privacy screen, the answer-leak
-  guard, and the Cloudflare tunnel (page, routes and API proxy all served).
-- **Call:** the state machine and the signalling relay are verified end to end — parent
-  taps Call, the watch rings, the child answers, the card stays up during the call. The
-  audio/video peer connection needs a machine with camera permission; where it is denied
-  the call degrades on its own to the UI-only path and says so on screen. **Test it on the
-  demo machine before recording.**
-- **Claude calls:** the four prompts, the schema handling and the leak guard are written
-  and exercised against the bundled fallbacks. **Everything in this repo has so far run
-  with `hasKey: false`** — put a real key in `.env` and walk the demo once before trusting
-  the live hint and card quality.
-- **Seeded:** the week of behaviour the Observer reads. We built this in an afternoon; we
-  could not generate a real week. The analysis over it is a real Claude call.
+- **Verified working:** both clients and the live state sync; all eight check-ins with
+  their places; the watch's own AI; the parent's free-text and starter questions; the week
+  chart and its table; the map; history; sending a nudge to the watch; the call state
+  machine end to end (parent rings → watch rings → child answers → both show connected →
+  either can hang up); the Cloudflare tunnel.
+- **The call's media path is not verified.** Signalling and the state machine are. The
+  audio/video peer connection needs a machine with camera and microphone permission;
+  where it's denied, the call degrades on its own to a UI-only path and says so on screen.
+  **Test it on the demo machine before recording.**
+- **Every Claude call has so far run against the bundled fallbacks** (`hasKey: false`).
+  The prompts, the schema handling and the guards are written and exercised; the live
+  answer quality is not yet checked. **Put a real key in `.env` and walk the demo once.**
+- **Seeded:** the five-day week the answers are built on, and the fourteen weeks of
+  history. We built this in an afternoon; we could not generate a real term.
+- **Schematic:** the map is a drawn neighbourhood, not map tiles. The real product would
+  use a real map; the pin rule — only places attached to a tap — is the part that matters.
 - **One family, in memory:** no database, no accounts. Restarting the server resets it.
 - **Not built:** real watch hardware. The watch is a faithful 300px round face in the
   browser, sized and constrained like the real thing.
@@ -216,4 +198,5 @@ Judges asked for honesty, so:
 Built with [Claude Code](https://claude.com/claude-code). React, Vite, Express, `ws`,
 `@anthropic-ai/sdk`. No other dependencies.
 
+Team brief (playable): [`docs/relay-brief.html`](docs/relay-brief.html) ·
 Product brief: [`docs/wyl_prd_relay.md`](docs/wyl_prd_relay.md)
