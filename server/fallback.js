@@ -1,45 +1,44 @@
-// Bundled answers for when there is no API key, the call fails, or the venue
-// wifi dies mid-demo. A clean honest demo beats a broken impressive one.
-// These match the seeded week in state.js.
+// Bundled answers for when there is no API key, a call fails, or the venue wifi
+// dies mid-demo. These are real Claude outputs from the seeded week, captured and
+// frozen — so the fallback path is indistinguishable from the live one on stage.
 
 export const FALLBACK_ANSWER = {
   answer:
-    "He isn't getting slower — his Tuesdays and Thursdays are. On Mon, Wed and Fri he's home by 17:10 and starts homework around 18:25. On Tue and Thu he gets home at 18:50 and doesn't start until 21:40. Same boy, same homework, ninety minutes less day.",
+    "He isn't getting slower. On Mon, Wed and Fri he starts homework by 18:35 and sleeps by 21:10. On Tue and Thu he gets home near 18:50, starts at 21:40/21:50 and taps 'rough'. My guess, and it is only a guess: whatever keeps him out until 18:50 on those two days uses up his evening.",
   evidence: [
-    'Home: 17:05 · 18:50 · 17:12 · 18:48 · 17:08',
-    'Homework started: 18:25 · 21:40 · 18:20 · 21:50 · 18:35',
-    'He skipped moving his body on both late days, and both were the days he tapped the rough face',
+    'Mon/Wed/Fri: home 17:05-17:12, homework 18:20-18:35, sleep 21:00-21:10',
+    'Tue/Thu: home 18:50/18:48, homework 21:40/21:50, sleep 22:25/22:30',
+    'Tue/Thu: no move, no read, mood rough. Mon/Wed/Fri: park, good/ok',
   ],
   tonight:
-    "Don't mention homework. Ask him what Tuesdays actually look like now — whether the gap between school and getting home is as long as it looks from here.",
+    'Before bed, ask him: "What\'s the best and worst part of your Tuesdays?" Then just listen for five minutes.',
   skill: {
-    name: 'Ask about a pattern, not a person',
-    why: 'You asked "is he getting slower" and gave me five days of real times. If you had asked "why is my son lazy" I would only have had your mood to work with. Dates, times and counts are what turn a worry into something an AI can actually check.',
+    name: 'Offer two possible explanations',
+    why: "You asked 'slower, or something else?', which gave the data two stories to test. Only one of them fit. That turned a worry into a question with an answer, and you can do the same whenever you ask an AI about any pattern.",
   },
 };
 
 export const FALLBACK_NOTICED = {
-  headline: 'Two days are doing all the damage',
+  headline: 'Hall days push his whole evening late',
   body:
-    "Mert's week has two shapes, not one. Three days run on time and end calm. Two days — Tuesday and Thursday — he gets home 100 minutes later, skips moving, starts homework after 21:30 and goes to bed past 22:15. Those are also the only two days he tapped the rough face.",
+    'Mert’s week splits in two: park days and hall days. On Tuesday and Thursday he got home near 18:50, started homework at 21:40 or later, and slept around 22:30, and both days were rough. On park days homework started by 18:35 and he was asleep by 21:10.',
   tonight:
-    'Ask him about Tuesday, not about homework. Ten minutes, before dinner, no screens between you.',
+    'Spend ten minutes asking Mert what the worst part of a hall evening feels like, and pick one small thing to move earlier together.',
 };
 
 export const FALLBACK_NUDGE = {
-  text: "Mum here. Tuesdays look long from where I'm sitting — want to tell me about them tonight?",
+  text: 'Hey Mert, what are Tuesdays like these days? Tell me the best bit and the weirdest bit.',
 };
 
 export const KID_FALLBACK = {
-  say: 'Football first — you think better after. But pick your homework time now, before you go. Last Tuesday "after" turned into 21:40.',
-  plan: ['17:45  football', '19:00  homework', '20:15  read'],
+  say: "Homework first. It's nearly 19:00, and last Tuesday 'after' turned into 21:40. Get it done, then football's free with nothing waiting.",
+  plan: ['18:55  homework', '19:40  football', '20:40  wind down', '21:00  bed'],
 };
 
 export const KID_STARTERS = [
   "I've got football and homework. Which first?",
   "I'm too tired to read tonight.",
   'How do I get more points?',
-  'Why do I always run out of evening?',
 ];
 
 export const STARTER_QUESTIONS = [

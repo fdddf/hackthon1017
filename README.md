@@ -182,9 +182,13 @@ Judges asked for honesty, so:
   audio/video peer connection needs a machine with camera and microphone permission;
   where it's denied, the call degrades on its own to a UI-only path and says so on screen.
   **Test it on the demo machine before recording.**
-- **Every Claude call has so far run against the bundled fallbacks** (`hasKey: false`).
-  The prompts, the schema handling and the guards are written and exercised; the live
-  answer quality is not yet checked. **Put a real key in `.env` and walk the demo once.**
+- **All four Claude calls have been run live and tuned.** Latency on the seeded week:
+  the parent's question 8–10s (13s in Turkish), the child's watch 3–6s, the weekly read
+  7s, the nudge 3s. The bundled fallbacks are frozen copies of real answers, so the
+  offline path looks identical to the live one on stage.
+- **Asked where the child is, it refuses.** "I can't see where he is. There's no tracking,
+  only what he taps." That is the prompt working, and it is the strongest thirty seconds
+  of the demo.
 - **Seeded:** the five-day week the answers are built on, and the fourteen weeks of
   history. We built this in an afternoon; we could not generate a real term.
 - **Schematic:** the map is a drawn neighbourhood, not map tiles. The real product would

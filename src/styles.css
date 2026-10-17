@@ -246,7 +246,7 @@ body {
 }
 .evi {
   margin: 9px 0 0; padding: 9px 11px; background: var(--paper-2); border-radius: 10px;
-  list-style: none; font-family: var(--mono); font-size: 11px; line-height: 1.75; color: var(--ink-dim);
+  list-style: none; font-family: var(--mono); font-size: 10px; line-height: 1.8; color: var(--ink-dim);
 }
 .evi li { overflow-x: auto; white-space: nowrap; }
 .skillcard { background: #eaf3ef; border: 1px solid #cbe0d6; border-radius: 16px; padding: 14px; }
