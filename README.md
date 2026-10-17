@@ -191,8 +191,10 @@ Judges asked for honesty, so:
   of the demo.
 - **Seeded:** the five-day week the answers are built on, and the fourteen weeks of
   history. We built this in an afternoon; we could not generate a real term.
-- **Schematic:** the map is a drawn neighbourhood, not map tiles. The real product would
-  use a real map; the pin rule — only places attached to a tap — is the part that matters.
+- **The map is real.** OpenStreetMap tiles via Leaflet, real Berlin coordinates, so the
+  distance on screen is the distance he actually travels. It needs the network, which is
+  the one thing we know will fail today — a tile error drops it back to a schematic map
+  that needs nothing, and says so on screen.
 - **One family, in memory:** no database, no accounts. Restarting the server resets it.
 - **Not built:** real watch hardware. The watch is a faithful 300px round face in the
   browser, sized and constrained like the real thing.
@@ -200,7 +202,8 @@ Judges asked for honesty, so:
 ## Credits
 
 Built with [Claude Code](https://claude.com/claude-code). React, Vite, Express, `ws`,
-`@anthropic-ai/sdk`. No other dependencies.
+`@anthropic-ai/sdk`, and [Leaflet](https://leafletjs.com) for the map.
+Map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors.
 
 Team brief (playable): [`docs/relay-brief.html`](docs/relay-brief.html) ·
 Product brief: [`docs/wyl_prd_relay.md`](docs/wyl_prd_relay.md)

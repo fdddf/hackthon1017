@@ -194,31 +194,91 @@ body {
 /* ───────────────────────── the phone ───────────────────── */
 
 .phone-shell {
-  width: 392px; max-width: 100%; height: 768px; border-radius: 46px;
-  background: #211e25; padding: 11px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  width: 392px; max-width: 100%; border-radius: 52px;
+  /* always fits the window, so the tab bar is never below the fold on stage */
+  height: min(800px, calc(100vh - 150px)); min-height: 580px;
+  background: #1b181f; padding: 12px;
+  box-shadow: 0 26px 64px rgba(0, 0, 0, 0.3), inset 0 0 0 2px #383340;
+  position: relative;
 }
+/* side buttons, so the frame reads as a device and not a rounded card */
+.phone-shell::before, .phone-shell::after {
+  content: ''; position: absolute; width: 3px; border-radius: 3px; background: #35303d;
+}
+.phone-shell::before { left: -3px; top: 150px; height: 62px; }
+.phone-shell::after { right: -3px; top: 176px; height: 96px; }
+
 .phone-screen {
-  width: 100%; height: 100%; border-radius: 36px;
-  background: var(--paper-2); overflow-y: auto; position: relative;
+  width: 100%; height: 100%; border-radius: 41px;
+  background: var(--paper-2); overflow: hidden;
+  display: flex; flex-direction: column;
 }
-.phone-head {
-  position: sticky; top: 0; z-index: 3;
-  background: var(--paper); border-bottom: 1px solid var(--line); padding: 18px 18px 12px;
+
+.status-bar {
+  flex: none; height: 46px; padding: 0 26px 0 30px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--paper); color: var(--ink); position: relative;
 }
-.phone-head h2 { margin: 0; font-size: 18px; letter-spacing: -0.015em; }
+.sb-time { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.sb-icons { display: flex; align-items: center; gap: 5px; }
+.dynamic-island {
+  position: absolute; left: 50%; top: 9px; transform: translateX(-50%);
+  width: 92px; height: 28px; border-radius: 999px; background: #0a090c;
+}
+
+.nav-bar {
+  flex: none; background: var(--paper); border-bottom: 1px solid var(--line);
+  padding: 2px 18px 13px;
+}
+.nav-bar h2 { margin: 0; font-size: 25px; letter-spacing: -0.025em; font-weight: 700; }
 .pill {
   display: inline-block; margin-top: 5px;
   font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
   padding: 4px 9px; border-radius: 999px; background: var(--paper-2); color: var(--ink-dim);
 }
-.ptabs { display: flex; gap: 5px; margin-top: 11px; }
-.ptabs button {
-  flex: 1; border: 0; background: var(--paper-2); padding: 8px 2px; border-radius: 9px;
-  font-family: inherit; font-size: 11.5px; cursor: pointer; color: var(--ink-dim);
-}
-.ptabs button[aria-selected='true'] { background: var(--ink); color: var(--paper); }
 
-.phone-body { padding: 14px 14px 28px; display: flex; flex-direction: column; gap: 12px; }
+.phone-body {
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: 14px 14px 20px; display: flex; flex-direction: column; gap: 12px;
+}
+.phone-body.has-dock { padding-bottom: 8px; }
+
+.ask-dock {
+  flex: none; display: flex; gap: 7px; padding: 9px 12px;
+  background: var(--paper); border-top: 1px solid var(--line);
+}
+.askinput {
+  flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 999px;
+  padding: 11px 15px; font-family: inherit; font-size: 13.5px;
+  background: var(--paper-2); color: var(--ink);
+}
+.askinput:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.asksend {
+  border: 0; border-radius: 999px; padding: 11px 17px; background: var(--ink);
+  color: var(--paper); font-family: inherit; font-size: 13.5px; font-weight: 600;
+  cursor: pointer; flex: none;
+}
+.asksend:disabled { opacity: 0.3; cursor: default; }
+
+.tab-bar {
+  flex: none; display: flex; background: var(--paper);
+  border-top: 1px solid var(--line); padding: 7px 4px 2px;
+}
+.tab-bar button {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: none; border: 0; cursor: pointer; padding: 3px 0;
+  color: var(--ink-dim); font-family: inherit; font-size: 10px; letter-spacing: 0.01em;
+}
+.tab-bar button svg { width: 23px; height: 23px; }
+.tab-bar button[aria-selected='true'] { color: var(--accent); }
+
+.home-indicator {
+  flex: none; height: 20px; background: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+}
+.home-indicator::after {
+  content: ''; width: 128px; height: 5px; border-radius: 3px; background: var(--ink); opacity: 0.85;
+}
 
 .pcard { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
 .pcard h5 {
@@ -230,6 +290,7 @@ body {
 .pcard.alert { background: #fff4ed; border-color: #f0cdba; }
 .pcard.alert h5 { color: var(--alert); }
 .muted { font-size: 13px; color: var(--ink-dim); line-height: 1.45; }
+.offline-note { margin-top: 9px; }
 .lead-line { font-weight: 600; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
@@ -272,7 +333,7 @@ body {
 .callvid { background: var(--accent); color: #fff; }
 .callaud { background: var(--paper); color: var(--ink); border: 1px solid var(--line) !important; }
 
-/* lives inside the sticky header, so it stays visible for the whole call */
+/* lives inside the nav bar, so it stays visible for the whole call */
 .callstage {
   background: #15131a; border-radius: 14px; padding: 10px; color: #efeae2;
   display: flex; gap: 10px; align-items: center; margin-top: 11px;
@@ -302,22 +363,6 @@ body {
 .histrow .what { font-size: 13px; line-height: 1.4; min-width: 0; }
 .histrow .what em { display: block; font-style: normal; color: var(--ink-dim); font-size: 12px; margin-top: 2px; }
 
-.askbar {
-  display: flex; gap: 7px; position: sticky; bottom: -14px; z-index: 2;
-  background: var(--paper-2); padding: 10px 0 4px; margin-top: 2px;
-}
-.askinput {
-  flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 999px;
-  padding: 11px 15px; font-family: inherit; font-size: 13.5px;
-  background: var(--paper); color: var(--ink);
-}
-.askinput:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-.asksend {
-  border: 0; border-radius: 999px; padding: 11px 17px; background: var(--ink);
-  color: var(--paper); font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; flex: none;
-}
-.asksend:disabled { opacity: 0.35; cursor: default; }
-
 .langs { display: flex; gap: 6px; flex-wrap: wrap; }
 .langs button {
   border: 1px solid var(--line); background: var(--paper); border-radius: 999px;
@@ -326,6 +371,32 @@ body {
 .langs button[data-on='true'] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
 .waiting { text-align: center; padding: 48px 24px; color: var(--ink-dim); font-size: 14px; }
+
+/* ───────────────────────── the real map ────────────────── */
+
+.mapview { height: 260px; border-radius: 12px; overflow: hidden; background: var(--paper-2); }
+.mapview .leaflet-container { height: 100%; font-family: var(--font); background: var(--paper-2); }
+.mapview .leaflet-control-attribution {
+  font-size: 8px; background: rgba(255, 254, 251, 0.75); padding: 1px 4px;
+}
+.pin { position: relative; }
+.pin-dot {
+  display: block; width: 14px; height: 14px; border-radius: 50%;
+  border: 2.5px solid var(--paper); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  transform: translate(-7px, -7px);
+}
+.pin.near .pin-dot { background: var(--series); }
+.pin.far .pin-dot { background: #eb6834; }
+.pin-label {
+  position: absolute; white-space: nowrap;
+  font-family: var(--mono); font-size: 9.5px; color: var(--ink);
+  background: rgba(255, 254, 251, 0.92); border-radius: 4px; padding: 1px 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.pin-label.ne { left: 11px; bottom: 3px; }
+.pin-label.se { left: 11px; top: 3px; }
+.pin-label.nw { right: 11px; bottom: 3px; }
+.pin-label.sw { right: 11px; top: 3px; }
 
 /* ───────────────────────── charts & map ────────────────── */
 
@@ -360,7 +431,7 @@ th {
 
 @media (max-width: 860px) {
   .devices { gap: 30px; }
-  .phone-shell { width: 360px; height: 700px; }
+  .phone-shell { width: 360px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
