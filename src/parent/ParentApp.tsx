@@ -150,7 +150,7 @@ function AskDock({ state, send }: { state: TempoState; send: Send }) {
         id="parent-question"
         className="askinput"
         value={draft}
-        placeholder="Ask about Mert in your own words…"
+        placeholder="Ask in your own words…"
         onChange={(e) => setDraft(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && submit()}
       />
@@ -376,7 +376,7 @@ export function ParentApp() {
         <header className="nav-bar">
           <h2>{TITLES[tab]}</h2>
           <span className="pill">
-            {done} check-ins today · {state.history.length * 3 + 2} weeks of history
+            {done} check-ins · {state.history.length * 3 + 2} weeks
           </span>
           <CallStage state={state} send={send} onSignal={onSignal} />
         </header>

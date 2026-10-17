@@ -24,6 +24,13 @@
   --alert: #b84f29;
   --series: #2a78d6;
 
+  /* iPhone 15/16 Pro is 393 x 852pt; the watch case is sized against it. A real
+     watch is ~31% of a phone's height, but its UI stops being readable on video
+     below about 45%, so the demo keeps it at 46%. */
+  --phone-h: clamp(620px, calc(100vh - 140px), 852px);
+  --watch-h: calc(var(--phone-h) * 0.46);
+  --watch-w: calc(var(--watch-h) / 1.173);
+
   --mono: ui-monospace, "IBM Plex Mono", SFMono-Regular, Menlo, monospace;
   --font: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
 }
@@ -60,22 +67,24 @@ body {
 /* ───────────────────────── the watch ───────────────────── */
 
 .watch-shell {
-  width: 300px; height: 352px; border-radius: 74px;
+  width: var(--watch-w); height: var(--watch-h);
+  border-radius: calc(var(--watch-w) * 0.247);
   background: linear-gradient(160deg, #3a3640, #17151a);
-  padding: 20px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3); position: relative;
+  padding: calc(var(--watch-w) * 0.065);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3); position: relative;
 }
 .watch-shell::after {
-  content: ''; position: absolute; right: -5px; top: 128px;
-  width: 6px; height: 46px; border-radius: 3px; background: #4a4552;
+  content: ''; position: absolute; right: -5px; top: 36%;
+  width: 6px; height: 13%; border-radius: 3px; background: #4a4552;
 }
 .watch-face {
-  width: 100%; height: 100%; border-radius: 56px;
+  width: 100%; height: 100%; border-radius: calc(var(--watch-w) * 0.19);
   background: var(--face); color: var(--face-ink);
   overflow: hidden; display: flex; flex-direction: column;
 }
 .watch-scroll {
-  flex: 1; overflow-y: auto; padding: 17px 19px 10px;
-  display: flex; flex-direction: column; gap: 11px; scrollbar-width: none;
+  flex: 1; overflow-y: auto; padding: 5.5% 6.5% 3.5%;
+  display: flex; flex-direction: column; gap: 10px; scrollbar-width: none;
 }
 .watch-scroll::-webkit-scrollbar { display: none; }
 
@@ -194,10 +203,10 @@ body {
 /* ───────────────────────── the phone ───────────────────── */
 
 .phone-shell {
-  width: 392px; max-width: 100%; border-radius: 52px;
-  /* always fits the window, so the tab bar is never below the fold on stage */
-  height: min(800px, calc(100vh - 150px)); min-height: 580px;
-  background: #1b181f; padding: 12px;
+  height: var(--phone-h);
+  width: calc(var(--phone-h) * 393 / 852);
+  border-radius: calc(var(--phone-h) * 0.065);
+  background: #1b181f; padding: calc(var(--phone-h) * 0.014);
   box-shadow: 0 26px 64px rgba(0, 0, 0, 0.3), inset 0 0 0 2px #383340;
   position: relative;
 }
@@ -205,36 +214,40 @@ body {
 .phone-shell::before, .phone-shell::after {
   content: ''; position: absolute; width: 3px; border-radius: 3px; background: #35303d;
 }
-.phone-shell::before { left: -3px; top: 150px; height: 62px; }
-.phone-shell::after { right: -3px; top: 176px; height: 96px; }
+.phone-shell::before { left: -3px; top: 17%; height: 7.5%; }
+.phone-shell::after { right: -3px; top: 20%; height: 11.5%; }
 
 .phone-screen {
-  width: 100%; height: 100%; border-radius: 41px;
+  width: 100%; height: 100%; border-radius: calc(var(--phone-h) * 0.051);
   background: var(--paper-2); overflow: hidden;
   display: flex; flex-direction: column;
 }
 
 .status-bar {
-  flex: none; height: 46px; padding: 0 26px 0 30px;
+  flex: none; height: calc(var(--phone-h) * 0.055); padding: 0 6.5% 0 7.5%;
   display: flex; align-items: center; justify-content: space-between;
   background: var(--paper); color: var(--ink); position: relative;
 }
 .sb-time { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
 .sb-icons { display: flex; align-items: center; gap: 5px; }
 .dynamic-island {
-  position: absolute; left: 50%; top: 9px; transform: translateX(-50%);
-  width: 92px; height: 28px; border-radius: 999px; background: #0a090c;
+  position: absolute; left: 50%; top: calc(var(--phone-h) * 0.011); transform: translateX(-50%);
+  width: 23.5%; height: calc(var(--phone-h) * 0.033); border-radius: 999px; background: #0a090c;
 }
 
 .nav-bar {
   flex: none; background: var(--paper); border-bottom: 1px solid var(--line);
   padding: 2px 18px 13px;
 }
-.nav-bar h2 { margin: 0; font-size: 25px; letter-spacing: -0.025em; font-weight: 700; }
+.nav-bar h2 {
+  margin: 0; letter-spacing: -0.025em; font-weight: 700; line-height: 1.15;
+  font-size: clamp(19px, calc(var(--phone-h) * 0.03), 26px);
+}
 .pill {
   display: inline-block; margin-top: 5px;
   font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
   padding: 4px 9px; border-radius: 999px; background: var(--paper-2); color: var(--ink-dim);
+  white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis;
 }
 
 .phone-body {
@@ -277,7 +290,7 @@ body {
   display: flex; align-items: center; justify-content: center;
 }
 .home-indicator::after {
-  content: ''; width: 128px; height: 5px; border-radius: 3px; background: var(--ink); opacity: 0.85;
+  content: ''; width: 34%; height: 5px; border-radius: 3px; background: var(--ink); opacity: 0.85;
 }
 
 .pcard { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
@@ -431,7 +444,6 @@ th {
 
 @media (max-width: 860px) {
   .devices { gap: 30px; }
-  .phone-shell { width: 360px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
