@@ -1,0 +1,982 @@
+<title>Relay</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* Layout: a single narrative column, interrupted once by a full-width device
+     stage where the reader plays the help ladder themselves. */
+  :root {
+    --bg: #ebe8e1;
+    --surface: #fffefb;
+    --surface-2: #f4f1ea;
+    --ink: #1a1817;
+    --ink-dim: #6b645c;
+    --line: #dbd5c9;
+    --amber: #a8690a;
+    --mint: #2b6e55;
+
+    /* the devices keep their own palette in both themes — they are products,
+       not page furniture */
+    --face: #111013;
+    --face-2: #1e1c22;
+    --face-ink: #f6f3ee;
+    --face-dim: #8d8792;
+    --ring: #ffb23f;
+    --rung: #6fe3b0;
+    --rung-off: #3b3843;
+    --paper: #fffefb;
+    --paper-2: #f4f1ea;
+    --paper-ink: #1a1817;
+    --paper-dim: #6b645c;
+    --paper-line: #e3ded4;
+    --alert: #b84f29;
+
+    --display: "Fraunces", Georgia, serif;
+    --body: "IBM Plex Sans", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16151a;
+      --surface: #1f1d24;
+      --surface-2: #26232c;
+      --ink: #f0ece4;
+      --ink-dim: #a39b92;
+      --line: #322e3a;
+      --amber: #ffb23f;
+      --mint: #6fe3b0;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16151a;
+    --surface: #1f1d24;
+    --surface-2: #26232c;
+    --ink: #f0ece4;
+    --ink-dim: #a39b92;
+    --line: #322e3a;
+    --amber: #ffb23f;
+    --mint: #6fe3b0;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .wrap-wide { max-width: 1040px; }
+
+  section { padding-block: 44px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: var(--ink-dim);
+    margin: 0 0 14px;
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(42px, 9vw, 76px);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(26px, 4.6vw, 36px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--body);
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    line-height: 1.35;
+  }
+  p { margin: 0 0 16px; }
+  p:last-child { margin-bottom: 0; }
+
+  .lede {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-dim);
+    max-width: 34em;
+  }
+
+  .thesis {
+    font-family: var(--display);
+    font-size: clamp(22px, 3.6vw, 30px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin: 26px 0 0;
+    padding-left: 18px;
+    border-left: 3px solid var(--amber);
+    text-wrap: balance;
+  }
+
+  .hero { padding-block: clamp(44px, 9vw, 86px) 30px; }
+  .meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 28px;
+    display: flex;
+    gap: 8px 18px;
+    flex-wrap: wrap;
+  }
+
+  /* ───────────── device stage ───────────── */
+
+  .stage-band {
+    background: var(--surface-2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .stage {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .device-col { min-width: 0; }
+  .device-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-dim);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .watch-shell {
+    width: 286px;
+    max-width: 100%;
+    height: 338px;
+    border-radius: 70px;
+    background: linear-gradient(160deg, #3a3640, #17151a);
+    padding: 19px;
+    box-shadow: 0 22px 54px rgba(0, 0, 0, 0.28);
+    position: relative;
+  }
+  .watch-shell::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 122px;
+    width: 6px;
+    height: 44px;
+    border-radius: 3px;
+    background: #4a4552;
+  }
+  .watch-face {
+    width: 100%;
+    height: 100%;
+    border-radius: 53px;
+    background: var(--face);
+    color: var(--face-ink);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .watch-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 17px 19px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    scrollbar-width: none;
+  }
+  .watch-scroll::-webkit-scrollbar { display: none; }
+  .watch-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    min-height: 24px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--face-dim);
+    letter-spacing: 0.06em;
+    flex: none;
+  }
+  .watch-problem { font-size: 13px; line-height: 1.34; margin: 0; }
+  .watch-action {
+    margin-top: auto;
+    padding: 10px 0 13px;
+    position: sticky;
+    bottom: -10px;
+    background: linear-gradient(to bottom, transparent, var(--face) 38%);
+  }
+  .watch-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 15px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--ring);
+    color: #241a06;
+    cursor: pointer;
+  }
+  .watch-btn:disabled { opacity: 0.4; cursor: default; }
+  .watch-btn.go { background: var(--rung); color: #06241a; }
+  .watch-tabs { display: flex; border-top: 1px solid #262330; flex: none; }
+  .watch-tabs button {
+    flex: 1;
+    background: none;
+    border: 0;
+    color: var(--face-dim);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 9px 0 12px;
+    cursor: pointer;
+  }
+  .watch-tabs button[aria-selected="true"] { color: var(--ring); }
+
+  .ring-wrap { display: flex; align-items: center; gap: 13px; flex: none; }
+  .ring-fill { stroke: var(--ring); stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+  .ring-track { stroke: #302c36; }
+  .ring-cap { font-size: 11px; color: var(--face-dim); line-height: 1.3; }
+  .ring-cap b { display: block; color: var(--face-ink); font-size: 15px; font-variant-numeric: tabular-nums; }
+
+  .rungs { display: flex; gap: 8px; align-items: center; }
+  .rung { width: 12px; height: 12px; border-radius: 50%; background: var(--rung); transition: all .3s; }
+  .rung.spent { background: var(--rung-off); transform: scale(.78); }
+  .rung.human {
+    width: 22px; height: 22px; background: var(--face-2);
+    border: 2px solid var(--rung); display: grid; place-items: center;
+    font-family: var(--mono); font-size: 8px; color: var(--rung); letter-spacing: 0;
+  }
+  .rung.human.spent { border-color: var(--rung-off); color: var(--rung-off); }
+
+  .hint {
+    flex: none;
+    background: var(--face-2);
+    border-left: 3px solid var(--ring);
+    border-radius: 10px;
+    padding: 9px 11px;
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+  .hint small {
+    display: block;
+    font-family: var(--mono);
+    color: var(--face-dim);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .hint.live { border-left-color: var(--rung); }
+  .seen { font-size: 12px; line-height: 1.45; padding: 7px 0; border-bottom: 1px solid #262330; }
+  .seen.no { color: var(--face-dim); }
+
+  .phone-shell {
+    width: 374px;
+    max-width: 100%;
+    height: 620px;
+    border-radius: 44px;
+    background: #211e25;
+    padding: 10px;
+    box-shadow: 0 22px 54px rgba(0, 0, 0, 0.26);
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 35px;
+    background: var(--paper-2);
+    color: var(--paper-ink);
+    overflow-y: auto;
+  }
+  .phone-head {
+    position: sticky; top: 0; z-index: 2;
+    background: var(--paper);
+    border-bottom: 1px solid var(--paper-line);
+    padding: 18px 18px 14px;
+  }
+  .phone-head h4 { margin: 0; font-size: 18px; font-family: var(--body); font-weight: 600; }
+  .phone-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+  .pill {
+    display: inline-block; margin-top: 4px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 999px;
+    background: var(--paper-2); color: var(--paper-dim);
+  }
+  .pill.live { background: #e6f2ec; color: #1f6049; }
+  .pcard {
+    background: var(--paper);
+    border: 1px solid var(--paper-line);
+    border-radius: 16px;
+    padding: 14px;
+  }
+  .pcard h5 {
+    margin: 0 0 7px;
+    font-family: var(--mono);
+    font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--paper-dim); font-weight: 500;
+  }
+  .pcard p { margin: 0; font-size: 14px; line-height: 1.5; }
+  .pcard.alert { background: #fff4ed; border-color: #f0cdba; }
+  .pcard.alert strong { color: var(--alert); }
+  .pstep { display: flex; gap: 11px; padding: 11px 0; border-bottom: 1px solid var(--paper-line); }
+  .pstep:last-child { border-bottom: 0; padding-bottom: 0; }
+  .pstep-n {
+    flex: none; width: 22px; height: 22px; border-radius: 50%;
+    background: #2b6e55; color: #fff; display: grid; place-items: center;
+    font-size: 11px; font-weight: 600;
+  }
+  .pstep p { margin: 0; font-size: 14px; line-height: 1.42; font-weight: 500; }
+  .pstep small { display: block; margin-top: 4px; font-size: 12.5px; line-height: 1.42; color: var(--paper-dim); font-weight: 400; }
+  .locked { background: var(--paper-2); border: 1px dashed var(--paper-line); border-radius: 14px; padding: 13px; text-align: center; }
+  .locked p { font-size: 12.5px; color: var(--paper-dim); margin: 0 0 9px; }
+  .pbtn {
+    border: 1px solid var(--paper-line); background: var(--paper); color: var(--paper-ink);
+    font-family: inherit; font-size: 13px; padding: 9px 15px; border-radius: 999px; cursor: pointer;
+  }
+  .revealed { background: #1f1c22; color: #f3efe8; border-radius: 14px; padding: 13px; }
+  .revealed .v { font-size: 20px; font-weight: 700; margin: 0 0 5px; }
+  .revealed .w { font-size: 12px; color: #a9a2b0; margin: 0; font-family: var(--mono); }
+  .skillcard { background: #eaf3ef; border: 1px solid #cbe0d6; border-radius: 16px; padding: 14px; }
+  .skillcard h5 { color: #1f6049; }
+  .skillcard .try {
+    margin: 7px 0 0; font-size: 13.5px; line-height: 1.45;
+    background: var(--paper); border: 1px solid #cbe0d6; border-radius: 10px; padding: 9px 11px;
+  }
+  .waiting { text-align: center; padding: 40px 20px; color: var(--paper-dim); font-size: 14px; line-height: 1.5; }
+  .blip { width: 9px; height: 9px; border-radius: 50%; background: #2b6e55; margin: 0 auto 12px; animation: blip 1.5s ease-in-out infinite; }
+  @keyframes blip { 50% { opacity: .18; } }
+
+  .stage-controls {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    margin-top: 28px;
+  }
+  .ctl {
+    font-family: var(--body); font-size: 14px; font-weight: 500;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    border-radius: 999px; padding: 10px 18px; cursor: pointer;
+  }
+  .ctl:hover { border-color: var(--ink-dim); }
+  .ctl.key { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .ctl:disabled { opacity: .38; cursor: default; }
+  .stage-hint {
+    text-align: center; font-size: 14px; color: var(--ink-dim);
+    margin-top: 14px; min-height: 2.8em; max-width: 42em;
+    margin-left: auto; margin-right: auto;
+  }
+  .stage-hint b { color: var(--ink); font-weight: 600; }
+
+  /* ───────────── prose blocks ───────────── */
+
+  .fails { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .fail { background: var(--surface); padding: 18px; }
+  .fail .n { font-family: var(--mono); font-size: 11px; color: var(--amber); letter-spacing: 0.1em; }
+  .fail p { margin: 6px 0 0; font-size: 15px; color: var(--ink-dim); }
+  .fail p b { color: var(--ink); font-weight: 600; }
+
+  .jobs { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+  .job { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; min-width: 0; }
+  .job .tag {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber); display: block; margin-bottom: 8px;
+  }
+  .job p { font-size: 14.5px; color: var(--ink-dim); }
+
+  .twocol { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .note { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; min-width: 0; }
+  .note p { font-size: 15px; color: var(--ink-dim); }
+  .note p b { color: var(--ink); font-weight: 600; }
+
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 360px; }
+  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-dim); font-weight: 500;
+  }
+  td.when { font-family: var(--mono); white-space: nowrap; color: var(--amber); }
+
+  .shots { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .shot { background: var(--surface); padding: 14px 16px; display: flex; gap: 14px; }
+  .shot .t { font-family: var(--mono); font-size: 12px; color: var(--amber); flex: none; width: 4.2em; padding-top: 2px; }
+  .shot .d { font-size: 14.5px; color: var(--ink-dim); min-width: 0; }
+  .shot .d b { color: var(--ink); font-weight: 600; }
+
+  .cutlist { font-family: var(--mono); font-size: 13.5px; line-height: 1.9; color: var(--ink-dim); margin: 0; }
+  .cutlist b { color: var(--ink); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 28px 40px;
+    font-size: 13.5px;
+    color: var(--ink-dim);
+  }
+  footer a { color: var(--amber); }
+
+  :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+
+<div class="wrap hero">
+  <p class="eyebrow">Claude Impact Lab Berlin · 17 Oct 2026 · team brief</p>
+  <h1>Relay</h1>
+  <p class="thesis">AI doesn't answer.<br>It passes the ball.</p>
+  <p class="lede" style="margin-top:28px">
+    A kid's watch and a parent's phone, with Claude between them — not doing the homework,
+    not policing the child, but making sure the two humans connect at the moment it matters.
+  </p>
+  <p class="meta">
+    <span>Audience: parents (and their kids)</span><span>·</span>
+    <span>Build 11:00–14:45</span><span>·</span>
+    <span>Record 14:45</span><span>·</span>
+    <span>Deadline 16:00</span>
+  </p>
+</div>
+
+<div class="stage-band">
+  <section class="wrap wrap-wide">
+    <p class="eyebrow" style="text-align:center">Play it yourself</p>
+    <h2 style="text-align:center;margin-bottom:8px">The help ladder</h2>
+    <p class="stage-hint" style="min-height:0;margin-bottom:30px">
+      Two hints, then a person. Press the button on the watch and watch what happens to
+      the phone — and to the answer.
+    </p>
+
+    <div class="stage">
+      <div class="device-col">
+        <p class="device-label">Mert, 10 — watch</p>
+        <div class="watch-shell">
+          <div class="watch-face">
+            <div class="watch-scroll" id="watchScroll"></div>
+            <div class="watch-tabs">
+              <button data-tab="now" aria-selected="true">Now</button>
+              <button data-tab="me" aria-selected="false">Me</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="device-col">
+        <p class="device-label">Ayşe — phone</p>
+        <div class="phone-shell">
+          <div class="phone-screen">
+            <div class="phone-head">
+              <h4>Mert</h4>
+              <span class="pill" id="phonePill">Working</span>
+            </div>
+            <div class="phone-body" id="phoneBody"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage-controls">
+      <button class="ctl key" id="advance">Start</button>
+      <button class="ctl" id="reset">Reset</button>
+    </div>
+    <p class="stage-hint" id="stageHint">
+      Mert is stuck on question 4. Nothing has happened yet.
+    </p>
+  </section>
+</div>
+
+<section class="wrap">
+  <p class="eyebrow">The problem</p>
+  <h2>Three things go wrong in the same ten minutes of an evening</h2>
+  <div class="fails">
+    <div class="fail">
+      <span class="n">01</span>
+      <p><b>The kid gets stuck</b>, and the fastest escape is a chatbot that hands over a
+      finished answer. They stop being stuck, and they stop learning.</p>
+    </div>
+    <div class="fail">
+      <span class="n">02</span>
+      <p><b>The kid doesn't ask for help</b>, because asking feels like admitting you're bad
+      at it. So they stall, guess, or quit — and nobody finds out until the test.</p>
+    </div>
+    <div class="fail">
+      <span class="n">03</span>
+      <p><b>The parent isn't there</b> — other room, other shift, other country — or is there
+      but doesn't know <i>how</i> to help, so they say the answer, or they say "concentrate."</p>
+    </div>
+  </div>
+  <p style="margin-top:22px;color:var(--ink-dim)">
+    AI made this worse, not better. Nothing on the market makes the <b style="color:var(--ink)">slow</b>
+    path — the one where the kid actually learns — easy enough to choose at 9pm.
+  </p>
+  <p style="color:var(--ink-dim)">
+    And in Berlin there's a fourth: a parent whose German isn't fluent can't engage with a
+    German worksheet at all. Their child does homework alone, in a language the household
+    doesn't share. That is not an edge case in this city.
+  </p>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">The bet</p>
+  <h2>Why a watch</h2>
+  <div class="twocol">
+    <div class="note">
+      <h3>Kids have one</h3>
+      <p>Most 8–13 year olds here <b>have a kids' smartwatch and don't have a phone</b>.
+      Parents chose that on purpose. It's the only device that's both on the child's wrist
+      all day and trusted by the parent.</p>
+    </div>
+    <div class="note">
+      <h3>The constraint is the thesis</h3>
+      <p>A watch shows one thing at a time, can't be scrolled, can't hold a chatbot. Usually
+      that's a limitation. Here: <b>the problem isn't that kids get too little from AI — it's
+      that they get too much, too fast, too finished.</b> A screen that can only give one hint
+      is a feature.</p>
+    </div>
+    <div class="note">
+      <h3>Nobody else will</h3>
+      <p>Every other team today is building a web app for a laptop. We should say the word
+      "watch" out loud in the first ten seconds of the pitch.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">Where Claude sits</p>
+  <h2>Three jobs, none of them "answer the question"</h2>
+  <div class="jobs">
+    <div class="job">
+      <span class="tag">01 · the brake</span>
+      <h3>One hint, never the answer</h3>
+      <p>Sized to this exact problem, citing its actual numbers. Still stuck? A heavier hint.
+      Still stuck? It hands over to a human. The answer is never on the watch.</p>
+    </div>
+    <div class="job">
+      <span class="tag">02 · the translator</span>
+      <h3>Both directions</h3>
+      <p>The stuck moment becomes a coaching card on the parent's phone. A parent's goal,
+      in their own words, becomes one small task the watch can hold.</p>
+    </div>
+    <div class="job">
+      <span class="tag">03 · the observer</span>
+      <h3>Patterns, not scores</h3>
+      <p>"He gives up on word problems after 4 minutes but stays 12 with geometry — he can't
+      parse what the question asks." Then one thing to do tonight.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">The two decisions worth defending</p>
+  <h2>What makes it ours</h2>
+  <div class="twocol">
+    <div class="note">
+      <h3>The persistence ring rewards time, not correctness</h3>
+      <p>It fills while the child stays with a problem. <b>Every other system in a child's
+      life rewards the right answer.</b> We reward not quitting — which is the thing that
+      actually transfers.</p>
+    </div>
+    <div class="note">
+      <h3>The third dot is a parent's face</h3>
+      <p>The ladder is visible <i>before</i> they ask: help exists, it's finite, and the last
+      rung is a person. <b>Help shame is the real reason kids don't ask</b>, and three dots on
+      a wrist fix more of it than any amount of encouragement.</p>
+    </div>
+    <div class="note">
+      <h3>The answer is collapsed — from the parent</h3>
+      <p>Two clicks and a "Sure? Try the questions first." We deliberately make it hard for
+      the <i>parent</i> to cheat. Every parent in the room knows they'd click it.</p>
+    </div>
+    <div class="note">
+      <h3>Points buy time with a parent, not toys</h3>
+      <p>"20 minutes of football with Dad." We refuse to teach a child that effort converts
+      into stuff.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">The question we will be asked</p>
+  <h2>Why the call isn't a gimmick</h2>
+  <p style="color:var(--ink-dim)">
+    A video call is the kind of thing a hackathon team bolts on to look impressive. Ours is
+    <b style="color:var(--ink)">the last rung of the ladder.</b> The whole argument is that AI
+    should know when to stop and fetch a human — so it ends at a parent's face, and the
+    parent arrives already briefed, card in hand, three questions ready, answer hidden.
+  </p>
+  <p class="thesis" style="font-size:clamp(19px,2.8vw,24px)">
+    Every other tool here is trying to replace a person.<br>
+    Ours is engineered to summon one — and to make them better when they arrive.
+  </p>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">Say this before you're asked</p>
+  <h2>Where we draw the privacy line</h2>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>We collect</th><th>We never collect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Which problem, how long they stayed, which hints they used, their own mood taps</td>
+          <td>Location. Audio. Camera. Messages. Screen time. Anything outside a homework session.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="twocol" style="margin-top:20px">
+    <div class="note">
+      <h3>Learning behaviour only</h3>
+      <p>The tool points at a worksheet, never at a child. We don't read their AI chats.</p>
+    </div>
+    <div class="note">
+      <h3>The child can see the deal</h3>
+      <p>There's a screen on the <b>child's</b> watch listing exactly what's shared, in words a
+      ten-year-old reads. Open the <b>Me</b> tab above. Nobody else will have this.</p>
+    </div>
+    <div class="note">
+      <h3>Guidance, never judgement</h3>
+      <p>"Do this tonight," never "your child has an attention problem." The prompt forbids
+      the words lazy, distracted, behind, struggling, weak.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">How we spend the day</p>
+  <h2>Five stages, each one demo-able alone</h2>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>When</th><th>Ships</th><th>If the clock stopped here</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="when">12:00–12:40</td><td>Two devices, live state sync</td><td>Thin, but real</td></tr>
+        <tr><td class="when">12:40–13:20</td><td>The ladder + the coaching card</td><td><b>The actual product</b></td></tr>
+        <tr><td class="when">13:20–13:50</td><td>Ring, quests, points, patterns</td><td>Now it's a system</td></tr>
+        <tr><td class="when">13:50–14:30</td><td>The call, card pinned during it</td><td>The money shot</td></tr>
+        <tr><td class="when">14:30–14:45</td><td>Fallbacks, README, freeze</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note" style="margin-top:20px">
+    <h3>Cut order — decided now, not argued at 14:00</h3>
+    <p class="cutlist">
+      tunnel → patterns → quests &amp; points → the call → mood<br>
+      <b>Never cut:</b> the help ladder · the collapsed answer · the two-device moment
+    </p>
+  </div>
+  <p style="margin-top:18px;color:var(--ink-dim)">
+    Two hard rules. If the call isn't connecting by <b style="color:var(--ink)">14:30</b> we stop and
+    make it UI-only, and say so in the README — judges have seen a hundred failed live calls.
+    And <b style="color:var(--ink)">everyone stops building at 14:45</b>; the last hour is recording
+    and rehearsal.
+  </p>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">Record at 14:45, not 15:55</p>
+  <h2>The two minutes, shot by shot</h2>
+  <div class="shots">
+    <div class="shot"><span class="t">0:00</span><span class="d">A parent on our team, no slides: <b>"My son has a watch, not a phone. When he's stuck in the other room, I find out three weeks later, from his teacher."</b></span></div>
+    <div class="shot"><span class="t">0:15</span><span class="d">Watch: a real worksheet. The ring fills, three dots glow. <b>"We reward him for not quitting, not for being right."</b></span></div>
+    <div class="shot"><span class="t">0:30</span><span class="d">He taps <b>I'm stuck</b>. Hint one, spoken aloud. No answer. One dot out.</span></div>
+    <div class="shot"><span class="t">0:45</span><span class="d">Hint two. Second dot out. <b>"Still nothing on screen he could copy."</b></span></div>
+    <div class="shot"><span class="t">1:00</span><span class="d">Third dot — <b>his mum's face.</b> Her phone lights up with the card. She reaches for the answer: it's collapsed. <b>"Sure? Try the questions first."</b></span></div>
+    <div class="shot"><span class="t">1:20</span><span class="d">She taps <b>Call</b>. The watch rings. <b>The card stays on screen while they talk.</b> She reads question one aloud.</span></div>
+    <div class="shot"><span class="t">1:40</span><span class="d">Patterns, then the Turkish card: <b>"Now a parent who can't read German can still coach German homework."</b></span></div>
+    <div class="shot"><span class="t">1:50</span><span class="d">The child's "what Mum can see" screen. <b>"He knows exactly what's shared. We never look anywhere else."</b> Repo link. Stop.</span></div>
+  </div>
+  <p style="margin-top:18px;color:var(--ink-dim)">
+    No slides. No architecture diagram. No code on screen. A real worksheet, a real table,
+    a real voice.
+  </p>
+</section>
+
+<section class="wrap">
+  <p class="eyebrow">Still open</p>
+  <h2>Three things the team decides</h2>
+  <div class="twocol">
+    <div class="note">
+      <h3>Team name</h3>
+      <p>The desk needs it, and the repo should match.</p>
+    </div>
+    <div class="note">
+      <h3>Which second language</h3>
+      <p>Pick one somebody on the team actually speaks, or Q&amp;A gets dangerous.</p>
+    </div>
+    <div class="note">
+      <h3>No children on camera</h3>
+      <p>Recommendation: don't. Consent and GDPR noise we don't need. The worksheet and a
+      parent's voice are enough.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <p>Relay · built with Claude Code at Claude Impact Lab Berlin, 17 October 2026.
+  The devices above are the real interface, running the real copy.</p>
+</footer>
+
+<script>
+  // The demo mirrors the product's own state machine: rungs 1 and 2 are hints,
+  // rung 3 is a person. Content is the real copy from the app's fallback set.
+  var HINTS = [
+    { n: 1, text: 'How many rolls go in ONE bag? Start there, not with the 48.' },
+    { n: 2, text: 'He sold 5 bags and then 2 more. How many bags did he sell altogether?' }
+  ];
+
+  var CARD = {
+    subject: 'Maths — multi-step word problem',
+    concept: 'It looks like division, but the real skill is holding three steps in order: make the bags, count what was sold, then see what is left.',
+    answer: { value: '6 rolls', working: '48 ÷ 6 = 8 bags · 5 + 2 = 7 sold · 8 − 7 = 1 bag · 1 × 6 = 6' },
+    ladder: [
+      { q: 'How many rolls go in one bag?', look: '"Six." If that comes easily, he has the entry point and just needs ordering.' },
+      { q: 'So how many bags can he make from 48 rolls?', look: 'Eight. If he guesses, ask him to count up in sixes out loud.' },
+      { q: 'He sold 5 bags, then 2 more. How many are still on the shelf?', look: 'One. Then he can find the rolls himself — do not say the last step.' }
+    ],
+    unlock: "Don't worry about the answer for a second. Just tell me what the question is actually asking us to find.",
+    skill: { name: 'Make the AI ask instead of answer', try: '"Don’t give me the answer. Ask me one question at a time until I work it out myself."' }
+  };
+
+  var PROBLEM = 'A baker has 48 bread rolls. He packs them into bags of 6. He sells 5 bags in the morning and 2 bags in the afternoon. How many rolls does he have left?';
+
+  var STEPS = [
+    { label: 'Start', hint: 'Mert is stuck on question 4. Nothing has happened yet.' },
+    { label: "I'm stuck", hint: 'He’s been on it <b>2 minutes</b>. The ring is filling and all three dots are lit — he can see help exists before he asks for it.' },
+    { label: "I'm stuck", hint: '<b>Hint one.</b> It points at the bags, not the answer. One dot goes out. Nothing on screen he could copy down.' },
+    { label: 'Still stuck — ask Mum', hint: '<b>Hint two.</b> Heavier, still short of the answer. Second dot out. The next rung is a person.' },
+    { label: 'Answer the call', hint: '<b>The handover.</b> Her phone lit up by itself with a coaching card — and the answer is collapsed. Try clicking it.' },
+    { label: 'Done', hint: '<b>The card stays up during the call.</b> She reads question one off her phone while she talks to him.' }
+  ];
+
+  var step = 0;
+  var tab = 'now';
+  var answerStage = 0;
+
+  var watchScroll = document.getElementById('watchScroll');
+  var phoneBody = document.getElementById('phoneBody');
+  var phonePill = document.getElementById('phonePill');
+  var advance = document.getElementById('advance');
+  var resetBtn = document.getElementById('reset');
+  var stageHint = document.getElementById('stageHint');
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function rungs() {
+    var used = step <= 1 ? 0 : step === 2 ? 1 : step === 3 ? 2 : 3;
+    return '<div class="rungs">'
+      + '<div class="rung ' + (used >= 1 ? 'spent' : '') + '"></div>'
+      + '<div class="rung ' + (used >= 2 ? 'spent' : '') + '"></div>'
+      + '<div class="rung human ' + (used >= 3 ? 'spent' : '') + '">MUM</div>'
+      + '</div>';
+  }
+
+  function ring() {
+    var secs = [0, 124, 196, 268, 331, 352][step] || 0;
+    var r = 24, c = 2 * Math.PI * r;
+    var pct = Math.min(secs / 600, 1);
+    var m = Math.floor(secs / 60), s = String(secs % 60);
+    if (s.length < 2) s = '0' + s;
+    return '<div class="ring-wrap">'
+      + '<svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true">'
+      + '<circle class="ring-track" cx="29" cy="29" r="' + r + '" fill="none" stroke-width="6"></circle>'
+      + '<circle class="ring-fill" cx="29" cy="29" r="' + r + '" fill="none" stroke-width="6"'
+      + ' stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - pct)).toFixed(1) + '"'
+      + ' transform="rotate(-90 29 29)"></circle></svg>'
+      + '<div class="ring-cap"><b>' + m + ':' + s + '</b>you stayed with it</div></div>';
+  }
+
+  function renderWatch() {
+    if (tab === 'me') {
+      watchScroll.innerHTML =
+        '<p class="watch-top" style="display:block">WHAT MUM CAN SEE</p>'
+        + '<div class="seen">Which question you’re on</div>'
+        + '<div class="seen">How long you stayed with it</div>'
+        + '<div class="seen">Which hints you used</div>'
+        + '<div class="seen">The face you tapped</div>'
+        + '<div class="seen no">Not where you are</div>'
+        + '<div class="seen no">Not your messages</div>'
+        + '<div class="seen no">Not anything else, ever</div>';
+      return;
+    }
+
+    if (step === 0) {
+      watchScroll.innerHTML =
+        '<div class="watch-top"><span>QUESTION 4</span></div>'
+        + '<p class="watch-problem">Question 4 is waiting for you.</p>'
+        + '<div class="watch-action"><button class="watch-btn" id="wbtn">Start</button></div>';
+      wire();
+      return;
+    }
+
+    var html = '<div class="watch-top"><span>QUESTION 4</span>' + rungs() + '</div>'
+      + '<p class="watch-problem">' + esc(PROBLEM) + '</p>'
+      + ring();
+
+    var shown = step >= 3 ? 2 : step >= 2 ? 1 : 0;
+    for (var i = 0; i < shown; i++) {
+      html += '<div class="hint"><small>Hint ' + HINTS[i].n + '</small>' + esc(HINTS[i].text) + '</div>';
+    }
+
+    html += '<div class="watch-action">';
+    if (step === 1) html += '<button class="watch-btn" id="wbtn">I’m stuck</button>';
+    else if (step === 2) html += '<button class="watch-btn" id="wbtn">I’m stuck</button>';
+    else if (step === 3) html += '<button class="watch-btn" id="wbtn">Still stuck — ask Mum</button>';
+    else if (step === 4) html += '<button class="watch-btn go" id="wbtn">Mum is calling — answer</button>';
+    else html += '<div class="hint live"><small>On a call</small>Mum is here. Tell her what the question is asking.</div>';
+    html += '</div>';
+
+    watchScroll.innerHTML = html;
+    wire();
+  }
+
+  function answerBlock() {
+    if (answerStage === 2) {
+      return '<div class="revealed"><p class="v">' + esc(CARD.answer.value) + '</p>'
+        + '<p class="w">' + esc(CARD.answer.working) + '</p></div>';
+    }
+    if (answerStage === 1) {
+      return '<div class="locked"><p><strong>Sure?</strong> Try the three questions first — '
+        + 'he gets there himself about half the time.</p>'
+        + '<button class="pbtn" id="ansBtn">Yes, show it</button></div>';
+    }
+    return '<div class="locked"><p>The answer is in here.</p>'
+      + '<button class="pbtn" id="ansBtn">Show me the answer</button></div>';
+  }
+
+  function renderPhone() {
+    var mins = ['0 min', '2 min', '3 min', '4 min', '5 min', '5 min'][step];
+    var used = step <= 1 ? 0 : step === 2 ? 1 : 2;
+
+    phonePill.textContent = step >= 4 ? 'Needs you' : 'Working';
+    phonePill.className = step >= 4 ? 'pill live' : 'pill';
+
+    var html = '<div class="pcard"><h5>Tonight</h5><p><strong>Mert</strong> is on '
+      + '<strong>Question 4</strong>. He stayed with it for <strong>' + mins + '</strong> and used '
+      + '<strong>' + used + ' of 2 hints</strong>'
+      + (step >= 4 ? ' before asking for you.' : '. He has not asked for you yet.') + '</p></div>';
+
+    if (step < 4) {
+      html += '<div class="waiting"><div class="blip"></div>'
+        + 'Mert is working. We will only interrupt you if he runs out of hints.</div>';
+      phoneBody.innerHTML = html;
+      return;
+    }
+
+    html += '<div class="pcard alert"><h5>He asked for you</h5><p><strong>'
+      + esc(CARD.subject) + '.</strong> Two hints did not get him there.</p></div>';
+    html += '<div class="pcard"><h5>What this is really testing</h5><p>' + esc(CARD.concept) + '</p></div>';
+    html += answerBlock();
+
+    html += '<div class="pcard"><h5>Ask him these, in order</h5>';
+    for (var i = 0; i < CARD.ladder.length; i++) {
+      html += '<div class="pstep"><div class="pstep-n">' + (i + 1) + '</div><div>'
+        + '<p>' + esc(CARD.ladder[i].q) + '</p>'
+        + '<small>' + esc(CARD.ladder[i].look) + '</small></div></div>';
+    }
+    html += '</div>';
+
+    html += '<div class="pcard"><h5>If he’s still stuck after question 2</h5><p>"'
+      + esc(CARD.unlock) + '"</p></div>';
+
+    html += '<div class="skillcard"><h5>The AI skill you just used</h5>'
+      + '<p><strong>' + esc(CARD.skill.name) + '</strong></p>'
+      + '<p class="try">' + esc(CARD.skill.try) + '</p></div>';
+
+    if (step === 5) {
+      html += '<div class="pcard alert"><h5>On a call</h5>'
+        + '<p>Connected. Read question 1 off this screen.</p></div>';
+    }
+
+    phoneBody.innerHTML = html;
+
+    var ansBtn = document.getElementById('ansBtn');
+    if (ansBtn) {
+      ansBtn.addEventListener('click', function () {
+        answerStage = answerStage + 1;
+        renderPhone();
+      });
+    }
+  }
+
+  function wire() {
+    var b = document.getElementById('wbtn');
+    if (b) b.addEventListener('click', next);
+  }
+
+  function next() {
+    if (step >= STEPS.length - 1) return;
+    step = step + 1;
+    if (tab !== 'now') { tab = 'now'; syncTabs(); }
+    render();
+  }
+
+  function syncTabs() {
+    var btns = document.querySelectorAll('.watch-tabs button');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].setAttribute('aria-selected', btns[i].dataset.tab === tab ? 'true' : 'false');
+    }
+  }
+
+  function render() {
+    renderWatch();
+    renderPhone();
+    stageHint.innerHTML = STEPS[step].hint;
+    var atEnd = step >= STEPS.length - 1;
+    advance.disabled = atEnd;
+    advance.textContent = atEnd ? 'That’s the ladder' : STEPS[step].label;
+  }
+
+  advance.addEventListener('click', next);
+  resetBtn.addEventListener('click', function () {
+    step = 0; answerStage = 0; tab = 'now';
+    syncTabs(); render();
+  });
+
+  var tabBtns = document.querySelectorAll('.watch-tabs button');
+  for (var i = 0; i < tabBtns.length; i++) {
+    tabBtns[i].addEventListener('click', function (e) {
+      tab = e.currentTarget.dataset.tab;
+      syncTabs();
+      renderWatch();
+    });
+  }
+
+  render();
+</script>
