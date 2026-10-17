@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { FALLBACK_ANSWER, FALLBACK_NOTICED, FALLBACK_NUDGE } from './fallback.js';
+import { FALLBACK_ANSWER, FALLBACK_NOTICED, FALLBACK_NUDGE, KID_FALLBACK } from './fallback.js';
 
 const MODEL = 'claude-opus-5-5';
 const client = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;
@@ -36,9 +36,10 @@ async function ask({ system, user, effort = 'medium', maxTokens = 2000 }) {
 /** The week, rendered the way a person would read it rather than as raw JSON. */
 function weekTable(week) {
   const cols = ['wake', 'left', 'home', 'move', 'homework', 'read', 'screens', 'sleep'];
-  const head = `day   | ${cols.join('  | ')}  | mood`;
+  const head = `day   | ${cols.join('  | ')}  | moved at | mood`;
   const rows = week.map(
-    (d) => `${d.day}   | ${cols.map((c) => d[c] ?? '  —  ').join(' | ')} | ${d.mood}`,
+    (d) =>
+      `${d.day}   | ${cols.map((c) => d[c] ?? '  —  ').join(' | ')} | ${d.movedAt ?? '—'} | ${d.mood}`,
   );
   return [head, ...rows].join('\n');
 }
@@ -66,7 +67,9 @@ How to answer:
   a guess.
 - Look for the SECOND column. A parent can already see that homework starts late; what
   they can't see is what else those days have in common. Your value is the correlation,
-  not the complaint.
+  not the complaint. "moved at" is where the child attached that check-in — a place they
+  tapped themselves. There is no tracking and no live location, so never imply you know
+  where the child is now or where they went between check-ins.
 - Separate behaviour from cause. The times are facts. The reason is a hypothesis, and you
   say so out loud.
 - ${NEVER}
@@ -105,6 +108,51 @@ export async function askAboutChild({ question, child, week, today, language = '
   } catch (err) {
     console.error('[ask] falling back:', err.message);
     return FALLBACK_ANSWER;
+  }
+}
+
+// --- THE CHILD'S OWN AI, on the wrist ---------------------------------------
+
+const KID_SYSTEM = `You are the assistant on a ten-year-old's smartwatch. He is talking to
+you about his own evening. You can see his own check-in times for this week.
+
+You help him THINK. You never do the thing for him, and you never tell him what to do.
+
+- Under 220 characters for "say". It is a watch, and he will hear it read aloud.
+- Talk to him, not about him. Short words, no exclamation marks, no cheerleading,
+  no "great question", no emoji.
+- Use his own times when they help him see something ("last Tuesday 'after' turned into
+  21:40"), never to tell him off about them.
+- If he wants to skip something, that is allowed. Say so, and offer a smaller version
+  instead of a lecture. You are not his parent and you do not enforce anything.
+- Never mention his parents watching, the data being shared, or being an AI.
+- If he asks you to do his homework or give an answer, say plainly that you won't, and
+  offer to help him work out the first step instead.
+- "plan" is optional: up to 4 lines of "HH:MM  thing" ONLY when he asked what to do when.
+  Otherwise an empty array.
+
+JSON only: {"say": "<under 220 chars>", "plan": ["HH:MM  thing", "..."]}`;
+
+export async function kidAsk({ question, child, week, today }) {
+  if (!client) return KID_FALLBACK;
+  try {
+    const out = await ask({
+      system: KID_SYSTEM,
+      effort: 'low',
+      maxTokens: 700,
+      user: [
+        `He is ${child.age}. He asks: "${question}"`,
+        `His week so far:\n${weekTable(week)}`,
+        `Today so far: ${JSON.stringify(today)}`,
+      ].join('\n\n'),
+    });
+    return {
+      say: String(out.say).slice(0, 260),
+      plan: Array.isArray(out.plan) ? out.plan.slice(0, 4).map(String) : [],
+    };
+  } catch (err) {
+    console.error('[kidAsk] falling back:', err.message);
+    return KID_FALLBACK;
   }
 }
 

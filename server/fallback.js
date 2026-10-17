@@ -30,9 +30,21 @@ export const FALLBACK_NUDGE = {
   text: "Mum here. Tuesdays look long from where I'm sitting — want to tell me about them tonight?",
 };
 
+export const KID_FALLBACK = {
+  say: 'Football first — you think better after. But pick your homework time now, before you go. Last Tuesday "after" turned into 21:40.',
+  plan: ['17:45  football', '19:00  homework', '20:15  read'],
+};
+
+export const KID_STARTERS = [
+  "I've got football and homework. Which first?",
+  "I'm too tired to read tonight.",
+  'How do I get more points?',
+  'Why do I always run out of evening?',
+];
+
 export const STARTER_QUESTIONS = [
   'Is he getting slower, or is something else going on?',
   'Why is bedtime sliding?',
-  'Which day of his week is the hardest?',
-  'Is he getting enough time outside?',
+  'Where is he on the days he gets home late?',
+  'What did you notice this week?',
 ];

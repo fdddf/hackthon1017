@@ -2,9 +2,9 @@ import 'dotenv/config';
 import express from 'express';
 import { createServer } from 'node:http';
 import { WebSocketServer } from 'ws';
-import { freshState, CHECKPOINTS, REWARDS, nowHHMM } from './state.js';
-import { askAboutChild, noticed, nudge } from './claude.js';
-import { STARTER_QUESTIONS } from './fallback.js';
+import { freshState, CHECKPOINTS, PLACES, REWARDS, nowHHMM } from './state.js';
+import { askAboutChild, noticed, nudge, kidAsk } from './claude.js';
+import { STARTER_QUESTIONS, KID_STARTERS } from './fallback.js';
 
 const PORT = Number(process.env.PORT ?? 8787);
 const app = express();
@@ -48,9 +48,27 @@ wss.on('connection', (socket, req) => {
       case 'checkin': {
         const point = CHECKPOINTS.find((c) => c.id === msg.id);
         if (point && !state.today[point.id]) {
-          state.today[point.id] = msg.at ?? nowHHMM();
+          state.today[point.id] = { at: msg.at ?? nowHHMM(), place: msg.place ?? point.place };
           state.points += point.points;
         }
+        break;
+      }
+
+      // The child's own AI. He is the second person in this family using one.
+      case 'kid:ask': {
+        const question = String(msg.question ?? '').trim();
+        if (!question) break;
+        state.kid = { question, say: null, plan: [] };
+        state.kidThinking = true;
+        broadcast();
+        const said = await kidAsk({
+          question,
+          child: state.child,
+          week: state.week,
+          today: state.today,
+        });
+        state.kid = { question, ...said };
+        state.kidThinking = false;
         break;
       }
 
@@ -119,10 +137,11 @@ wss.on('connection', (socket, req) => {
 
       // --- the call --------------------------------------------------------
       case 'call:ring':
+        state.callMode = msg.mode === 'audio' ? 'audio' : 'video';
         state.call = 'ringing';
         break;
       case 'call:accept':
-        state.call = 'connected';
+        state.call = state.callMode;
         break;
       case 'call:end':
         state.call = 'idle';
@@ -147,6 +166,8 @@ app.get('/api/health', (_req, res) =>
 );
 app.get('/api/rewards', (_req, res) => res.json(REWARDS));
 app.get('/api/starters', (_req, res) => res.json(STARTER_QUESTIONS));
+app.get('/api/kid-starters', (_req, res) => res.json(KID_STARTERS));
+app.get('/api/places', (_req, res) => res.json(PLACES));
 
 server.listen(PORT, () => {
   console.log(`\n  Tempo server  →  http://localhost:${PORT}`);

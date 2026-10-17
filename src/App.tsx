@@ -28,8 +28,8 @@ export function App() {
   return (
     <div className="stage">
       <div className="stage-head">
-        <h1>Relay</h1>
-        <p>AI doesn't answer. It passes the ball.</p>
+        <h1>Tempo</h1>
+        <p>It doesn't score your child. It tells you what to say tonight.</p>
       </div>
       <div className="devices">
         <div>

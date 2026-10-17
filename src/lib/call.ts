@@ -29,19 +29,22 @@ export function useCall(role: 'watch' | 'parent', send: Send, onSignal: OnSignal
     return peer;
   };
 
-  const getLocal = async () => {
+  const getLocal = async (mode: 'video' | 'audio' = 'video') => {
     if (localRef.current) return localRef.current;
-    const media = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    const media = await navigator.mediaDevices.getUserMedia({
+      video: mode === 'video',
+      audio: true,
+    });
     localRef.current = media;
     return media;
   };
 
-  /** Parent side: make the offer. */
-  const start = async () => {
+  /** Parent side: make the offer. Audio-only when she's on the tram. */
+  const start = async (mode: 'video' | 'audio' = 'video') => {
     try {
       setError(null);
       const peer = peerRef.current ?? makePeer();
-      const media = await getLocal();
+      const media = await getLocal(mode);
       media.getTracks().forEach((track) => peer.addTrack(track, media));
       const offer = await peer.createOffer();
       await peer.setLocalDescription(offer);
