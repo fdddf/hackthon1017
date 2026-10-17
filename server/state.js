@@ -1,52 +1,72 @@
-// Relay keeps one family in memory. No database, no accounts — see docs PRD §12.
-// The server is authoritative so the watch and the phone can never disagree on stage.
+// Tempo keeps one family in memory. No database, no accounts.
+// The server is authoritative so the watch and the phone can never disagree.
 
-export const DEMO_PROBLEM = {
-  subject: 'Maths — word problem',
-  title: 'Question 4',
-  text:
-    'A baker has 48 bread rolls. He packs them into bags of 6. ' +
-    'He sells 5 bags in the morning and 2 bags in the afternoon. ' +
-    'How many rolls does he have left?',
-  language: 'de', // the worksheet is in German in the real demo; text kept English for judges
-};
+/** The eight moments that give a school day its shape. */
+export const CHECKPOINTS = [
+  { id: 'wake',    label: 'Woke up',        icon: '☀',  points: 5,  target: '07:00' },
+  { id: 'left',    label: 'Left for school', icon: '🎒', points: 5,  target: '07:45' },
+  { id: 'home',    label: 'Got home',        icon: '🏠', points: 5,  target: '17:10' },
+  { id: 'move',    label: 'Moved my body',   icon: '⚽', points: 15, target: '17:45' },
+  { id: 'homework',label: 'Started homework',icon: '✏',  points: 20, target: '18:30' },
+  { id: 'read',    label: 'Read something',  icon: '📖', points: 15, target: '20:00' },
+  { id: 'screens', label: 'Screens off',     icon: '🌙', points: 15, target: '20:30' },
+  { id: 'sleep',   label: 'In bed',          icon: '🛏', points: 10, target: '21:00' },
+];
+
+export const REWARDS = [
+  { cost: 120, label: '20 minutes of football with Dad' },
+  { cost: 180, label: 'You pick the Saturday film' },
+  { cost: 250, label: 'A whole afternoon, just you and Mum' },
+];
+
+/**
+ * Five weekdays of real check-in times. The shape is deliberate and it is the
+ * thing Claude has to find: homework always starts late, but on Tuesday and
+ * Thursday he also gets home an hour and a half later. It is not laziness —
+ * those two days are overloaded. A parent staring at this would see "late
+ * again"; the point of the product is that Claude sees the other column.
+ */
+export const SEEDED_WEEK = [
+  { day: 'Mon', wake: '06:58', left: '07:42', home: '17:05', move: '17:40', homework: '18:25', read: '20:05', screens: '20:35', sleep: '21:04', mood: 'good' },
+  { day: 'Tue', wake: '07:01', left: '07:44', home: '18:50', move: null,    homework: '21:40', read: null,    screens: '22:10', sleep: '22:25', mood: 'rough' },
+  { day: 'Wed', wake: '06:55', left: '07:40', home: '17:12', move: '17:50', homework: '18:20', read: '19:55', screens: '20:30', sleep: '21:00', mood: 'good' },
+  { day: 'Thu', wake: '07:04', left: '07:46', home: '18:48', move: null,    homework: '21:50', read: null,    screens: '22:15', sleep: '22:30', mood: 'rough' },
+  { day: 'Fri', wake: '06:59', left: '07:41', home: '17:08', move: '17:35', homework: '18:35', read: '20:10', screens: '20:40', sleep: '21:10', mood: 'ok' },
+];
 
 export function freshState() {
   return {
     child: { name: 'Mert', age: 10 },
     parent: { name: 'Ayşe', language: 'en' },
 
-    // --- the current homework session -------------------------------------
-    problem: DEMO_PROBLEM,
-    active: false,
-    persistSeconds: 0, // the Persistence Ring. Rewards not quitting, not being right.
+    // --- today on the watch ------------------------------------------------
+    checkpoints: CHECKPOINTS,
+    today: {}, // id -> "HH:MM"
+    mood: null, // 'good' | 'ok' | 'rough'
+    points: 340,
+    streak: 11,
 
-    // --- the help ladder: dot 1 = hint, dot 2 = hint, dot 3 = a human ------
-    rungsUsed: 0, // 0..3
-    hints: [], // { level, hint, spoken }
-    escalated: false,
-    card: null, // CoachingCard, appears on the parent's phone
+    // --- what the parent sent back to the watch ---------------------------
+    nudge: null, // { text, from, at }
 
-    // --- call -------------------------------------------------------------
+    // --- the conversation the parent is having with Claude ----------------
+    thread: [], // { role: 'parent' | 'claude', ... }
+    thinking: false,
+
     call: 'idle', // idle | ringing | connected
 
-    // --- the rest of the watch -------------------------------------------
-    points: 120,
-    quest: {
-      title: 'Read the question twice before you calculate',
-      why: 'Mum noticed you solve fast but sometimes answer a different question.',
-      points: 15,
-      done: false,
-    },
-    mood: null, // 'good' | 'ok' | 'rough'
-
-    // --- what the Observer reads -----------------------------------------
-    events: [],
+    week: SEEDED_WEEK,
   };
 }
 
-export const REWARDS = [
-  { cost: 100, label: '20 minutes of football with Dad' },
-  { cost: 150, label: 'You pick the Saturday film' },
-  { cost: 200, label: 'Stay up 30 minutes later on Friday' },
-];
+/** Minutes past midnight, for comparing a check-in against its target. */
+export function toMinutes(hhmm) {
+  if (!hhmm) return null;
+  const [h, m] = hhmm.split(':').map(Number);
+  return h * 60 + m;
+}
+
+export function nowHHMM() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}

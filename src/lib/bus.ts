@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { RelayState } from './types';
+import type { TempoState } from './types';
 
 type Send = (msg: Record<string, unknown>) => void;
 
@@ -8,7 +8,7 @@ type Send = (msg: Record<string, unknown>) => void;
  * can never disagree in front of a judge.
  */
 export function useRelay(role: 'watch' | 'parent') {
-  const [state, setState] = useState<RelayState | null>(null);
+  const [state, setState] = useState<TempoState | null>(null);
   const [connected, setConnected] = useState(false);
   const socketRef = useRef<WebSocket | null>(null);
   const rtcHandler = useRef<((payload: unknown) => void) | null>(null);

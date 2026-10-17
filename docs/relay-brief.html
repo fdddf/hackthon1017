@@ -1,4 +1,4 @@
-<title>Relay</title>
+<title>Tempo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -6,7 +6,7 @@
 
 <style>
   /* Layout: a single narrative column, interrupted once by a full-width device
-     stage where the reader plays the help ladder themselves. */
+     stage where the reader checks in on the watch and asks Claude on the phone. */
   :root {
     --bg: #ebe8e1;
     --surface: #fffefb;
@@ -451,15 +451,100 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   }
+
+  /* ── check-in rows on the watch ── */
+  .streak {
+    font-family: var(--mono); font-size: 10px; color: var(--ring);
+    letter-spacing: 0.05em;
+  }
+  .cp {
+    display: flex; align-items: center; gap: 9px; width: 100%;
+    background: var(--face-2); border: 0; border-radius: 11px;
+    padding: 9px 11px; cursor: pointer; text-align: left;
+    font-family: inherit; color: var(--face-ink); flex: none;
+  }
+  .cp:disabled { cursor: default; opacity: .72; }
+  .cp.done { background: #19222033; box-shadow: inset 0 0 0 1px #2b4a3f; }
+  .cp-icon { font-size: 14px; flex: none; width: 17px; }
+  .cp-label { flex: 1; font-size: 12.5px; min-width: 0; }
+  .cp-time {
+    font-family: var(--mono); font-size: 11px; color: var(--rung); flex: none;
+  }
+  .cp-time.late { color: #ff8f6b; }
+  .cp:not(.done) .cp-time { color: var(--face-dim); }
+
+  .nudge {
+    flex: none; background: #241f14; border: 1px solid #5a4620;
+    border-radius: 12px; padding: 10px 11px; font-size: 12.5px; line-height: 1.42;
+  }
+  .nudge small {
+    display: block; font-family: var(--mono); font-size: 9px; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ring); margin-bottom: 5px;
+  }
+  .nudge .ok {
+    margin-top: 9px; width: 100%; border: 0; border-radius: 999px; padding: 8px;
+    background: var(--ring); color: #241a06; font-family: inherit; font-size: 12px;
+    font-weight: 600; cursor: pointer;
+  }
+  .watch-label {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--face-dim); margin: 0; flex: none;
+  }
+  .points-big { font-size: 32px; font-weight: 700; letter-spacing: -.02em; flex: none; }
+  .reward {
+    display: flex; justify-content: space-between; gap: 8px; align-items: center;
+    font-size: 11.5px; padding: 9px 0; border-bottom: 1px solid #262330;
+    background: none; border-left: 0; border-right: 0; border-top: 0;
+    color: inherit; font-family: inherit; text-align: left; width: 100%; flex: none;
+    line-height: 1.3;
+  }
+  .reward span:last-child { color: var(--ring); flex: none; font-family: var(--mono); }
+  .moods { display: flex; gap: 7px; flex: none; }
+  .moods button {
+    flex: 1; font-size: 19px; padding: 9px 0; background: var(--face-2);
+    border: 2px solid transparent; border-radius: 11px; cursor: pointer;
+  }
+  .moods button[aria-pressed="true"] { border-color: var(--ring); }
+
+  /* ── the parent asking Claude ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    border: 1px solid var(--paper-line); background: var(--paper);
+    color: var(--paper-ink); border-radius: 999px; padding: 7px 12px;
+    font-family: inherit; font-size: 12.5px; cursor: pointer; text-align: left;
+    line-height: 1.3;
+  }
+  .chip:hover { background: var(--paper-2); }
+  .bubble-parent {
+    align-self: flex-end; max-width: 86%; background: #1f1c22; color: #f3efe8;
+    border-radius: 16px 16px 4px 16px; padding: 10px 13px; font-size: 13.5px;
+    line-height: 1.45;
+  }
+  .evi {
+    margin: 9px 0 0; padding: 9px 11px; background: var(--paper-2);
+    border-radius: 10px; list-style: none; font-family: var(--mono);
+    font-size: 11px; line-height: 1.75; color: var(--paper-dim);
+  }
+  .evi li { overflow-x: auto; white-space: nowrap; }
+  .tonight-card { background: #fff4ed; border: 1px solid #f0cdba; border-radius: 16px; padding: 14px; }
+  .tonight-card h5 { color: var(--alert); }
+  .thinking { font-family: var(--mono); font-size: 11.5px; color: var(--paper-dim); padding: 4px 2px; }
+  .sendbtn {
+    width: 100%; border: 0; border-radius: 999px; padding: 12px;
+    background: #2b6e55; color: #fff; font-family: inherit; font-size: 14px;
+    font-weight: 600; cursor: pointer;
+  }
+  .sendbtn:disabled { opacity: .5; cursor: default; }
 </style>
 
 <div class="wrap hero">
   <p class="eyebrow">Claude Impact Lab Berlin · 17 Oct 2026 · team brief</p>
-  <h1>Relay</h1>
-  <p class="thesis">AI doesn't answer.<br>It passes the ball.</p>
+  <h1>Tempo</h1>
+  <p class="thesis">It doesn't score your child.<br>It tells you what to say tonight.</p>
   <p class="lede" style="margin-top:28px">
-    A kid's watch and a parent's phone, with Claude between them — not doing the homework,
-    not policing the child, but making sure the two humans connect at the moment it matters.
+    A kid checks in through their day on a watch. Their parent asks Claude about it in
+    their own words — and gets an answer built out of their child's real times, plus one
+    thing to do this evening.
   </p>
   <p class="meta">
     <span>Audience: parents (and their kids)</span><span>·</span>
@@ -472,10 +557,10 @@
 <div class="stage-band">
   <section class="wrap wrap-wide">
     <p class="eyebrow" style="text-align:center">Play it yourself</p>
-    <h2 style="text-align:center;margin-bottom:8px">The help ladder</h2>
+    <h2 style="text-align:center;margin-bottom:8px">Check in, then ask</h2>
     <p class="stage-hint" style="min-height:0;margin-bottom:30px">
-      Two hints, then a person. Press the button on the watch and watch what happens to
-      the phone — and to the answer.
+      Tap a few check-ins on the watch. Then pick a question on the phone — the one a real
+      parent would actually type — and watch what Claude does with five days of times.
     </p>
 
     <div class="stage">
@@ -485,7 +570,8 @@
           <div class="watch-face">
             <div class="watch-scroll" id="watchScroll"></div>
             <div class="watch-tabs">
-              <button data-tab="now" aria-selected="true">Now</button>
+              <button data-tab="today" aria-selected="true">Today</button>
+              <button data-tab="points" aria-selected="false">Points</button>
               <button data-tab="me" aria-selected="false">Me</button>
             </div>
           </div>
@@ -497,8 +583,8 @@
         <div class="phone-shell">
           <div class="phone-screen">
             <div class="phone-head">
-              <h4>Mert</h4>
-              <span class="pill" id="phonePill">Working</span>
+              <h4>Ask about Mert</h4>
+              <span class="pill" id="phonePill">5 days of check-ins</span>
             </div>
             <div class="phone-body" id="phoneBody"></div>
           </div>
@@ -507,43 +593,69 @@
     </div>
 
     <div class="stage-controls">
-      <button class="ctl key" id="advance">Start</button>
-      <button class="ctl" id="reset">Reset</button>
+      <button class="ctl" id="reset">Start over</button>
     </div>
     <p class="stage-hint" id="stageHint">
-      Mert is stuck on question 4. Nothing has happened yet.
+      Mert got home at 18:51 today. His mum has never used an AI for anything.
     </p>
   </section>
 </div>
 
 <section class="wrap">
+  <p class="eyebrow">The brief says: help real people use AI</p>
+  <h2>So a parent has to be the one using it</h2>
+  <p style="color:var(--ink-dim)">
+    An app that quietly runs analysis in the background is not a person using AI — it's a
+    feature. The judges will say so.
+  </p>
+  <p style="color:var(--ink-dim)">
+    Here the parent types the question themselves, in their own words, the way they'd say
+    it to a friend. What makes it work isn't a clever interface — it's that
+    <b style="color:var(--ink)">for the first time they have something worth asking about:
+    their own child's real data, and their own worry.</b> Most parents have never had a
+    reason to open an AI. This is one.
+  </p>
+  <div class="twocol" style="margin-top:22px">
+    <div class="note">
+      <h3>And they learn to use it better</h3>
+      <p>Every answer ends with <b>what made that question answerable</b> — "you gave me five
+      days of times instead of saying he's lazy." They take that to any AI, anywhere. That's
+      the <i>learn</i> half of the brief, and it costs us one field in the response.</p>
+    </div>
+    <div class="note">
+      <h3>Starter questions are the on-ramp</h3>
+      <p>A parent who has never used AI doesn't know what to type. Four real questions sit
+      on the screen as chips. <b>Blank-page paralysis is the actual barrier</b>, not
+      scepticism.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
   <p class="eyebrow">The problem</p>
-  <h2>Three things go wrong in the same ten minutes of an evening</h2>
+  <h2>Parents can see the symptom and never the cause</h2>
   <div class="fails">
     <div class="fail">
       <span class="n">01</span>
-      <p><b>The kid gets stuck</b>, and the fastest escape is a chatbot that hands over a
-      finished answer. They stop being stuck, and they stop learning.</p>
+      <p><b>What a parent sees:</b> homework starting at half nine, again. Bedtime creeping.
+      A kid who seems slower than last year.</p>
     </div>
     <div class="fail">
       <span class="n">02</span>
-      <p><b>The kid doesn't ask for help</b>, because asking feels like admitting you're bad
-      at it. So they stall, guess, or quit — and nobody finds out until the test.</p>
+      <p><b>What they conclude:</b> he's getting lazy. Because that's the only explanation
+      visible from the kitchen at 21:40.</p>
     </div>
     <div class="fail">
       <span class="n">03</span>
-      <p><b>The parent isn't there</b> — other room, other shift, other country — or is there
-      but doesn't know <i>how</i> to help, so they say the answer, or they say "concentrate."</p>
+      <p><b>What's actually happening:</b> two days a week he gets home ninety minutes later.
+      Nobody has ever put those two columns side by side — <b>including the parent, who has
+      all the information and none of the pattern.</b></p>
     </div>
   </div>
   <p style="margin-top:22px;color:var(--ink-dim)">
-    AI made this worse, not better. Nothing on the market makes the <b style="color:var(--ink)">slow</b>
-    path — the one where the kid actually learns — easy enough to choose at 9pm.
-  </p>
-  <p style="color:var(--ink-dim)">
-    And in Berlin there's a fourth: a parent whose German isn't fluent can't engage with a
-    German worksheet at all. Their child does homework alone, in a language the household
-    doesn't share. That is not an edge case in this city.
+    And the family that needs this most is the one where the parent works a late shift, or
+    reads German slowly, or simply isn't in the room at 17:00. They aren't absent. They're
+    missing one column.
   </p>
 </section>
 
@@ -554,156 +666,123 @@
     <div class="note">
       <h3>Kids have one</h3>
       <p>Most 8–13 year olds here <b>have a kids' smartwatch and don't have a phone</b>.
-      Parents chose that on purpose. It's the only device that's both on the child's wrist
-      all day and trusted by the parent.</p>
+      Parents chose that on purpose. It's the only device that's on the child's wrist all
+      day and trusted by the parent.</p>
     </div>
     <div class="note">
-      <h3>The constraint is the thesis</h3>
-      <p>A watch shows one thing at a time, can't be scrolled, can't hold a chatbot. Usually
-      that's a limitation. Here: <b>the problem isn't that kids get too little from AI — it's
-      that they get too much, too fast, too finished.</b> A screen that can only give one hint
-      is a feature.</p>
+      <h3>A tap is the only honest input</h3>
+      <p>No child fills in a form. No child answers "how was your day" usefully. <b>One tap
+      at the moment it happens</b> is the only way to get a timestamp that's true — and
+      timestamps are the entire raw material of the product.</p>
     </div>
     <div class="note">
-      <h3>Nobody else will</h3>
-      <p>Every other team today is building a web app for a laptop. We should say the word
-      "watch" out loud in the first ten seconds of the pitch.</p>
+      <h3>Nobody else will build for it</h3>
+      <p>Every other team today is building a web app for a laptop. Say the word "watch" in
+      the first ten seconds of the pitch.</p>
     </div>
   </div>
 </section>
 
 <section class="wrap">
-  <p class="eyebrow">Where Claude sits</p>
-  <h2>Three jobs, none of them "answer the question"</h2>
+  <p class="eyebrow">What's on each device</p>
+  <h2>A rich watch, a thinking phone</h2>
   <div class="jobs">
     <div class="job">
-      <span class="tag">01 · the brake</span>
-      <h3>One hint, never the answer</h3>
-      <p>Sized to this exact problem, citing its actual numbers. Still stuck? A heavier hint.
-      Still stuck? It hands over to a human. The answer is never on the watch.</p>
+      <span class="tag">the watch · the child's</span>
+      <h3>Eight taps, one day</h3>
+      <p>Woke, left, got home, moved, started homework, read, screens off, in bed. Each tap
+      is a timestamp and some points. A ring fills as the day takes shape — <b>it shows the
+      shape, it doesn't grade it.</b></p>
     </div>
     <div class="job">
-      <span class="tag">02 · the translator</span>
-      <h3>Both directions</h3>
-      <p>The stuck moment becomes a coaching card on the parent's phone. A parent's goal,
-      in their own words, becomes one small task the watch can hold.</p>
+      <span class="tag">the watch · the child's</span>
+      <h3>Points buy time, not toys</h3>
+      <p>"20 minutes of football with Dad." "A whole afternoon, just you and Mum." We refuse
+      to teach a child that effort converts into stuff. Plus a one-tap mood, and a streak
+      they care about more than we expect.</p>
     </div>
     <div class="job">
-      <span class="tag">03 · the observer</span>
-      <h3>Patterns, not scores</h3>
-      <p>"He gives up on word problems after 4 minutes but stays 12 with geometry — he can't
-      parse what the question asks." Then one thing to do tonight.</p>
+      <span class="tag">the phone · the parent's</span>
+      <h3>Ask anything, in your own words</h3>
+      <p>Claude answers from the real times, quotes them, separates behaviour from cause,
+      and says "I can't see that from this" when it can't. Then: one thing to do tonight.</p>
+    </div>
+    <div class="job">
+      <span class="tag">the phone · the parent's</span>
+      <h3>Guidance that reaches the child</h3>
+      <p>The advice becomes a short message in the parent's own voice on the watch — never
+      a reminder, never a reprimand. Or one tap to call. <b>The AI stops at the doorway; a
+      parent walks through it.</b></p>
     </div>
   </div>
-</section>
-
-<section class="wrap">
-  <p class="eyebrow">The two decisions worth defending</p>
-  <h2>What makes it ours</h2>
-  <div class="twocol">
-    <div class="note">
-      <h3>The persistence ring rewards time, not correctness</h3>
-      <p>It fills while the child stays with a problem. <b>Every other system in a child's
-      life rewards the right answer.</b> We reward not quitting — which is the thing that
-      actually transfers.</p>
-    </div>
-    <div class="note">
-      <h3>The third dot is a parent's face</h3>
-      <p>The ladder is visible <i>before</i> they ask: help exists, it's finite, and the last
-      rung is a person. <b>Help shame is the real reason kids don't ask</b>, and three dots on
-      a wrist fix more of it than any amount of encouragement.</p>
-    </div>
-    <div class="note">
-      <h3>The answer is collapsed — from the parent</h3>
-      <p>Two clicks and a "Sure? Try the questions first." We deliberately make it hard for
-      the <i>parent</i> to cheat. Every parent in the room knows they'd click it.</p>
-    </div>
-    <div class="note">
-      <h3>Points buy time with a parent, not toys</h3>
-      <p>"20 minutes of football with Dad." We refuse to teach a child that effort converts
-      into stuff.</p>
-    </div>
-  </div>
-</section>
-
-<section class="wrap">
-  <p class="eyebrow">The question we will be asked</p>
-  <h2>Why the call isn't a gimmick</h2>
-  <p style="color:var(--ink-dim)">
-    A video call is the kind of thing a hackathon team bolts on to look impressive. Ours is
-    <b style="color:var(--ink)">the last rung of the ladder.</b> The whole argument is that AI
-    should know when to stop and fetch a human — so it ends at a parent's face, and the
-    parent arrives already briefed, card in hand, three questions ready, answer hidden.
-  </p>
-  <p class="thesis" style="font-size:clamp(19px,2.8vw,24px)">
-    Every other tool here is trying to replace a person.<br>
-    Ours is engineered to summon one — and to make them better when they arrive.
-  </p>
 </section>
 
 <section class="wrap">
   <p class="eyebrow">Say this before you're asked</p>
-  <h2>Where we draw the privacy line</h2>
-  <div class="tablewrap">
+  <h2>This is the one that can sink us</h2>
+  <p style="color:var(--ink-dim)">
+    We are building behaviour tracking for children. If we don't draw the line out loud,
+    a judge will draw it for us.
+  </p>
+  <div class="tablewrap" style="margin-top:18px">
     <table>
-      <thead>
-        <tr><th>We collect</th><th>We never collect</th></tr>
-      </thead>
+      <thead><tr><th>We collect</th><th>We never collect</th></tr></thead>
       <tbody>
         <tr>
-          <td>Which problem, how long they stayed, which hints they used, their own mood taps</td>
-          <td>Location. Audio. Camera. Messages. Screen time. Anything outside a homework session.</td>
+          <td>The times the child tapped, which ones they skipped, the face they picked,
+          points and streak</td>
+          <td>Location. Audio. Camera. Messages. Screen time. Contacts. Anything the child
+          didn't tap themselves.</td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="twocol" style="margin-top:20px">
     <div class="note">
-      <h3>Learning behaviour only</h3>
-      <p>The tool points at a worksheet, never at a child. We don't read their AI chats.</p>
+      <h3>The child taps it, or it doesn't exist</h3>
+      <p>Every data point in the system was put there by the child, on purpose. Nothing is
+      sensed, inferred or collected in the background. <b>That one rule answers most of the
+      question.</b></p>
     </div>
     <div class="note">
       <h3>The child can see the deal</h3>
-      <p>There's a screen on the <b>child's</b> watch listing exactly what's shared, in words a
-      ten-year-old reads. Open the <b>Me</b> tab above. Nobody else will have this.</p>
+      <p>Open the <b>Me</b> tab on the watch above. A complete list of what's shared, in
+      words a ten-year-old reads. Nobody else in the room will have this.</p>
     </div>
     <div class="note">
       <h3>Guidance, never judgement</h3>
-      <p>"Do this tonight," never "your child has an attention problem." The prompt forbids
-      the words lazy, distracted, behind, struggling, weak.</p>
+      <p>The prompt forbids the words lazy, distracted, behind, struggling, weak, and every
+      clinical label. Output is "do this tonight", never "your child has a problem."</p>
     </div>
   </div>
 </section>
 
 <section class="wrap">
   <p class="eyebrow">How we spend the day</p>
-  <h2>Five stages, each one demo-able alone</h2>
+  <h2>Four stages, each demo-able alone</h2>
   <div class="tablewrap">
     <table>
-      <thead>
-        <tr><th>When</th><th>Ships</th><th>If the clock stopped here</th></tr>
-      </thead>
+      <thead><tr><th>When</th><th>Ships</th><th>If the clock stopped here</th></tr></thead>
       <tbody>
-        <tr><td class="when">12:00–12:40</td><td>Two devices, live state sync</td><td>Thin, but real</td></tr>
-        <tr><td class="when">12:40–13:20</td><td>The ladder + the coaching card</td><td><b>The actual product</b></td></tr>
-        <tr><td class="when">13:20–13:50</td><td>Ring, quests, points, patterns</td><td>Now it's a system</td></tr>
-        <tr><td class="when">13:50–14:30</td><td>The call, card pinned during it</td><td>The money shot</td></tr>
-        <tr><td class="when">14:30–14:45</td><td>Fallbacks, README, freeze</td><td>—</td></tr>
+        <tr><td class="when">→ 13:10</td><td>Watch check-ins + live sync to the phone</td><td>Thin, but real</td></tr>
+        <tr><td class="when">→ 13:50</td><td><b>Ask Claude, grounded in the week</b></td><td><b>The actual product</b></td></tr>
+        <tr><td class="when">→ 14:20</td><td>Send guidance to the watch · the call</td><td>The loop closes</td></tr>
+        <tr><td class="when">→ 14:45</td><td>Fallbacks, README, freeze</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
   <div class="note" style="margin-top:20px">
     <h3>Cut order — decided now, not argued at 14:00</h3>
     <p class="cutlist">
-      tunnel → patterns → quests &amp; points → the call → mood<br>
-      <b>Never cut:</b> the help ladder · the collapsed answer · the two-device moment
+      tunnel → the call → points &amp; rewards → mood → streak<br>
+      <b>Never cut:</b> the parent typing a real question · the answer quoting real times ·
+      the AI-skill card
     </p>
   </div>
   <p style="margin-top:18px;color:var(--ink-dim)">
-    Two hard rules. If the call isn't connecting by <b style="color:var(--ink)">14:30</b> we stop and
-    make it UI-only, and say so in the README — judges have seen a hundred failed live calls.
-    And <b style="color:var(--ink)">everyone stops building at 14:45</b>; the last hour is recording
-    and rehearsal.
+    <b style="color:var(--ink)">Everyone stops building at 14:45.</b> The last hour is
+    recording and rehearsal. If the call isn't connecting by 14:20 it becomes UI-only and
+    we say so in the README.
   </p>
 </section>
 
@@ -711,18 +790,18 @@
   <p class="eyebrow">Record at 14:45, not 15:55</p>
   <h2>The two minutes, shot by shot</h2>
   <div class="shots">
-    <div class="shot"><span class="t">0:00</span><span class="d">A parent on our team, no slides: <b>"My son has a watch, not a phone. When he's stuck in the other room, I find out three weeks later, from his teacher."</b></span></div>
-    <div class="shot"><span class="t">0:15</span><span class="d">Watch: a real worksheet. The ring fills, three dots glow. <b>"We reward him for not quitting, not for being right."</b></span></div>
-    <div class="shot"><span class="t">0:30</span><span class="d">He taps <b>I'm stuck</b>. Hint one, spoken aloud. No answer. One dot out.</span></div>
-    <div class="shot"><span class="t">0:45</span><span class="d">Hint two. Second dot out. <b>"Still nothing on screen he could copy."</b></span></div>
-    <div class="shot"><span class="t">1:00</span><span class="d">Third dot — <b>his mum's face.</b> Her phone lights up with the card. She reaches for the answer: it's collapsed. <b>"Sure? Try the questions first."</b></span></div>
-    <div class="shot"><span class="t">1:20</span><span class="d">She taps <b>Call</b>. The watch rings. <b>The card stays on screen while they talk.</b> She reads question one aloud.</span></div>
-    <div class="shot"><span class="t">1:40</span><span class="d">Patterns, then the Turkish card: <b>"Now a parent who can't read German can still coach German homework."</b></span></div>
-    <div class="shot"><span class="t">1:50</span><span class="d">The child's "what Mum can see" screen. <b>"He knows exactly what's shared. We never look anywhere else."</b> Repo link. Stop.</span></div>
+    <div class="shot"><span class="t">0:00</span><span class="d">A parent on our team, no slides: <b>"My son starts his homework at half nine. I've been telling him he's lazy for a month."</b></span></div>
+    <div class="shot"><span class="t">0:15</span><span class="d">Watch: he taps <b>Got home</b>. 18:51. The ring fills a notch. <b>"One tap. That's the whole input."</b></span></div>
+    <div class="shot"><span class="t">0:30</span><span class="d">Phone. She types it the way she'd say it: <b>"Is he getting slower, or is something else going on?"</b></span></div>
+    <div class="shot"><span class="t">0:45</span><span class="d">The answer, with her own numbers in it: <b>"Three days he's home by 17:10 and starts at 18:25. Two days he's home at 18:50 and starts at 21:40. Same boy, ninety minutes less day."</b> Let that sit.</span></div>
+    <div class="shot"><span class="t">1:05</span><span class="d"><b>Tonight:</b> "Don't mention homework. Ask him what Tuesdays actually look like now."</span></div>
+    <div class="shot"><span class="t">1:20</span><span class="d">She taps <b>send to his watch</b>. It arrives in her voice, not the app's: <i>"Tuesdays look long from where I'm sitting — want to tell me about them tonight?"</i> He taps OK.</span></div>
+    <div class="shot"><span class="t">1:35</span><span class="d">Scroll to the skill card: <b>"You gave me five days of times instead of saying he's lazy. That's what made this answerable."</b> Say: <b>"She just learned to use AI. We didn't teach her — the answer did."</b></span></div>
+    <div class="shot"><span class="t">1:50</span><span class="d">The child's <b>Me</b> screen. <b>"He tapped every one of these himself. We sense nothing."</b> Repo link. Stop.</span></div>
   </div>
   <p style="margin-top:18px;color:var(--ink-dim)">
-    No slides. No architecture diagram. No code on screen. A real worksheet, a real table,
-    a real voice.
+    No slides. No architecture diagram. No code on screen. A real parent's voice, two real
+    devices.
   </p>
 </section>
 
@@ -730,253 +809,354 @@
   <p class="eyebrow">Still open</p>
   <h2>Three things the team decides</h2>
   <div class="twocol">
-    <div class="note">
-      <h3>Team name</h3>
-      <p>The desk needs it, and the repo should match.</p>
-    </div>
-    <div class="note">
-      <h3>Which second language</h3>
-      <p>Pick one somebody on the team actually speaks, or Q&amp;A gets dangerous.</p>
-    </div>
-    <div class="note">
-      <h3>No children on camera</h3>
-      <p>Recommendation: don't. Consent and GDPR noise we don't need. The worksheet and a
-      parent's voice are enough.</p>
-    </div>
+    <div class="note"><h3>Team name</h3><p>The desk needs it, and the repo should match.</p></div>
+    <div class="note"><h3>Which second language</h3><p>Pick one somebody on the team actually speaks, or Q&amp;A gets dangerous.</p></div>
+    <div class="note"><h3>No children on camera</h3><p>Recommendation: don't. The watch and a parent's voice are enough.</p></div>
   </div>
 </section>
 
 <footer class="wrap">
-  <p>Relay · built with Claude Code at Claude Impact Lab Berlin, 17 October 2026.
-  The devices above are the real interface, running the real copy.</p>
+  <p>Tempo · built with Claude Code at Claude Impact Lab Berlin, 17 October 2026.
+  The devices above are the real interface, running the real copy and the real seeded week.</p>
 </footer>
 
 <script>
-  // The demo mirrors the product's own state machine: rungs 1 and 2 are hints,
-  // rung 3 is a person. Content is the real copy from the app's fallback set.
-  var HINTS = [
-    { n: 1, text: 'How many rolls go in ONE bag? Start there, not with the 48.' },
-    { n: 2, text: 'He sold 5 bags and then 2 more. How many bags did he sell altogether?' }
+  // Five weekdays of real check-in times. The shape is the thing Claude has to
+  // find: homework is always late, but so is getting home — on exactly two days.
+  var WEEK = [
+    { day: 'Mon', home: '17:05', hw: '18:25', bed: '21:04', move: '17:40', mood: 'good'  },
+    { day: 'Tue', home: '18:50', hw: '21:40', bed: '22:25', move: null,    mood: 'rough' },
+    { day: 'Wed', home: '17:12', hw: '18:20', bed: '21:00', move: '17:50', mood: 'good'  },
+    { day: 'Thu', home: '18:48', hw: '21:50', bed: '22:30', move: null,    mood: 'rough' },
+    { day: 'Fri', home: '17:08', hw: '18:35', bed: '21:10', move: '17:35', mood: 'ok'    }
   ];
 
-  var CARD = {
-    subject: 'Maths — multi-step word problem',
-    concept: 'It looks like division, but the real skill is holding three steps in order: make the bags, count what was sold, then see what is left.',
-    answer: { value: '6 rolls', working: '48 ÷ 6 = 8 bags · 5 + 2 = 7 sold · 8 − 7 = 1 bag · 1 × 6 = 6' },
-    ladder: [
-      { q: 'How many rolls go in one bag?', look: '"Six." If that comes easily, he has the entry point and just needs ordering.' },
-      { q: 'So how many bags can he make from 48 rolls?', look: 'Eight. If he guesses, ask him to count up in sixes out loud.' },
-      { q: 'He sold 5 bags, then 2 more. How many are still on the shelf?', look: 'One. Then he can find the rolls himself — do not say the last step.' }
-    ],
-    unlock: "Don't worry about the answer for a second. Just tell me what the question is actually asking us to find.",
-    skill: { name: 'Make the AI ask instead of answer', try: '"Don’t give me the answer. Ask me one question at a time until I work it out myself."' }
+  var CHECKPOINTS = [
+    { id: 'wake',     label: 'Woke up',          icon: '☀', pts: 5,  target: '07:00', demo: '07:02' },
+    { id: 'left',     label: 'Left for school',  icon: '🎒', pts: 5,  target: '07:45', demo: '07:43' },
+    { id: 'home',     label: 'Got home',         icon: '🏠', pts: 5,  target: '17:10', demo: '18:51' },
+    { id: 'move',     label: 'Moved my body',    icon: '⚽', pts: 15, target: '17:45', demo: '19:05' },
+    { id: 'homework', label: 'Started homework', icon: '✏', pts: 20, target: '18:30', demo: '21:38' },
+    { id: 'read',     label: 'Read something',   icon: '📖', pts: 15, target: '20:00', demo: '21:55' },
+    { id: 'screens',  label: 'Screens off',      icon: '🌙', pts: 15, target: '20:30', demo: '22:05' },
+    { id: 'sleep',    label: 'In bed',           icon: '🛏', pts: 10, target: '21:00', demo: '22:20' }
+  ];
+
+  var REWARDS = [
+    { cost: 120, label: '20 minutes of football with Dad' },
+    { cost: 180, label: 'You pick the Saturday film' },
+    { cost: 250, label: 'A whole afternoon, just you and Mum' }
+  ];
+
+  var ANSWERS = {
+    slower: {
+      q: 'Is he getting slower, or is something else going on?',
+      answer: "He isn't getting slower — his Tuesdays and Thursdays are. On Mon, Wed and Fri he's home by 17:10 and starts homework around 18:25. On Tue and Thu he gets home at 18:50 and doesn't start until 21:40. Same boy, same homework, ninety minutes less day.",
+      evidence: [
+        'Got home     17:05 · 18:50 · 17:12 · 18:48 · 17:08',
+        'Homework     18:25 · 21:40 · 18:20 · 21:50 · 18:35',
+        'Moved body     yes ·     — ·   yes ·     — ·   yes'
+      ],
+      tonight: "Don't mention homework. Ask him what Tuesdays actually look like now — whether the gap between school and getting home is as long as it looks from here.",
+      skill: {
+        name: 'Ask about a pattern, not a person',
+        why: 'You asked "is he getting slower" and gave me five days of real times. If you had asked "why is my son lazy" I would only have had your mood to work with. Dates, times and counts are what turn a worry into something an AI can actually check.'
+      }
+    },
+    bedtime: {
+      q: 'Why is bedtime sliding?',
+      answer: "It isn't sliding — it's two different weeks living in one. Mon, Wed and Fri he's in bed by 21:10. Tue and Thu: 22:25 and 22:30. Both late nights follow a day he got home at about 18:50 and started homework after 21:30. Bedtime is the last domino here, not the first.",
+      evidence: [
+        'In bed       21:04 · 22:25 · 21:00 · 22:30 · 21:10',
+        'Got home     17:05 · 18:50 · 17:12 · 18:48 · 17:08'
+      ],
+      tonight: "Nothing about bedtime tonight. Ask him instead which one thing he'd drop from a Tuesday if he were allowed to — and actually consider dropping it.",
+      skill: {
+        name: 'Ask why, not how do I fix it',
+        why: 'You asked why it was happening instead of asking me for a bedtime routine. That let me go looking for a cause inside your own data. Had you asked for a routine, I would have handed you a generic one that ignored Tuesdays completely.'
+      }
+    },
+    hardest: {
+      q: 'Which day of his week is the hardest?',
+      answer: 'Tuesday, and Thursday is its twin. They are the only two days he gets home after 18:45, the only two he skips moving his body, the only two homework starts after 21:30, and the only two he tapped the rough face. Four separate things agree, which is more than I usually get.',
+      evidence: [
+        'Got home     17:05 · 18:50 · 17:12 · 18:48 · 17:08',
+        'Moved body     yes ·     — ·   yes ·     — ·   yes',
+        'His mood      good · rough ·  good · rough ·    ok'
+      ],
+      tonight: 'Ask him to walk you through a Tuesday, hour by hour, with no comment from you at all. Just listen to where the time goes.',
+      skill: {
+        name: 'Let the AI do the ranking',
+        why: "You asked which day, rather than asking me to confirm that Tuesday is bad. An open question lets me check every day against every signal. A leading question only ever gets you your own hunch back."
+      }
+    }
   };
 
-  var PROBLEM = 'A baker has 48 bread rolls. He packs them into bags of 6. He sells 5 bags in the morning and 2 bags in the afternoon. How many rolls does he have left?';
+  var NOTICED = {
+    headline: 'Two days are doing all the damage',
+    body: "Mert's week has two shapes, not one. Three days run on time and end calm. Two — Tuesday and Thursday — he gets home 100 minutes later, skips moving, starts homework after 21:30 and is in bed past 22:15. Those are also the only two days he tapped the rough face.",
+    tonight: 'Ask him about Tuesday, not about homework. Ten minutes, before dinner, no screens between you.'
+  };
 
-  var STEPS = [
-    { label: 'Start', hint: 'Mert is stuck on question 4. Nothing has happened yet.' },
-    { label: "I'm stuck", hint: 'He’s been on it <b>2 minutes</b>. The ring is filling and all three dots are lit — he can see help exists before he asks for it.' },
-    { label: "I'm stuck", hint: '<b>Hint one.</b> It points at the bags, not the answer. One dot goes out. Nothing on screen he could copy down.' },
-    { label: 'Still stuck — ask Mum', hint: '<b>Hint two.</b> Heavier, still short of the answer. Second dot out. The next rung is a person.' },
-    { label: 'Answer the call', hint: '<b>The handover.</b> Her phone lit up by itself with a coaching card — and the answer is collapsed. Try clicking it.' },
-    { label: 'Done', hint: '<b>The card stays up during the call.</b> She reads question one off her phone while she talks to him.' }
-  ];
+  var NUDGE_TEXT = "Mum here. Tuesdays look long from where I'm sitting — want to tell me about them tonight?";
 
-  var step = 0;
-  var tab = 'now';
-  var answerStage = 0;
+  // ── state ──────────────────────────────────────────────────────────────
+  var today, points, mood, thread, nudge, tab, thinking;
+
+  function init() {
+    today = { wake: '07:02', left: '07:43', home: '18:51' };
+    points = 340;
+    mood = null;
+    thread = [];
+    nudge = null;
+    tab = 'today';
+    thinking = false;
+  }
 
   var watchScroll = document.getElementById('watchScroll');
   var phoneBody = document.getElementById('phoneBody');
   var phonePill = document.getElementById('phonePill');
-  var advance = document.getElementById('advance');
-  var resetBtn = document.getElementById('reset');
   var stageHint = document.getElementById('stageHint');
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  function rungs() {
-    var used = step <= 1 ? 0 : step === 2 ? 1 : step === 3 ? 2 : 3;
-    return '<div class="rungs">'
-      + '<div class="rung ' + (used >= 1 ? 'spent' : '') + '"></div>'
-      + '<div class="rung ' + (used >= 2 ? 'spent' : '') + '"></div>'
-      + '<div class="rung human ' + (used >= 3 ? 'spent' : '') + '">MUM</div>'
-      + '</div>';
+  function mins(hhmm) {
+    var p = hhmm.split(':');
+    return Number(p[0]) * 60 + Number(p[1]);
   }
 
-  function ring() {
-    var secs = [0, 124, 196, 268, 331, 352][step] || 0;
-    var r = 24, c = 2 * Math.PI * r;
-    var pct = Math.min(secs / 600, 1);
-    var m = Math.floor(secs / 60), s = String(secs % 60);
-    if (s.length < 2) s = '0' + s;
-    return '<div class="ring-wrap">'
-      + '<svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true">'
-      + '<circle class="ring-track" cx="29" cy="29" r="' + r + '" fill="none" stroke-width="6"></circle>'
-      + '<circle class="ring-fill" cx="29" cy="29" r="' + r + '" fill="none" stroke-width="6"'
-      + ' stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - pct)).toFixed(1) + '"'
-      + ' transform="rotate(-90 29 29)"></circle></svg>'
-      + '<div class="ring-cap"><b>' + m + ':' + s + '</b>you stayed with it</div></div>';
+  /** Only flag a check-in that actually moved the shape of the day. */
+  function isLate(at, target) {
+    return Boolean(at) && mins(at) - mins(target) > 20;
   }
 
+  // ── the watch ──────────────────────────────────────────────────────────
   function renderWatch() {
+    var html = '';
+
+    if (tab === 'today') {
+      var done = Object.keys(today).length;
+      var r = 24, c = 2 * Math.PI * r, pct = done / CHECKPOINTS.length;
+
+      html += '<div class="watch-top"><span>TODAY</span><span class="streak">11 days</span></div>';
+      html += '<div class="ring-wrap"><svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true">'
+        + '<circle class="ring-track" cx="29" cy="29" r="' + r + '" fill="none" stroke-width="6"></circle>'
+        + '<circle class="ring-fill" cx="29" cy="29" r="' + r + '" fill="none" stroke-width="6"'
+        + ' stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - pct)).toFixed(1) + '"'
+        + ' transform="rotate(-90 29 29)"></circle></svg>'
+        + '<div class="ring-cap"><b>' + done + '/' + CHECKPOINTS.length + '</b>of today checked in</div></div>';
+
+      if (nudge) {
+        html += '<div class="nudge"><small>Mum · ' + esc(nudge.at) + '</small>' + esc(nudge.text)
+          + (nudge.acked ? '' : '<button class="ok" data-ack="1">OK</button>') + '</div>';
+      }
+
+      for (var i = 0; i < CHECKPOINTS.length; i++) {
+        var cp = CHECKPOINTS[i];
+        var at = today[cp.id];
+        var late = isLate(at, cp.target);
+        html += '<button class="cp ' + (at ? 'done' : '') + '" data-cp="' + cp.id + '"'
+          + (at ? ' disabled' : '') + '>'
+          + '<span class="cp-icon">' + cp.icon + '</span>'
+          + '<span class="cp-label">' + esc(cp.label) + '</span>'
+          + '<span class="cp-time ' + (late ? 'late' : '') + '">' + (at ? esc(at) : '+' + cp.pts) + '</span>'
+          + '</button>';
+      }
+    }
+
+    if (tab === 'points') {
+      html += '<p class="watch-label">Your points</p><div class="points-big">' + points + '</div>'
+        + '<p class="watch-label">Swap for time together</p>';
+      for (var j = 0; j < REWARDS.length; j++) {
+        var rw = REWARDS[j];
+        html += '<button class="reward" data-rw="' + j + '"' + (points < rw.cost ? ' disabled' : '') + '>'
+          + '<span>' + esc(rw.label) + '</span><span>' + rw.cost + '</span></button>';
+      }
+    }
+
     if (tab === 'me') {
-      watchScroll.innerHTML =
-        '<p class="watch-top" style="display:block">WHAT MUM CAN SEE</p>'
-        + '<div class="seen">Which question you’re on</div>'
-        + '<div class="seen">How long you stayed with it</div>'
-        + '<div class="seen">Which hints you used</div>'
-        + '<div class="seen">The face you tapped</div>'
+      html += '<p class="watch-label">How was today?</p><div class="moods">'
+        + '<button data-mood="good" aria-pressed="' + (mood === 'good') + '">🙂</button>'
+        + '<button data-mood="ok" aria-pressed="' + (mood === 'ok') + '">😐</button>'
+        + '<button data-mood="rough" aria-pressed="' + (mood === 'rough') + '">😞</button>'
+        + '</div>'
+        + '<p class="watch-label">What Mum can see</p>'
+        + '<div class="seen">The times you tapped today</div>'
+        + '<div class="seen">Which ones you skipped</div>'
+        + '<div class="seen">The face you picked</div>'
+        + '<div class="seen">Your points and your streak</div>'
         + '<div class="seen no">Not where you are</div>'
         + '<div class="seen no">Not your messages</div>'
         + '<div class="seen no">Not anything else, ever</div>';
-      return;
     }
-
-    if (step === 0) {
-      watchScroll.innerHTML =
-        '<div class="watch-top"><span>QUESTION 4</span></div>'
-        + '<p class="watch-problem">Question 4 is waiting for you.</p>'
-        + '<div class="watch-action"><button class="watch-btn" id="wbtn">Start</button></div>';
-      wire();
-      return;
-    }
-
-    var html = '<div class="watch-top"><span>QUESTION 4</span>' + rungs() + '</div>'
-      + '<p class="watch-problem">' + esc(PROBLEM) + '</p>'
-      + ring();
-
-    var shown = step >= 3 ? 2 : step >= 2 ? 1 : 0;
-    for (var i = 0; i < shown; i++) {
-      html += '<div class="hint"><small>Hint ' + HINTS[i].n + '</small>' + esc(HINTS[i].text) + '</div>';
-    }
-
-    html += '<div class="watch-action">';
-    if (step === 1) html += '<button class="watch-btn" id="wbtn">I’m stuck</button>';
-    else if (step === 2) html += '<button class="watch-btn" id="wbtn">I’m stuck</button>';
-    else if (step === 3) html += '<button class="watch-btn" id="wbtn">Still stuck — ask Mum</button>';
-    else if (step === 4) html += '<button class="watch-btn go" id="wbtn">Mum is calling — answer</button>';
-    else html += '<div class="hint live"><small>On a call</small>Mum is here. Tell her what the question is asking.</div>';
-    html += '</div>';
 
     watchScroll.innerHTML = html;
-    wire();
   }
 
-  function answerBlock() {
-    if (answerStage === 2) {
-      return '<div class="revealed"><p class="v">' + esc(CARD.answer.value) + '</p>'
-        + '<p class="w">' + esc(CARD.answer.working) + '</p></div>';
-    }
-    if (answerStage === 1) {
-      return '<div class="locked"><p><strong>Sure?</strong> Try the three questions first — '
-        + 'he gets there himself about half the time.</p>'
-        + '<button class="pbtn" id="ansBtn">Yes, show it</button></div>';
-    }
-    return '<div class="locked"><p>The answer is in here.</p>'
-      + '<button class="pbtn" id="ansBtn">Show me the answer</button></div>';
-  }
-
+  // ── the phone ──────────────────────────────────────────────────────────
   function renderPhone() {
-    var mins = ['0 min', '2 min', '3 min', '4 min', '5 min', '5 min'][step];
-    var used = step <= 1 ? 0 : step === 2 ? 1 : 2;
+    var done = Object.keys(today).length;
+    phonePill.textContent = done + ' check-ins today · 5 days of history';
 
-    phonePill.textContent = step >= 4 ? 'Needs you' : 'Working';
-    phonePill.className = step >= 4 ? 'pill live' : 'pill';
+    var html = '';
 
-    var html = '<div class="pcard"><h5>Tonight</h5><p><strong>Mert</strong> is on '
-      + '<strong>Question 4</strong>. He stayed with it for <strong>' + mins + '</strong> and used '
-      + '<strong>' + used + ' of 2 hints</strong>'
-      + (step >= 4 ? ' before asking for you.' : '. He has not asked for you yet.') + '</p></div>';
+    if (!thread.length && !thinking) {
+      html += '<div class="pcard"><h5>Where to start</h5>'
+        + '<p style="font-size:13.5px;color:var(--paper-dim);margin-bottom:11px">'
+        + 'Ayşe has never used an AI for anything. These are the four questions she might '
+        + 'actually type.</p>'
+        + '<div class="chips">'
+        + '<button class="chip" data-q="slower">Is he getting slower, or is something else going on?</button>'
+        + '<button class="chip" data-q="bedtime">Why is bedtime sliding?</button>'
+        + '<button class="chip" data-q="hardest">Which day of his week is the hardest?</button>'
+        + '<button class="chip" data-q="noticed">What did you notice this week?</button>'
+        + '</div></div>';
+    }
 
-    if (step < 4) {
-      html += '<div class="waiting"><div class="blip"></div>'
-        + 'Mert is working. We will only interrupt you if he runs out of hints.</div>';
-      phoneBody.innerHTML = html;
+    for (var i = 0; i < thread.length; i++) {
+      var t = thread[i];
+      if (t.role === 'parent') {
+        html += '<div class="bubble-parent">' + esc(t.text) + '</div>';
+        continue;
+      }
+      if (t.unprompted) {
+        html += '<div class="pcard"><h5>What I noticed</h5>'
+          + '<p style="font-weight:600;margin-bottom:6px">' + esc(t.headline) + '</p>'
+          + '<p>' + esc(t.body) + '</p></div>';
+      } else {
+        html += '<div class="pcard"><h5>From his check-ins</h5><p>' + esc(t.answer) + '</p>';
+        html += '<ul class="evi">';
+        for (var e = 0; e < t.evidence.length; e++) html += '<li>' + esc(t.evidence[e]) + '</li>';
+        html += '</ul></div>';
+      }
+
+      html += '<div class="tonight-card"><h5>Tonight, 15 minutes</h5><p>' + esc(t.tonight) + '</p></div>';
+
+      if (t.skill) {
+        html += '<div class="skillcard"><h5>What made that question work</h5>'
+          + '<p><strong>' + esc(t.skill.name) + '</strong></p>'
+          + '<p class="try">' + esc(t.skill.why) + '</p></div>';
+      }
+
+      if (i === thread.length - 1) {
+        html += '<div class="pcard"><h5>Send it to him</h5>'
+          + '<p style="font-size:13.5px;color:var(--paper-dim);margin-bottom:11px">'
+          + 'Claude rewrites tonight’s suggestion in your voice — never a reminder, '
+          + 'never a telling-off.</p>'
+          + '<button class="sendbtn" data-send="1"' + (nudge ? ' disabled' : '') + '>'
+          + (nudge ? 'Sent to his watch' : 'Send to his watch') + '</button></div>';
+
+        if (!thinking) {
+          html += '<div class="pcard"><h5>Ask something else</h5><div class="chips">'
+            + '<button class="chip" data-q="slower">Is he getting slower?</button>'
+            + '<button class="chip" data-q="bedtime">Why is bedtime sliding?</button>'
+            + '<button class="chip" data-q="hardest">Which day is hardest?</button>'
+            + '</div></div>';
+        }
+      }
+    }
+
+    if (thinking) html += '<div class="thinking">reading five days of check-ins…</div>';
+
+    phoneBody.innerHTML = html;
+    phoneBody.scrollIntoView = phoneBody.scrollIntoView || function () {};
+    var screen = phoneBody.parentElement;
+    if (thread.length || thinking) screen.scrollTop = screen.scrollHeight;
+  }
+
+  function render() { renderWatch(); renderPhone(); }
+
+  function hint(text) { stageHint.innerHTML = text; }
+
+  // ── interaction ────────────────────────────────────────────────────────
+  function askQuestion(key) {
+    if (thinking) return;
+    if (key === 'noticed') {
+      thinking = true; render();
+      setTimeout(function () {
+        thread.push({ role: 'claude', unprompted: true, headline: NOTICED.headline,
+                      body: NOTICED.body, tonight: NOTICED.tonight });
+        thinking = false; render();
+        hint('Claude went looking without being asked. Useful — but the <b>real</b> moment is a parent typing their own question.');
+      }, 900);
+      return;
+    }
+    var a = ANSWERS[key];
+    if (!a) return;
+    thread.push({ role: 'parent', text: a.q });
+    thinking = true;
+    render();
+    hint('She asked it the way she’d say it to a friend. No prompt engineering, no training.');
+    setTimeout(function () {
+      thread.push({ role: 'claude', answer: a.answer, evidence: a.evidence,
+                    tonight: a.tonight, skill: a.skill });
+      thinking = false; render();
+      hint('<b>Her own numbers are in the answer.</b> Scroll the phone — under the advice is the card that teaches her why the question worked.');
+    }, 1100);
+  }
+
+  document.addEventListener('click', function (ev) {
+    var el = ev.target.closest ? ev.target.closest('[data-cp],[data-q],[data-send],[data-ack],[data-mood],[data-rw],[data-tab]') : null;
+    if (!el) return;
+
+    if (el.dataset.tab) {
+      tab = el.dataset.tab;
+      var btns = document.querySelectorAll('.watch-tabs button');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].setAttribute('aria-selected', btns[i].dataset.tab === tab ? 'true' : 'false');
+      }
+      renderWatch();
+      if (tab === 'me') hint('Every line here was put there by a tap he made himself. <b>Nothing is sensed in the background.</b>');
+      if (tab === 'points') hint('Points buy <b>time with a parent</b>, never things.');
       return;
     }
 
-    html += '<div class="pcard alert"><h5>He asked for you</h5><p><strong>'
-      + esc(CARD.subject) + '.</strong> Two hints did not get him there.</p></div>';
-    html += '<div class="pcard"><h5>What this is really testing</h5><p>' + esc(CARD.concept) + '</p></div>';
-    html += answerBlock();
-
-    html += '<div class="pcard"><h5>Ask him these, in order</h5>';
-    for (var i = 0; i < CARD.ladder.length; i++) {
-      html += '<div class="pstep"><div class="pstep-n">' + (i + 1) + '</div><div>'
-        + '<p>' + esc(CARD.ladder[i].q) + '</p>'
-        + '<small>' + esc(CARD.ladder[i].look) + '</small></div></div>';
-    }
-    html += '</div>';
-
-    html += '<div class="pcard"><h5>If he’s still stuck after question 2</h5><p>"'
-      + esc(CARD.unlock) + '"</p></div>';
-
-    html += '<div class="skillcard"><h5>The AI skill you just used</h5>'
-      + '<p><strong>' + esc(CARD.skill.name) + '</strong></p>'
-      + '<p class="try">' + esc(CARD.skill.try) + '</p></div>';
-
-    if (step === 5) {
-      html += '<div class="pcard alert"><h5>On a call</h5>'
-        + '<p>Connected. Read question 1 off this screen.</p></div>';
+    if (el.dataset.cp) {
+      var cp = null;
+      for (var j = 0; j < CHECKPOINTS.length; j++) if (CHECKPOINTS[j].id === el.dataset.cp) cp = CHECKPOINTS[j];
+      if (cp && !today[cp.id]) {
+        today[cp.id] = cp.demo;
+        points += cp.pts;
+        render();
+        hint(isLate(cp.demo, cp.target)
+          ? '<b>' + cp.label + ' at ' + cp.demo + '.</b> Late again — but that is the symptom, not the cause. Ask the phone why.'
+          : cp.label + ' at ' + cp.demo + '. One tap, one timestamp. That is the entire input.');
+      }
+      return;
     }
 
-    phoneBody.innerHTML = html;
+    if (el.dataset.q) { askQuestion(el.dataset.q); return; }
 
-    var ansBtn = document.getElementById('ansBtn');
-    if (ansBtn) {
-      ansBtn.addEventListener('click', function () {
-        answerStage = answerStage + 1;
-        renderPhone();
-      });
+    if (el.dataset.send) {
+      nudge = { text: NUDGE_TEXT, at: '19:04', acked: false };
+      render();
+      hint('It arrived <b>in her voice</b>, not the app’s — and it asks him something instead of telling him something.');
+      return;
     }
-  }
 
-  function wire() {
-    var b = document.getElementById('wbtn');
-    if (b) b.addEventListener('click', next);
-  }
+    if (el.dataset.ack) { if (nudge) nudge.acked = true; renderWatch(); return; }
 
-  function next() {
-    if (step >= STEPS.length - 1) return;
-    step = step + 1;
-    if (tab !== 'now') { tab = 'now'; syncTabs(); }
-    render();
-  }
+    if (el.dataset.mood) { mood = el.dataset.mood; renderWatch(); return; }
 
-  function syncTabs() {
-    var btns = document.querySelectorAll('.watch-tabs button');
-    for (var i = 0; i < btns.length; i++) {
-      btns[i].setAttribute('aria-selected', btns[i].dataset.tab === tab ? 'true' : 'false');
+    if (el.dataset.rw) {
+      var rw = REWARDS[Number(el.dataset.rw)];
+      if (rw && points >= rw.cost) { points -= rw.cost; renderWatch(); }
+      return;
     }
-  }
-
-  function render() {
-    renderWatch();
-    renderPhone();
-    stageHint.innerHTML = STEPS[step].hint;
-    var atEnd = step >= STEPS.length - 1;
-    advance.disabled = atEnd;
-    advance.textContent = atEnd ? 'That’s the ladder' : STEPS[step].label;
-  }
-
-  advance.addEventListener('click', next);
-  resetBtn.addEventListener('click', function () {
-    step = 0; answerStage = 0; tab = 'now';
-    syncTabs(); render();
   });
 
-  var tabBtns = document.querySelectorAll('.watch-tabs button');
-  for (var i = 0; i < tabBtns.length; i++) {
-    tabBtns[i].addEventListener('click', function (e) {
-      tab = e.currentTarget.dataset.tab;
-      syncTabs();
-      renderWatch();
-    });
-  }
+  document.getElementById('reset').addEventListener('click', function () {
+    init();
+    var btns = document.querySelectorAll('.watch-tabs button');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].setAttribute('aria-selected', btns[i].dataset.tab === 'today' ? 'true' : 'false');
+    }
+    render();
+    hint('Mert got home at 18:51 today. His mum has never used an AI for anything.');
+  });
 
+  init();
   render();
 </script>
